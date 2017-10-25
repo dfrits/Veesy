@@ -4,6 +4,8 @@ import java.util.Observable;
 
 /**
  * Created by Martin on 24.10.2017.
+ * veesy.de
+ * hs-augsburg
  *
  * This class is observed by ShareActivity to update the items in the list
  */

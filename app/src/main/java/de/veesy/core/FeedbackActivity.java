@@ -13,7 +13,9 @@ import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 
 /**
- * Created by Martin on 24.10.2017.
+ * Created by dfritsch on 24.10.2017.
+ * veesy.de
+ * hs-augsburg
  */
 
 /**
