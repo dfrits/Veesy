@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/share"
+        android:layout_below="@+id/bShare"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageButton
+        android:id="@+id/bShare"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="34dp"
+        android:contentDescription="@string/share"
+        android:onClick="bShareClicked"
+        android:src="@android:drawable/ic_menu_always_landscape_portrait"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageButton
+        android:id="@+id/bContacts"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/contacts"
+        android:onClick="bContactsClicked"
+        android:src="@android:drawable/ic_dialog_email"
+        android:layout_below="@+id/tShare"
+        android:layout_toStartOf="@+id/bShare"/>
+
+    <ImageButton
+        android:id="@+id/bSettings"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/settings"
+        android:onClick="bSettingsClicked"
+        android:src="@android:drawable/ic_menu_manage"
+        android:layout_below="@+id/tShare"
+        android:layout_toEndOf="@+id/bShare"/>
 </RelativeLayout>

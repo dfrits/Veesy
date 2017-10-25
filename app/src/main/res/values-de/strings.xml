@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Veesy</string>
+    <string name="share">Tauschen</string>
+    <string name="contacts">Kontakte</string>
+    <string name="settings">Einstellungen</string>
+</resources>
