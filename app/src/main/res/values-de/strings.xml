@@ -4,4 +4,7 @@
     <string name="share">Tauschen</string>
     <string name="contacts">Kontakte</string>
     <string name="settings">Einstellungen</string>
+    <string name="home">Home</string>
+    <string name="details">Details</string>
+    <string name="dataTransmissionSuccess">Data Transmission Success</string>
 </resources>

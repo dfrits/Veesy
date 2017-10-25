@@ -8,14 +8,25 @@ import android.view.View;
 import android.widget.TextView;
 
 import de.veesy.R;
+import de.veesy.connection.ConnectionManager;
 
 public class MainMenu extends Activity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+
+        initConnectionManager();
+
     }
+
+    // launching
+    private void initConnectionManager(){
+        //ConnectionManager.instance();
+    }
+
 
     public void bShareClicked(View view) {
         startActivity(new Intent(this, ShareActivity.class));
