@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="de.veesy">
 
     <uses-feature android:name="android.hardware.type.watch"/>
@@ -22,16 +23,10 @@
             </intent-filter>
         </activity>
 
-
         <activity
-            android:name=".core.ShareActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:name=".core.FeedbackActivity"/>
 
-        <activity
-            android:name=".core.FeedbackActivity"
-            android:label="@string/app_name">
-        </activity>
+        <activity android:name=".core.ShareActivity"/>
 
         <meta-data
             android:name="com.google.android.wearable.standalone"
