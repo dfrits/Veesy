@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/hintergrund_feedback"
+                android:orientation="vertical">
 
     <ImageView
         android:id="@+id/feedback_imgV"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:contentDescription="@string/dataTransmissionSuccess"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="34dp"
-        android:src="@drawable/accept_deny_dialog_negative_bg" />
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/dataTransmissionSuccess"
+        android:src="@drawable/bestaetigung_icon"/>
 
     <TextView
         android:id="@+id/feedback_textV"
@@ -20,7 +22,9 @@
         android:layout_height="20dp"
         android:layout_below="@+id/feedback_imgV"
         android:layout_centerHorizontal="true"
-        />
+        android:background="@android:color/transparent"
+        android:text="@string/success"
+        android:textAlignment="center"/>
 
     <ImageButton
         android:id="@+id/bDetails"
@@ -28,9 +32,11 @@
         android:layout_height="30dp"
         android:layout_below="@+id/feedback_textV"
         android:layout_toStartOf="@+id/feedback_textV"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/details"
         android:onClick="bDetailsClicked"
-        android:src="@android:drawable/ic_menu_info_details" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/details_anzeigen_button"/>
 
     <ImageButton
         android:id="@+id/bHome"
@@ -38,9 +44,11 @@
         android:layout_height="30dp"
         android:layout_below="@+id/feedback_textV"
         android:layout_toEndOf="@+id/feedback_textV"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/home"
         android:onClick="bHomeClicked"
-        android:src="@mipmap/ic_launcher" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/home_button"/>
 
 
 </RelativeLayout>

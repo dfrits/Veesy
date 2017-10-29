@@ -2,44 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/hintergrund_home"
                 android:orientation="vertical">
 
     <TextView
         android:id="@+id/tShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/share"
         android:layout_below="@+id/bShare"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:text="@string/share"/>
 
     <ImageButton
         android:id="@+id/bShare"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="34dp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/share"
         android:onClick="bShareClicked"
-        android:src="@android:drawable/ic_menu_always_landscape_portrait"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:scaleType="fitCenter"
+        android:paddingStart="6dp"
+        android:paddingEnd="0dp"
+        android:src="@drawable/tauschen_button"/>
 
     <ImageButton
         android:id="@+id/bContacts"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_below="@+id/tShare"
+        android:layout_toStartOf="@+id/bShare"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/contacts"
         android:onClick="bContactsClicked"
-        android:src="@android:drawable/ic_dialog_email"
-        android:layout_below="@+id/tShare"
-        android:layout_toStartOf="@+id/bShare"/>
+        android:src="@android:drawable/ic_dialog_email"/>
 
     <ImageButton
         android:id="@+id/bSettings"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_below="@+id/tShare"
+        android:layout_toEndOf="@+id/bShare"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/settings"
         android:onClick="bSettingsClicked"
-        android:src="@android:drawable/ic_menu_manage"
-        android:layout_below="@+id/tShare"
-        android:layout_toEndOf="@+id/bShare"/>
+        android:src="@android:drawable/ic_menu_manage"/>
 </RelativeLayout>
