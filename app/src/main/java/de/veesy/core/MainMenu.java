@@ -32,14 +32,26 @@ public class MainMenu extends Activity {
         //ConnectionManager.instance();
     }
 
-
+    /**
+     * Aktion des Share-Buttons.
+     * @param view .
+     */
     public void bShareClicked(View view) {
         startActivity(new Intent(this, ShareActivity.class));
+        finish();
     }
 
+    /**
+     * Aktion des Contacts-Buttons.
+     * @param view .
+     */
     public void bContactsClicked(View view) {
     }
 
+    /**
+     * Aktion des Settings-Buttons.
+     * @param view .
+     */
     public void bSettingsClicked(View view) {
     }
 }

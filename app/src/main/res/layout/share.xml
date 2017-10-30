@@ -6,6 +6,7 @@
               android:layout_below="@+id/layout"
               android:background="@drawable/hintergrund_feedback"
               android:orientation="vertical"
+              android:paddingTop="30dp"
               android:weightSum="2">
 
     <android.support.wear.widget.WearableRecyclerView
@@ -22,7 +23,8 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="3dp">
 
         <Space
             android:layout_width="0dp"

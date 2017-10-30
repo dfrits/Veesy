@@ -1,10 +1,22 @@
 package de.veesy.core;
 
-import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.wear.widget.WearableLinearLayoutManager;
+import android.support.wear.widget.WearableRecyclerView;
+import android.support.wearable.activity.WearableActivity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,7 +29,18 @@ import de.veesy.connection.ConnectionManager;
  * hs-augsburg
  */
 
-public class ShareActivity extends Activity implements Observer {
+public class ShareActivity extends WearableActivity implements Observer {
+    private final ConnectionManager cm = ConnectionManager.instance();
+    private final List<String> DUMMY_DATA = new ArrayList<String>() {{
+        add("Max Maier");
+        add("Lisa Agathe");
+        add("Bernd Ober");
+    }};
+    private final Context context = this;
+
+    private ShareAdapter adapter;
+
+    public static final String CONTACT_DATA = "CONTACT_DATA";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,10 +48,49 @@ public class ShareActivity extends Activity implements Observer {
 
         setContentView(R.layout.share);
 
+        initListView();
 
+        setList();
+    }
+
+    private void initListView() {
+        WearableRecyclerView recyclerView = findViewById(R.id.lVDevices);
+        recyclerView.setEdgeItemsCenteringEnabled(true);
+        final CustomScrollingLayoutCallback customScrollingLayoutCallback =
+                new CustomScrollingLayoutCallback();
+        adapter = new ShareAdapter(new ShareAdapter.Callback() {
+            @Override
+            public void onDeviceClicked(int position, String deviceName) {
+                Toast.makeText(context, "Connecting with" + deviceName, Toast.LENGTH_SHORT).show();
+                onListItemClick(position, deviceName);
+            }
+        });
+        recyclerView.setLayoutManager(
+                new WearableLinearLayoutManager(this, customScrollingLayoutCallback));
+        recyclerView.setAdapter(adapter);
     }
 
     public void update(Observable o, Object arg) {
+        setList();
+    }
 
+    /**
+     * Übergibt der Liste die neuen Daten
+     */
+    private void setList() {
+        adapter.setDeviceNames(DUMMY_DATA);
+    }
+
+    protected void onListItemClick(int position, String deviceName) {
+        Intent intent = new Intent(this, FeedbackActivity.class);
+        intent.putExtra(CONTACT_DATA, deviceName);
+        startActivity(intent);
+        finish();
+    }
+
+    //TODO ersetzen mit Refresh
+    public void getHome(View view) {
+        startActivity(new Intent(this, MainMenu.class));
+        finish();
     }
 }
