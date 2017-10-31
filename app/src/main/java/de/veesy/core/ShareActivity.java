@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.wear.widget.WearableLinearLayoutManager;
@@ -54,6 +55,14 @@ public class ShareActivity extends WearableActivity implements Observer {
     }
 
     private void initListView() {
+        SwipeRefreshLayout refreshView = findViewById(R.id.swiperefresh);
+        refreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(context, "Refreshing.......", Toast.LENGTH_LONG).show();
+            }
+        });
+
         WearableRecyclerView recyclerView = findViewById(R.id.lVDevices);
         recyclerView.setEdgeItemsCenteringEnabled(true);
         final CustomScrollingLayoutCallback customScrollingLayoutCallback =
@@ -88,9 +97,21 @@ public class ShareActivity extends WearableActivity implements Observer {
         finish();
     }
 
-    //TODO ersetzen mit Refresh
-    public void getHome(View view) {
-        startActivity(new Intent(this, MainMenu.class));
+    /**
+     * Aktion des Refresh-Buttons. Damit erneuert der Nutzer intentional.
+     * @param view .
+     */
+    /*//TODO Refresh
+    public void refresh(View view) {
+        //cm.refresh();
+    }*/
+
+    /**
+     * Activity beenden und zum Homescreen zurückkehren.
+     */
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(context, MainMenu.class));
         finish();
     }
 }
