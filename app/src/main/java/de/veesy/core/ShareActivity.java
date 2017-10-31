@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -31,13 +32,15 @@ import de.veesy.connection.ConnectionManager;
  */
 
 public class ShareActivity extends WearableActivity implements Observer {
-    private final ConnectionManager cm = ConnectionManager.instance();
     private final List<String> DUMMY_DATA = new ArrayList<String>() {{
         add("Max Maier");
         add("Lisa Agathe");
         add("Bernd Ober");
     }};
     private final Context context = this;
+
+    //TODO final, warum?
+    private ConnectionManager connectionManager = null;
 
     private ShareAdapter adapter;
 
@@ -51,7 +54,23 @@ public class ShareActivity extends WearableActivity implements Observer {
 
         initListView();
 
+        startConnectionManager();
+
         setList();
+    }
+
+    protected void onDestroy(){
+        connectionManager.unregisterReceiver(this);
+        connectionManager.deleteObserver(this);
+        super.onDestroy();
+    }
+
+    private void startConnectionManager(){
+        connectionManager = ConnectionManager.instance();
+        connectionManager.addObserver(this);
+        connectionManager.registerReceiver(this);
+        connectionManager.discoverBluetoothDevices();
+        connectionManager.startBluetoothIntent(this, 300);
     }
 
     private void initListView() {
@@ -100,11 +119,12 @@ public class ShareActivity extends WearableActivity implements Observer {
     /**
      * Aktion des Refresh-Buttons. Damit erneuert der Nutzer intentional.
      * @param view .
-     */
-    /*//TODO Refresh
+    */
+
     public void refresh(View view) {
-        //cm.refresh();
-    }*/
+        connectionManager.discoverBluetoothDevices();
+    }
+
 
     /**
      * Activity beenden und zum Homescreen zurückkehren.

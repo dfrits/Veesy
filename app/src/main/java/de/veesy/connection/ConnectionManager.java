@@ -6,68 +6,41 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
-
-
-/**
- * Created by Martin on 24.10.2017.
- */
-
-/**
- *
- * Solange wir keine Uhren zum Testn haben, ist diese Klasse ohne Funktion. Alle Referenzen darauf
- * sind auskommentiert.
- *
- *
- *
- * This class is observed by ShareActivity to update the items in the list
- *
- * **/
-
-
-
-/**
- *
- *  --------------------------------- Nochmal drüber nachdenken ------------------------------------
- *
- * macht das so überhaupt sinn? Vllt sollte man den Broadcast und allgemein das ganze Bluetooth zeug
- * gleich in die ShareActivity packen. Ansonsten muss man immer den
- * context mit überreichen. Ist das egl nicht total umständlich?
- *
- * Auf Bluetooth muss ja an sich eh nur die ShareActivity zugreifen.
- *
- * man könnte sich dadurch auch den Observer Pattern sparen.
- *
- * die FeedbackActivity könnte man auch von ShareAct aus aufrufen.. solange der Datenaustausch erfolgt
- * Animation anzeigen
- *
- *
- */
-
-
-
-
 
 
 
 public class ConnectionManager extends Observable {
 
+    //region Class members
+
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
     private static final String TAG = "ConnectionManager";
-    private static String btDeviceName = "default_name";
-    private static String prefix_name = "[veesy]";
-    private static ArrayList<String> newBluetoothDevices;
 
+    private static String btName_device = "no name";
+    private static String btName_prefix = "[veesy]";
+    private static String btName_splitter = "-";
+    private static boolean btNameCorrect_flag = false;
+
+
+    private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
+
+    //endregion
 
     // Singleton Pattern to ensure only one instance of ConnectionManager is used
     private ConnectionManager() {
-        initBluetooth();
+        if (!initBluetooth()){
+            //TODO implement Bluetooth init error
+        }
+        enableBluetooth();
         renameDevice();
-        newBluetoothDevices = new ArrayList<>();
+        availableVeesyBTDevices = new ArrayList<>();
     }
 
     public static ConnectionManager instance() {
@@ -75,104 +48,190 @@ public class ConnectionManager extends Observable {
         return unique;
     }
 
-
-
-    private static void initBluetooth(){
+    //region Initializing
+    // initialize BluetoothAdapter
+    private static boolean initBluetooth() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
             // Bluetooth is not supported
             Log.w(TAG, "Bluetooth is not supported on this device");
-            return;
+            return false;
         }
-        btDeviceName = btAdapter.getName();
+        btName_device = btAdapter.getName();
+        Log.i(TAG, "Bluetooth initialized");
+        Log.i(TAG, "Current Device name is: " + btName_device);
+        return true;
     }
 
-    private static void renameDevice(){
-        btAdapter.setName(prefix_name+ btDeviceName);
+    //endregion
+
+    // region Bluetooth - Renaming & Veesy environment
+
+    // This method renaming the bluetooth device
+    //
+    // Therefore, Bluetooth has to be enabled (this needs some time)
+    // First, we check, if the name is already correct in terms of a predefined style
+    // if the name has the prefix [veesy] its correct
+    // if not, we start a timeHandler which is delayed with 1s/  500ms
+    // this handler waits for bluetooth to activate, and for the new name
+    // to sink in (this also takes some time)
+
+    // if something goes wrong, this method determines after 10s
+    //
+    private static void renameDevice() {
+
+        if (!isVeesyDevice(btName_device)) {
+            if (btAdapter != null) {
+                enableBluetooth();
+                final long timeOutMillis = System.currentTimeMillis() + 10000;
+                final Handler timeHandler = new Handler();
+                final String newName = btName_prefix + btName_splitter + btName_device;
+                final long delayMillis = 500;
+
+                timeHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!btNameCorrect_flag) {
+                            btAdapter.setName(newName);
+                            if (btAdapter.getName().equals(newName)) {
+                                Log.i(TAG, "Set BT name to: " + btAdapter.getName());
+                                btNameCorrect_flag = true;
+                            }
+                            if (!(btAdapter.getName().equals(newName)) && System.currentTimeMillis() < timeOutMillis) {
+                                timeHandler.postDelayed(this, delayMillis);
+                                if (!btAdapter.isEnabled())
+                                    Log.i(TAG, "Renaming bluetooth device . . . waiting for Bluetooth to enable");
+                                else
+                                    Log.i(TAG, "Renaming bluetooth device . . . waiting for name to sink in");
+                            }
+                        }
+                    }
+                }, delayMillis);
+            }
+        } else{
+            btNameCorrect_flag = true;
+            Log.i(TAG, "Device is already named correctly");
+        }
     }
 
+    // this method provides a possibility to track if a discovered BT device is
+    // part of the veesy environment
+    // this method determines, whether the name of a Device could be split by btName_splitter, and if,
+    // is the first part btName_prefix?
+
+    private static boolean isVeesyDevice(String deviceName) {
+        try{
+            return deviceName.split(btName_splitter)[0].equals(btName_prefix);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isBtNameCorrect_flag() {
+        return btNameCorrect_flag;
+    }
+
+
+    public static void logSomeShit() {
+        Log.i(TAG, "Discovering devices" + btAdapter.isDiscovering());
+    }
+
+    //endregion
+
+    //region Bluetooth - Enable & Discover
 
     /**
-     *
      * this method enables the bluetooth and sets it visible for some time
-     *
+     * <p>
      * in order to start the User input dialog, we need to pass Context
-     *
      */
-    public void startBluetooth(Context context, int visibility_time){
-
-        Intent discoverableIntent  = new Intent (BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-
+    public void startBluetoothIntent(Context context, int visibility_time) {
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, visibility_time);
-
         context.startActivity(discoverableIntent);
-
     }
 
-    public void stopBluetooth(){
+    public static void enableBluetooth() {
+        if (!btAdapter.isEnabled()) {
+            btAdapter.enable();
+        }
+    }
+
+    public static void stopBluetooth() {
         btAdapter.disable();
     }
-
 
 
     /**
      * this method searches for other Bluetooth devices
      */
-    public boolean discoverBluetoothDevices(){
-        if(btAdapter.isDiscovering()){
+    public boolean discoverBluetoothDevices() {
+        if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
         }
+        //availableVeesyBTDevices.clear();
+        Log.i(TAG, "restarting discovery");
         return btAdapter.startDiscovery();
     }
 
 
-
-
-    /**
-     * if other Devices are found
-
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Discovery has found a device. Get the BluetoothDevice
-                // object and its info from the Intent.
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-
-                // no we have to check, if it is a "veesy" device
-                if(isVeesyDevice(deviceName)) {
-                    // now we check if the devices have already been bonded, if not, then add them to the list of new devices
-                    if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                        newBluetoothDevices.add(deviceName + ", Adress: "+deviceHardwareAddress );
-                    }
-                }
-            }
-        }
-    };
-
-
-
-    // this method determines, whether the name of a Device could be split by "-", and if,
-    // is the first part [veesy]?
-    private boolean isVeesyDevice(String deviceName){
-        String [] strings = deviceName.split("-");
-        return strings[0].equals(prefix_name);
-    }
-
-
-    public void registerReceiver(Context context){
+    public void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         context.registerReceiver(mReceiver, filter);
     }
 
-    public void unregisterReceiver(Context context){
+    public void unregisterReceiver(Context context) {
         if (btAdapter != null) {
             btAdapter.cancelDiscovery();
         }
         // Unregister broadcast listeners
         context.unregisterReceiver(mReceiver);
     }
-     */
+
+    public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getAction();
+
+            Log.i(TAG, "onReceive action:  .  .  .  .  "+action);
+
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // A Bluetooth device was found
+                // Getting device information from the intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress();
+
+                Log.i(TAG, "Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
+
+                if (isVeesyDevice(deviceName)) {
+
+                    if(!availableVeesyBTDevices.contains(device)){
+                        availableVeesyBTDevices.add(device);
+                        setChanged();
+                        notifyObservers();
+                    }
+
+                }
+            }
+        }
+    };
+
+    // endregion
+
+    //region Bluetooth - Connecting & Datatransmission
+
+    //endregion
+
+    //region Getter & Settter
+    public List<String> getAvailableBTDevicesNames() {
+        List<String> list = new ArrayList<>();
+        for(BluetoothDevice d : availableVeesyBTDevices){
+            list.add(d.getName());
+        }
+        return list;
+    }
+
+    // endregion
 }

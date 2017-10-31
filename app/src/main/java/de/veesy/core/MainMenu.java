@@ -29,7 +29,7 @@ public class MainMenu extends Activity {
 
     // launching
     private void initConnectionManager(){
-        //ConnectionManager.instance();
+        ConnectionManager.instance();
     }
 
     /**

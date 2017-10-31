@@ -32,7 +32,6 @@ import de.veesy.connection.ConnectionManager;
 public class FeedbackActivity extends Activity implements Observer {
 
     ImageView feedback_img = null;
-    //ConnectionManager cm = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +39,16 @@ public class FeedbackActivity extends Activity implements Observer {
 
         feedback_img = findViewById(R.id.feedback_imgV);
 
-        //cm = ConnectionManager.instance();
-        //cm.addObserver(this);
     }
 
     protected void onDestroy(){
-        //cm.deleteObserver(this);
         super.onDestroy();
     }
 
 
     public void bHomeClicked(View view){
-        onDestroy();
         startActivity(new Intent(this, MainMenu.class));
+        finish();
     }
 
     public void bDetailsClicked(View view){
