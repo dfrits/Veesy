@@ -170,7 +170,7 @@ public class ConnectionManager extends Observable {
         if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
         }
-        //availableVeesyBTDevices.clear();
+        availableVeesyBTDevices.clear();
         Log.i(TAG, "restarting discovery");
         return btAdapter.startDiscovery();
     }
@@ -194,8 +194,6 @@ public class ConnectionManager extends Observable {
 
             String action = intent.getAction();
 
-            Log.i(TAG, "onReceive action:  .  .  .  .  "+action);
-
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // A Bluetooth device was found
                 // Getting device information from the intent
@@ -203,9 +201,9 @@ public class ConnectionManager extends Observable {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress();
 
-                Log.i(TAG, "Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
-
                 if (isVeesyDevice(deviceName)) {
+
+                    Log.i(TAG, "Veesy - Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
 
                     if(!availableVeesyBTDevices.contains(device)){
                         availableVeesyBTDevices.add(device);

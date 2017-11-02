@@ -59,13 +59,13 @@ public class ShareActivity extends WearableActivity implements Observer {
         setList();
     }
 
-    protected void onDestroy(){
+    protected void onDestroy() {
         connectionManager.unregisterReceiver(this);
         connectionManager.deleteObserver(this);
         super.onDestroy();
     }
 
-    private void startConnectionManager(){
+    private void startConnectionManager() {
         connectionManager = ConnectionManager.instance();
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
@@ -99,7 +99,7 @@ public class ShareActivity extends WearableActivity implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        setList();
+        adapter.setDeviceNames(connectionManager.getAvailableBTDevicesNames());
     }
 
     /**
@@ -108,6 +108,7 @@ public class ShareActivity extends WearableActivity implements Observer {
     private void setList() {
         adapter.setDeviceNames(DUMMY_DATA);
     }
+
 
     protected void onListItemClick(int position, String deviceName) {
         Intent intent = new Intent(this, FeedbackActivity.class);
@@ -118,8 +119,9 @@ public class ShareActivity extends WearableActivity implements Observer {
 
     /**
      * Aktion des Refresh-Buttons. Damit erneuert der Nutzer intentional.
+     *
      * @param view .
-    */
+     */
 
     public void refresh(View view) {
         connectionManager.discoverBluetoothDevices();
