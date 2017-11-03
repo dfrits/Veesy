@@ -32,17 +32,20 @@ import de.veesy.connection.ConnectionManager;
  */
 
 public class ShareActivity extends WearableActivity implements Observer {
-    private final List<String> DUMMY_DATA = new ArrayList<String>() {{
-        add("Max Maier");
-        add("Lisa Agathe");
-        add("Bernd Ober");
-    }};
     private final Context context = this;
 
     //TODO final, warum?
     private ConnectionManager connectionManager = null;
 
     private ShareAdapter adapter;
+
+    private static List<String> DUMMY_DATA;
+    static {
+        DUMMY_DATA = new ArrayList<>();
+        DUMMY_DATA.add("Max Maier");
+        DUMMY_DATA.add("Lisa Agathe");
+        DUMMY_DATA.add("Bernd Ober");
+    }
 
     public static final String CONTACT_DATA = "CONTACT_DATA";
 
@@ -119,10 +122,8 @@ public class ShareActivity extends WearableActivity implements Observer {
 
     /**
      * Aktion des Refresh-Buttons. Damit erneuert der Nutzer intentional.
-     *
      * @param view .
      */
-
     public void refresh(View view) {
         connectionManager.discoverBluetoothDevices();
     }

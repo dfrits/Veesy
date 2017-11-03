@@ -5,7 +5,9 @@ import android.support.wear.widget.WearableLinearLayoutManager;
 import android.view.View;
 
 /**
- * Created by Daniel on 29.10.2017.
+ * Created by dfritsch on 24.10.2017.
+ * veesy.de
+ * hs-augsburg
  */
 
 public class CustomScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutCallback  {
