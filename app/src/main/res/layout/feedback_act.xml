@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/hintergrund_feedback"
+                android:background="@drawable/deprecated_hintergrund_feedback"
                 android:orientation="vertical">
 
     <ImageView
@@ -14,7 +14,7 @@
         android:layout_marginTop="34dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/dataTransmissionSuccess"
-        android:src="@drawable/bestaetigung_icon"/>
+        android:src="@drawable/bestaetigung_img"/>
 
     <TextView
         android:id="@+id/feedback_textV"

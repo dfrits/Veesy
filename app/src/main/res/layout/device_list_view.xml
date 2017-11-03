@@ -4,7 +4,7 @@
           android:layout_width="match_parent"
           android:layout_height="30dp"
           android:background="@android:color/transparent"
-          android:drawableStart="@drawable/kleine_punkt"
+          android:drawableStart="@drawable/punkt_img"
           android:textColor="@color/black">
 
 
