@@ -1,22 +1,16 @@
 package de.veesy.core;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -30,6 +24,9 @@ import de.veesy.connection.ConnectionManager;
  * veesy.de
  * hs-augsburg
  */
+
+//TODO hier wird nur über Strings gearbeitet, der ConnectionManager sollte egl eine Devicelist zurück geben und hier muss man sich dann die namen der devices holen/
+// also sollte das kein List<String> objekt sein sonder ein List<BluetoothDevice>
 
 public class ShareActivity extends WearableActivity implements Observer {
     private final Context context = this;
@@ -70,10 +67,12 @@ public class ShareActivity extends WearableActivity implements Observer {
 
     private void startConnectionManager() {
         connectionManager = ConnectionManager.instance();
+        connectionManager.btCheckPermissions(this);
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
         connectionManager.discoverBluetoothDevices();
         connectionManager.startBluetoothIntent(this, 300);
+        connectionManager.btStartListeningForConnectionAttempts();
     }
 
     private void initListView() {
@@ -102,7 +101,7 @@ public class ShareActivity extends WearableActivity implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        adapter.setDeviceNames(connectionManager.getAvailableBTDevicesNames());
+        adapter.setDeviceNames(connectionManager.btGetAvailableDeviceNames());
     }
 
     /**
@@ -114,10 +113,13 @@ public class ShareActivity extends WearableActivity implements Observer {
 
 
     protected void onListItemClick(int position, String deviceName) {
-        Intent intent = new Intent(this, FeedbackActivity.class);
-        intent.putExtra(CONTACT_DATA, deviceName);
-        startActivity(intent);
-        finish();
+        connectionManager.btConnectToDevice(deviceName);
+
+        //TODO uncomment to start feedback screen
+        //Intent intent = new Intent(this, FeedbackActivity.class);
+        //Intent.putExtra(CONTACT_DATA, deviceName);
+        //startActivity(intent);
+        //finish();
     }
 
     /**
@@ -126,6 +128,8 @@ public class ShareActivity extends WearableActivity implements Observer {
      */
     public void refresh(View view) {
         connectionManager.discoverBluetoothDevices();
+        // ist wsl unnötig, der Thread läuft ja immer
+        //connectionManager.btStartListeningForConnectionAttempts();
     }
 
 

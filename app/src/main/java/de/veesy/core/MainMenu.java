@@ -54,4 +54,8 @@ public class MainMenu extends Activity {
      */
     public void bSettingsClicked(View view) {
     }
+
+
+
+
 }
