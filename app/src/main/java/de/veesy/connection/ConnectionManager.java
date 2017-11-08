@@ -60,7 +60,7 @@ public class ConnectionManager extends Observable {
         if (!initBluetooth()) {
             //TODO implement Bluetooth init error
         }
-        enableBluetooth();
+        enableBluetooth(); //TODO Überflüssig? wird doch bei rename auch aufgerufen?
         renameDevice();
         availableVeesyBTDevices = new ArrayList<>();
     }

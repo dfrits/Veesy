@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_below="@+id/layout"
-              android:background="@drawable/deprecated_hintergrund_feedback"
+              android:background="@drawable/hintergrund_all_layouts"
               android:orientation="vertical"
               android:paddingTop="30dp"
               android:weightSum="2">
