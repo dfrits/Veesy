@@ -1,7 +1,9 @@
-package de.veesy;
+package de.veesy.util;
 
 /**
  * Created by Martin on 08.11.2017.
+ * veesy.de
+ * hs-augsburg
  */
 
 public final class MESSAGE {

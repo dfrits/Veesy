@@ -23,9 +23,13 @@ import java.util.List;
 import java.util.Observable;
 import java.util.UUID;
 
-import de.veesy.MESSAGE;
+import de.veesy.util.MESSAGE;
 
-
+/**
+ * Created by Martin on 25.10.2017.
+ * veesy.de
+ * hs-augsburg
+ */
 public class ConnectionManager extends Observable {
 
     //region Class members
@@ -58,6 +62,7 @@ public class ConnectionManager extends Observable {
 
 
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
+    private static ArrayList<BluetoothDevice> bondedBTDevices;
 
     //endregion
 
@@ -71,6 +76,9 @@ public class ConnectionManager extends Observable {
 
         renameDevice(btName_prefix+btName_splitter+btName_device);
         availableVeesyBTDevices = new ArrayList<>();
+        bondedBTDevices = new ArrayList<>();
+        bondedBTDevices.addAll(btAdapter.getBondedDevices());
+
     }
 
     public static ConnectionManager instance() {
@@ -245,7 +253,6 @@ public class ConnectionManager extends Observable {
 
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
         //if(!isVeesyDevice(originalDeviceName)) originalDeviceName = btName_prefix+btName_splitter+originalDeviceName;
-
         for (BluetoothDevice d : availableVeesyBTDevices) {
             if (d.getName().equals(deviceName)) {
                 btConnectedDevice = d;

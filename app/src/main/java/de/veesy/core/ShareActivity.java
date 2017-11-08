@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import de.veesy.MESSAGE;
+import de.veesy.util.MESSAGE;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 
@@ -111,6 +111,7 @@ public class ShareActivity extends WearableActivity implements Observer {
                 //TODO falls der user bestätigt hat und disco on is kommt hier was
                 //wenn er nicht bestätigt, kommt auch nichts...
                 System.out.println("DISCO ON, You Rock!!!");
+
 
                 setContentView(R.layout.share);
                 initListView();
