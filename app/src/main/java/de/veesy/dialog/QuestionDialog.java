@@ -13,14 +13,24 @@ import de.veesy.R;
  * Created by dfritsch on 08.11.2017.
  * veesy.de
  * hs-augsburg
+ * <p>
+ * FrageDialog mit beliebigen Titel und 2 Bestätigen-Button. Wird einer der beiden Button gedrückt,
+ * wird die entsprechende Methode vom Callback aufgerufen.
+ * <p>
+ * Funktion:<br>
+ * QuestionDialog dialog = AlertDialog.newInstance("message", new QuestionDialogCallback(this));<br>
+ * dialog.show();
+ * <p>
+ * Reagieren kann man dann, indem man das Interface implementiert.
  */
 
-public class QuestionDialog extends DialogFragment implements View.OnClickListener{
+public class QuestionDialog extends DialogFragment implements View.OnClickListener {
     private static String message;
     private static QuestionDialogCallback callback;
 
-    public interface QuestionDialogCallback{
+    public interface QuestionDialogCallback {
         void positiveButtonClicked();
+
         void negativeButtonClicked();
     }
 
@@ -37,11 +47,10 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (view.getId()==R.id.button_1) {
+        if (view.getId() == R.id.button_1) {
             callback.positiveButtonClicked();
             dismiss();
-        }
-        else if (view.getId()==R.id.button_2) {
+        } else if (view.getId() == R.id.button_2) {
             callback.negativeButtonClicked();
             dismiss();
         }

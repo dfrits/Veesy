@@ -13,9 +13,19 @@ import de.veesy.R;
  * Created by dfritsch on 08.11.2017.
  * veesy.de
  * hs-augsburg
- *
+ * <p>
  * AlertDialog mit beliebigen Titel und einem Bestätigen-Button. Wird der Button gedrückt, wird
  * der Dialog geschlossen. Darauf kann reagiert werden mit einem OnDissmissListener().
+ * <p>
+ * Funktion:<br>
+ * AlertDialog dialog = AlertDialog.newInstance("message");<br>
+ * dialog.show();
+ * <p>
+ * Reagieren kann man z.B. so:<br>
+ * dialog.onDismiss(new DialogInterface() {<br>
+ *      '@Override' public void cancel() {}<br>
+ *      '@Override' public void dismiss() {}<br>
+ * });
  */
 
 public class AlertDialog extends DialogFragment implements View.OnClickListener {
@@ -26,7 +36,7 @@ public class AlertDialog extends DialogFragment implements View.OnClickListener 
      * @param message Nachricht, die angezeigt werden soll
      * @return Neuen AlertDialog
      */
-    static AlertDialog newInstance(String message) {
+    public static AlertDialog newInstance(String message) {
         AlertDialog.message = message;
         return new AlertDialog();
     }
