@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import de.veesy.MESSAGE;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 
@@ -25,18 +26,16 @@ import de.veesy.connection.ConnectionManager;
  * hs-augsburg
  */
 
-//TODO hier wird nur über Strings gearbeitet, der ConnectionManager sollte egl eine Devicelist zurück geben und hier muss man sich dann die namen der devices holen/
-// also sollte das kein List<String> objekt sein sonder ein List<BluetoothDevice>
 
 public class ShareActivity extends WearableActivity implements Observer {
     private final Context context = this;
 
-    //TODO final, warum?
     private ConnectionManager connectionManager = null;
 
     private ShareAdapter adapter;
 
     private static List<String> DUMMY_DATA;
+
     static {
         DUMMY_DATA = new ArrayList<>();
         DUMMY_DATA.add("Max Maier");
@@ -50,13 +49,13 @@ public class ShareActivity extends WearableActivity implements Observer {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.share);
-
-        initListView();
-
         startConnectionManager();
 
-        setList();
+        //TODO hier den ein layout erstellen, welches dem user nahe legt bluetooth zu aktivieren und ihn entweder zu home zurück schickt, oder dann nochmal den BT visible Intent aufruft
+        // das feedback layout is nur zu test zwecken drin.
+        // also standard mäßig wird davon ausgegangen, dass der bluetooth adapter nicht visible gesetzt wurde und deswegen
+        // soll ein neues layout (neuer Screen) "schalt mal Bluetooth visible oder geh zurück zu home" erstellt werden und hier dann aufgerufen werden
+        setContentView(R.layout.feedback_act);
     }
 
     protected void onDestroy() {
@@ -71,7 +70,7 @@ public class ShareActivity extends WearableActivity implements Observer {
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
         connectionManager.discoverBluetoothDevices();
-        connectionManager.startBluetoothIntent(this, 300);
+        connectionManager.startBluetoothIntent(this, 100);
         connectionManager.btStartListeningForConnectionAttempts();
     }
 
@@ -100,8 +99,31 @@ public class ShareActivity extends WearableActivity implements Observer {
         recyclerView.setAdapter(adapter);
     }
 
+
     public void update(Observable o, Object arg) {
-        adapter.setDeviceNames(connectionManager.btGetAvailableDeviceNames());
+
+        switch ((Integer) arg) {
+            case MESSAGE.DEVICE_FOUND:
+                adapter.setDeviceNames(connectionManager.btGetAvailableDeviceNames());
+                break;
+            case MESSAGE.DISCOVERABILITY_ON:
+
+                //TODO falls der user bestätigt hat und disco on is kommt hier was
+                //wenn er nicht bestätigt, kommt auch nichts...
+                System.out.println("DISCO ON, You Rock!!!");
+
+                setContentView(R.layout.share);
+                initListView();
+                setList();
+
+                break;
+            case MESSAGE.DISCOVERABILITY_OFF:
+                //hier kommt nur dann was an, wenn sich der status ändert (von on zu off beispielsweiße)
+                System.out.println("DISCO Off, You Suck!!!");
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -124,6 +146,7 @@ public class ShareActivity extends WearableActivity implements Observer {
 
     /**
      * Aktion des Refresh-Buttons. Damit erneuert der Nutzer intentional.
+     *
      * @param view .
      */
     public void refresh(View view) {

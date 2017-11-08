@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.UUID;
 
+import de.veesy.MESSAGE;
+
 
 public class ConnectionManager extends Observable {
 
@@ -30,7 +32,13 @@ public class ConnectionManager extends Observable {
 
     private static final String TAG = "ConnectionManager";
     private static final String appName = "veesy";
-    private static final UUID VEESY_UUID = UUID.randomUUID();
+
+    // insecure??
+    private static final UUID VEESY_UUID = UUID.fromString("54630abc-3b78-4cf2-9f0d-0b844924cf36");
+
+    //TODO den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
+    // soll dann über die Einstellungen wieder umbenannt werden können
+    private static String originalDeviceName;
 
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
@@ -60,8 +68,8 @@ public class ConnectionManager extends Observable {
         if (!initBluetooth()) {
             //TODO implement Bluetooth init error
         }
-        enableBluetooth(); //TODO Überflüssig? wird doch bei rename auch aufgerufen?
-        renameDevice();
+
+        renameDevice(btName_prefix+btName_splitter+btName_device);
         availableVeesyBTDevices = new ArrayList<>();
     }
 
@@ -82,7 +90,8 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "Bluetooth is not supported on this device");
             return false;
         }
-        btName_device = btAdapter.getName();
+        originalDeviceName = btAdapter.getName();
+        btName_device = originalDeviceName;
         Log.d(TAG, "Bluetooth initialized");
         return true;
     }
@@ -103,14 +112,14 @@ public class ConnectionManager extends Observable {
      *
      * if something goes wrong, this method determines after 10s
      */
-    private static void renameDevice() {
+    private static void renameDevice(String name) {
 
         if (!isVeesyDevice(btName_device)) {
             if (btAdapter != null) {
                 enableBluetooth();
                 final long timeOutMillis = System.currentTimeMillis() + 10000;
                 final Handler timeHandler = new Handler();
-                final String newName = btName_prefix + btName_splitter + btName_device;
+                final String newName = name;
                 final long delayMillis = 500;
 
                 timeHandler.postDelayed(new Runnable() {
@@ -156,19 +165,7 @@ public class ConnectionManager extends Observable {
         return false;
     }
 
-    /**
-     * This method tries to return the "real" device name
-     * [veesy]-NAME --> NAME
-     * <p>
-     * if something goes wrong, it will return parameter deviceName
-     */
-    public static String getRealDeviceName(String deviceName) {
-        if (isVeesyDevice(deviceName)) {
-            String s[] = deviceName.split(btName_splitter);
-            if (s.length > 1) return s[1];
-        }
-        return deviceName;
-    }
+
 
 
     //endregion
@@ -184,6 +181,7 @@ public class ConnectionManager extends Observable {
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, visibility_time);
         context.startActivity(discoverableIntent);
+
     }
 
     public static void enableBluetooth() {
@@ -246,7 +244,7 @@ public class ConnectionManager extends Observable {
     public void btConnectToDevice(String deviceName) {
 
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
-        //if(!isVeesyDevice(deviceName)) deviceName = btName_prefix+btName_splitter+deviceName;
+        //if(!isVeesyDevice(originalDeviceName)) originalDeviceName = btName_prefix+btName_splitter+originalDeviceName;
 
         for (BluetoothDevice d : availableVeesyBTDevices) {
             if (d.getName().equals(deviceName)) {
@@ -266,10 +264,14 @@ public class ConnectionManager extends Observable {
     //region Bluetooth - BroadcastReceiver
 
     public void registerReceiver(Context context) {
+
         IntentFilter actionFoundFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         IntentFilter actionBondStateFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        context.registerReceiver(btReceiver_foundDevice, actionFoundFilter);
-        context.registerReceiver(btReceiver_bondState, actionBondStateFilter);
+        IntentFilter actionScanModeChangedFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+
+        context.registerReceiver(btReceiver_ACTION_FOUND, actionFoundFilter);
+        context.registerReceiver(btReceiver_BOND_STATE, actionBondStateFilter);
+        context.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
     }
 
     public void unregisterReceiver(Context context) {
@@ -277,45 +279,46 @@ public class ConnectionManager extends Observable {
             btAdapter.cancelDiscovery();
         }
         // Unregister broadcast listeners
-        context.unregisterReceiver(btReceiver_foundDevice);
-        context.unregisterReceiver(btReceiver_bondState);
+        context.unregisterReceiver(btReceiver_ACTION_FOUND);
+        context.unregisterReceiver(btReceiver_BOND_STATE);
+        context.unregisterReceiver(btReceiver_SCAN_MODE);
     }
 
-    private final BroadcastReceiver btReceiver_foundDevice = new BroadcastReceiver() {
+    private final BroadcastReceiver btReceiver_ACTION_FOUND = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            Log.d(TAG, "btReceiver_foundDevice onReceive: " + action);
-
             switch (action) {
                 // a new, unpaired device was found
                 case BluetoothDevice.ACTION_FOUND:
                     String deviceName = device.getName();
                     String deviceHardwareAddress = device.getAddress();
+
+                    Log.d(TAG, "BroadcastReceiver: Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
+
                     if (isVeesyDevice(deviceName)) {
                         Log.d(TAG, "BroadcastReceiver: Veesy-Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
                         if (!availableVeesyBTDevices.contains(device)) {
                             availableVeesyBTDevices.add(device);
                             setChanged();
-                            notifyObservers();
+                            notifyObservers(MESSAGE.DEVICE_FOUND);
                         }
                     }
                     break;
-
             }
         }
     };
 
 
-    private final BroadcastReceiver btReceiver_bondState = new BroadcastReceiver() {
+    private final BroadcastReceiver btReceiver_BOND_STATE = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
 
-            Log.d(TAG, "btReceiver_bondState onReceive: " + action);
+            Log.d(TAG, "btReceiver_BOND_STATE onReceive: " + action);
 
 
             if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
@@ -340,6 +343,47 @@ public class ConnectionManager extends Observable {
                         Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDING");
                         break;
                 }
+            }
+        }
+    };
+
+
+    private final BroadcastReceiver btReceiver_SCAN_MODE = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
+
+                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
+
+                switch (mode) {
+                    //Device is in Discoverable Mode
+                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
+                        Log.d(TAG, "BroadcastReceiver: Discoverability Enabled.");
+
+                        setChanged();
+                        notifyObservers(MESSAGE.DISCOVERABILITY_ON);
+
+                        break;
+                    //Device is NOT in discoverable mode
+                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
+                        Log.d(TAG, "BroadcastReceiver: Discoverability Enabled. Able to receive connections.");
+                        break;
+                    case BluetoothAdapter.SCAN_MODE_NONE:
+                        Log.d(TAG, "BroadcastReceiver: Discoverability Disabled. Not able to receive connections.");
+                        setChanged();
+                        notifyObservers(MESSAGE.DISCOVERABILITY_OFF);
+                        break;
+                    case BluetoothAdapter.STATE_CONNECTING:
+                        Log.d(TAG, "BroadcastReceiver: Connecting....");
+                        break;
+                    case BluetoothAdapter.STATE_CONNECTED:
+                        Log.d(TAG, "BroadcastReceiver: Connected.");
+                        break;
+                }
+
             }
         }
     };
@@ -619,6 +663,34 @@ public class ConnectionManager extends Observable {
             Log.d(TAG, "btCheckPermissions: No need to check permissions. SDK version < LOLLIPOP.");
         }
     }
+
+    /**
+     * This method should be accessible via the Settings menu
+     * because if an user does not want his device to be named
+     * "[veesy]- ..", he has the ability to set back the name     *
+     */
+    public static void setBackOriginalDeviceName(){
+        renameDevice(originalDeviceName);
+    }
+
+    public static String getOriginalDeviceName(){
+        return originalDeviceName;
+    }
+
+    /**
+     * This method tries to return the "real" device name
+     * [veesy]-NAME --> NAME
+     * <p>
+     * if something goes wrong, it will return parameter originalDeviceName
+     */
+    public static String getRealDeviceName(String deviceName) {
+        if (isVeesyDevice(deviceName)) {
+                String s[] = deviceName.split(btName_splitter);
+            if (s.length > 1) return s[1];
+        }
+        return deviceName;
+    }
+
 
 
     // endregion
