@@ -50,7 +50,7 @@ public class AlertDialog extends DialogFragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.alert_dialog_wearable, container, false);
-        TextView messageText = view.findViewById(R.id.text1);
+        TextView messageText = view.findViewById(R.id.message_text);
         messageText.setText(message);
         View button = view.findViewById(R.id.button);
         button.setOnClickListener(this);

@@ -47,10 +47,10 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_1) {
+        if (view.getId() == R.id.button_yes) {
             callback.positiveButtonClicked();
             dismiss();
-        } else if (view.getId() == R.id.button_2) {
+        } else if (view.getId() == R.id.button_no) {
             callback.negativeButtonClicked();
             dismiss();
         }
@@ -60,11 +60,11 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.alert_dialog_wearable, container, false);
-        TextView messageText = view.findViewById(R.id.text1);
+        TextView messageText = view.findViewById(R.id.message_text);
         messageText.setText(message);
-        View button = view.findViewById(R.id.button_1);
+        View button = view.findViewById(R.id.button_yes);
         button.setOnClickListener(this);
-        button = view.findViewById(R.id.button_2);
+        button = view.findViewById(R.id.button_no);
         button.setOnClickListener(this);
         return view;
     }
