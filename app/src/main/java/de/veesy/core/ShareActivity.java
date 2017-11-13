@@ -12,6 +12,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -83,17 +85,8 @@ public class ShareActivity extends Activity implements Observer {
 
     private void initAnimation() {
         animationView = findViewById(R.id.suchanimation_view);
-
-        Resources resources = context.getResources();
-        int resId = R.drawable.tauschpartner_suchen_gif;
-        Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + resources.getResourcePackageName(resId) + '/'
-                + resources.getResourceTypeName(resId) + '/'
-                + resources.getResourceEntryName(resId));
-
-        Glide.with(this)
-                .load(uri)
-                .into(animationView);
+        final Animation a = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        animationView.startAnimation(a);
     }
 
     private void setRefreshListener() {
@@ -107,7 +100,7 @@ public class ShareActivity extends Activity implements Observer {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        if(refreshLayout.isRefreshing()) {
+                        if (refreshLayout.isRefreshing()) {
                             refreshLayout.setRefreshing(false);
                         }
                     }
@@ -128,8 +121,7 @@ public class ShareActivity extends Activity implements Observer {
                 onListItemClick(position, deviceName);
             }
         });
-        recyclerView.setLayoutManager(
-                new WearableLinearLayoutManager(this, customScrollingLayoutCallback));
+        recyclerView.setLayoutManager(new WearableLinearLayoutManager(this, customScrollingLayoutCallback));
         recyclerView.setAdapter(adapter);
     }
 
@@ -173,7 +165,7 @@ public class ShareActivity extends Activity implements Observer {
 
         //TODO uncomment to start feedback screen
         Intent intent = new Intent(this, FeedbackActivity.class);
-       // Intent.putExtra(CONTACT_DATA, deviceName);
+        // Intent.putExtra(CONTACT_DATA, deviceName);
         startActivity(intent);
         finish();
     }

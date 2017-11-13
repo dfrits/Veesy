@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/lVDevices_row"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:drawableStart="@drawable/punkt_img"
-          android:layout_centerHorizontal="true"
-          android:textSize="18sp"
-          android:textColor="@color/white">
+    android:id="@+id/lVDevices_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:background="@android:color/transparent"
+    android:drawableStart="@drawable/punkt_img"
+    android:drawablePadding="10dp"
+    android:textColor="@color/white"
+    android:textSize="18sp">
 
 </TextView>

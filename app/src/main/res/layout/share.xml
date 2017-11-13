@@ -3,12 +3,18 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-
+    <ImageView
+        android:id="@+id/bg_view"
+        android:layout_width="match_parent"
+        android:background="@drawable/suchen_bg"
+        android:layout_height="match_parent"
+        android:contentDescription="bg" />
 
     <ImageView
         android:id="@+id/suchanimation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/suchen_licht2"
         android:contentDescription="animation"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -23,6 +29,8 @@
             android:id="@+id/lVDevices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:background="@android:color/transparent"
             android:scrollbars="vertical"/>
     </android.support.v4.widget.SwipeRefreshLayout>
