@@ -85,7 +85,7 @@ public class ShareActivity extends Activity implements Observer {
         animationView = findViewById(R.id.suchanimation_view);
 
         Resources resources = context.getResources();
-        int resId = R.drawable.suchen_gif;
+        int resId = R.drawable.tauschpartner_suchen_gif;
         Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                 + resources.getResourcePackageName(resId) + '/'
                 + resources.getResourceTypeName(resId) + '/'
