@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
           android:id="@+id/lVDevices_row"
           android:layout_width="match_parent"
-          android:layout_height="30dp"
+          android:layout_height="wrap_content"
           android:background="@android:color/transparent"
           android:drawableStart="@drawable/punkt_img"
-          android:textColor="@color/black">
+          android:layout_centerHorizontal="true"
+          android:textSize="18sp"
+          android:textColor="@color/white">
 
-
-    <!--Für die andere Liste dann (mit Bild)
-    <TextView
-        android:drawablePadding="5dp"
-        android:drawableStart="@drawable/ic_full_cancel"
-        android:id="@+id/lVDevices_row"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@android:color/transparent"
-        android:textColor="@color/black"/>-->
 </TextView>
