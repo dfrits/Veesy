@@ -3,9 +3,7 @@ package de.veesy.core;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.wearable.view.WatchViewStub;
 import android.view.View;
-import android.widget.TextView;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;

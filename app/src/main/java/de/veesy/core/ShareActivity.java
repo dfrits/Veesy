@@ -172,10 +172,10 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.btConnectToDevice(deviceName);
 
         //TODO uncomment to start feedback screen
-        //Intent intent = new Intent(this, FeedbackActivity.class);
-        //Intent.putExtra(CONTACT_DATA, deviceName);
-        //startActivity(intent);
-        //finish();
+        Intent intent = new Intent(this, FeedbackActivity.class);
+       // Intent.putExtra(CONTACT_DATA, deviceName);
+        startActivity(intent);
+        finish();
     }
 
     protected void onDestroy() {
