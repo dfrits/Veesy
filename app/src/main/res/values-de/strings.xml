@@ -7,5 +7,6 @@
     <string name="home">Home</string>
     <string name="details">Details</string>
     <string name="dataTransmissionSuccess">Data Transmission Success</string>
-    <string name="success">Success!</string>
+    <string name="success">Erfolgreich!</string>
+    <string name="backpress_hint">Nochmal drücken zum Beenden!</string>
 </resources>
