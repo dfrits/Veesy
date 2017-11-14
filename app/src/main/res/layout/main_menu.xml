@@ -4,22 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/hintergrund_all_layouts"
+                android:background="@drawable/main_background"
                 android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/hintergrund_main" />
 
     <TextView
         android:id="@+id/tShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bSettings"
+        android:layout_marginTop="18dp"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:fontFamily="@font/roboto"
@@ -36,24 +28,24 @@
         android:contentDescription="@string/share"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/tauschen_button" />
+        android:src="@drawable/main_share_button" />
 
     <ImageButton
         android:id="@+id/bContacts"
         android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="8dp"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
+        android:layout_margin="8dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/contacts"
         android:onClick="bContactsClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/kontakte_button" />
+        android:src="@drawable/main_contacts_button" />
 
     <ImageButton
         android:id="@+id/bSettings"
         android:layout_width="30dp"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
@@ -61,6 +53,6 @@
         android:contentDescription="@string/settings"
         android:onClick="bSettingsClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/einstellungen_button" />
+        android:src="@drawable/main_settings_button" />
 
 </RelativeLayout>

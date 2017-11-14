@@ -1,4 +1,4 @@
-/*
+
 package de.veesy.dialog;
 
 import android.app.DialogFragment;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import de.veesy.R;
 
-*/
+
 /**
  * Created by dfritsch on 08.11.2017.
  * veesy.de
@@ -28,18 +28,18 @@ import de.veesy.R;
  *      '@Override' public void cancel() {}<br>
  *      '@Override' public void dismiss() {}<br>
  * });
- *//*
+ */
 
 
 public class AlertDialog extends DialogFragment implements View.OnClickListener {
     private static String message;
 
-    */
+
 /**
      * Erstellt einen neuen AlertDialog.
      * @param message Nachricht, die angezeigt werden soll
      * @return Neuen AlertDialog
-     *//*
+     */
 
     public static AlertDialog newInstance(String message) {
         AlertDialog.message = message;
@@ -62,4 +62,4 @@ public class AlertDialog extends DialogFragment implements View.OnClickListener 
         return view;
     }
 }
-*/
+

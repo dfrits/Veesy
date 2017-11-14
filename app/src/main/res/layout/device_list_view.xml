@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:background="@android:color/transparent"
-    android:drawableStart="@drawable/punkt_img"
+    android:drawableStart="@drawable/share_list_point_img"
     android:drawablePadding="10dp"
     android:textColor="@color/white"
     android:textSize="18sp">
