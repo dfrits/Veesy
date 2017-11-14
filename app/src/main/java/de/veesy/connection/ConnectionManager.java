@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 
@@ -72,9 +73,10 @@ public class ConnectionManager extends Observable {
     private ConnectionManager() {
         if (!initBluetooth()) {
             //TODO implement Bluetooth init error
+            return;
         }
 
-        renameDevice(btName_prefix+btName_splitter+btName_device);
+        renameDevice(btName_prefix + btName_splitter + btName_device);
         availableVeesyBTDevices = new ArrayList<>();
         bondedBTDevices = new ArrayList<>();
         bondedBTDevices.addAll(btAdapter.getBondedDevices());
@@ -110,14 +112,14 @@ public class ConnectionManager extends Observable {
 
     /**
      * This method is renaming the bluetooth device
-     *
+     * <p>
      * Therefore, Bluetooth has to be enabled (this needs some time)
      * First, we check, if the name is already correct in terms of a predefined style
      * if the name has the prefix [veesy] its correct
      * if not, we start a timeHandler which is delayed with 1s/  500ms
      * this handler waits for bluetooth to activate, and for the new name
      * to sink in (this also takes some time)
-     *
+     * <p>
      * if something goes wrong, this method determines after 10s
      */
     private static void renameDevice(String name) {
@@ -157,7 +159,6 @@ public class ConnectionManager extends Observable {
     }
 
 
-
     /**
      * this method provides a possibility to track if a discovered BT device is
      * part of the veesy environment
@@ -165,15 +166,18 @@ public class ConnectionManager extends Observable {
      * is the first part btName_prefix?
      */
     private static boolean isVeesyDevice(String deviceName) {
+        boolean b = false;
+        Log.d(TAG, "isVeesyDevice: " + deviceName);
         try {
-            return deviceName.split(btName_splitter)[0].equals(btName_prefix);
+            b = deviceName.split(btName_splitter)[0].equals(btName_prefix);
+
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d(TAG, "isVessyDevice failed");
+
         }
-        return false;
+        return b;
     }
-
-
 
 
     //endregion
@@ -207,12 +211,43 @@ public class ConnectionManager extends Observable {
      * this method searches for other Bluetooth devices
      */
     public boolean discoverBluetoothDevices() {
+        cancelDiscovery();
+        availableVeesyBTDevices.clear();
+        if (btAdapter.startDiscovery()){
+            startDisocveryEndingThread();
+            setChanged();
+            notifyObservers(MESSAGE.START_DISCOVERING);
+            Log.d(TAG, " . . . . starting discovery");
+            return true;
+        }
+        return false;
+    }
+
+    private void cancelDiscovery() {
         if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
+            Log.d(TAG, " . . . . stopping discovery");
+            setChanged();
+            notifyObservers(MESSAGE.STOP_DISCOVERING);
         }
-        availableVeesyBTDevices.clear();
-        Log.d(TAG, "restarting discovery");
-        return btAdapter.startDiscovery();
+    }
+
+    private void startDisocveryEndingThread() {
+        new CountDownTimer(15000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                cancelDiscovery();
+            }
+        }.start();
+
+        //        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }).start();
     }
 
     //endregion
@@ -241,7 +276,8 @@ public class ConnectionManager extends Observable {
     public void btConnectToDevice(BluetoothDevice device, UUID uuid) {
 
         btConnectedDevice = device;
-        if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED) btPairWithDevice(device);
+        if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED)
+            btPairWithDevice(device);
         else {
             btStartConnection();
         }
@@ -252,18 +288,20 @@ public class ConnectionManager extends Observable {
     public void btConnectToDevice(String deviceName) {
 
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
-        //if(!isVeesyDevice(originalDeviceName)) originalDeviceName = btName_prefix+btName_splitter+originalDeviceName;
+        deviceName = btName_prefix + btName_splitter + deviceName;
+        Log.d(TAG, "btConnectTo: " + deviceName);
+
         for (BluetoothDevice d : availableVeesyBTDevices) {
             if (d.getName().equals(deviceName)) {
                 btConnectedDevice = d;
-                if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED) btPairWithDevice(d);
+                if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED)
+                    btPairWithDevice(d);
                 else {
                     btStartConnection();
                 }
             }
         }
     }
-
 
 
     //endregion
@@ -304,7 +342,7 @@ public class ConnectionManager extends Observable {
                     String deviceName = device.getName();
                     String deviceHardwareAddress = device.getAddress();
 
-                    Log.d(TAG, "BroadcastReceiver: Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
+                    //Log.d(TAG, "BroadcastReceiver: Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
 
                     if (isVeesyDevice(deviceName)) {
                         Log.d(TAG, "BroadcastReceiver: Veesy-Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
@@ -606,7 +644,6 @@ public class ConnectionManager extends Observable {
 //            }
 
 
-
         }
 
         public void write(byte[] bytes) {
@@ -649,7 +686,7 @@ public class ConnectionManager extends Observable {
     public List<String> btGetAvailableDeviceNames() {
         List<String> list = new ArrayList<>();
         for (BluetoothDevice d : availableVeesyBTDevices) {
-            list.add(d.getName());
+            list.add(getRealDeviceName(d.getName()));
         }
         return list;
     }
@@ -676,11 +713,11 @@ public class ConnectionManager extends Observable {
      * because if an user does not want his device to be named
      * "[veesy]- ..", he has the ability to set back the name     *
      */
-    public static void setBackOriginalDeviceName(){
+    public static void setBackOriginalDeviceName() {
         renameDevice(originalDeviceName);
     }
 
-    public static String getOriginalDeviceName(){
+    public static String getOriginalDeviceName() {
         return originalDeviceName;
     }
 
@@ -691,13 +728,17 @@ public class ConnectionManager extends Observable {
      * if something goes wrong, it will return parameter originalDeviceName
      */
     public static String getRealDeviceName(String deviceName) {
-        if (isVeesyDevice(deviceName)) {
-                String s[] = deviceName.split(btName_splitter);
-            if (s.length > 1) return s[1];
+
+        String s[] = new String[5];
+        try {
+            s = deviceName.split(btName_splitter);
+            deviceName = s[1];
+        } catch (Exception e) {
+            Log.d(TAG, "getRealDeviceName failed");
         }
+
         return deviceName;
     }
-
 
 
     // endregion
