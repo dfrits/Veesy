@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/bg_view"
         android:layout_width="match_parent"
-        android:background="@drawable/suchen_bg"
+        android:background="@drawable/share_bg"
         android:layout_height="match_parent"
         android:contentDescription="bg" />
 
@@ -14,7 +14,7 @@
         android:id="@+id/suchanimation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/suchen_licht2"
+        android:background="@drawable/share_light"
         android:contentDescription="animation"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
