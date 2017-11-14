@@ -31,8 +31,10 @@
         android:layout_below="@+id/feedback_imgV"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto_condensed_regular"
         android:text="@string/success"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/bDetails"
