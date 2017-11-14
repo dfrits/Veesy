@@ -1,11 +1,8 @@
 package de.veesy.core;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,8 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,8 +107,8 @@ public class ShareActivity extends Activity implements Observer {
     private void initListView() {
         WearableRecyclerView recyclerView = findViewById(R.id.lVDevices);
         recyclerView.setEdgeItemsCenteringEnabled(true);
-        final CustomScrollingLayoutCallback customScrollingLayoutCallback =
-                new CustomScrollingLayoutCallback();
+        final ScrollingLayoutCallback scrollingLayoutCallback =
+                new ScrollingLayoutCallback();
         adapter = new ShareAdapter(new ShareAdapter.Callback() {
             @Override
             public void onDeviceClicked(int position, String deviceName) {
@@ -121,7 +116,8 @@ public class ShareActivity extends Activity implements Observer {
                 onListItemClick(position, deviceName);
             }
         });
-        recyclerView.setLayoutManager(new WearableLinearLayoutManager(this, customScrollingLayoutCallback));
+        recyclerView.setLayoutManager(
+                new WearableLinearLayoutManager(this, scrollingLayoutCallback));
         recyclerView.setAdapter(adapter);
     }
 
@@ -174,14 +170,5 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.unregisterReceiver(this);
         connectionManager.deleteObserver(this);
         super.onDestroy();
-    }
-
-    /**
-     * Activity beenden und zum Homescreen zurückkehren.
-     */
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(context, MainMenu.class));
-        finish();
     }
 }
