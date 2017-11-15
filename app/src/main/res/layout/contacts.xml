@@ -2,9 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+                android:background="@drawable/contacts_background"
               android:orientation="vertical">
 
 
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/settings"
+            android:onClick="bSettingsClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/contacts_share_button" />
 
         <android.support.wear.widget.WearableRecyclerView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,7 +26,9 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:background="@android:color/transparent"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical">
+
+        </android.support.wear.widget.WearableRecyclerView>
 
 
 
