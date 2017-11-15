@@ -7,6 +7,11 @@
                 android:background="@drawable/main_background"
                 android:orientation="vertical">
 
+    <android.support.wearable.view.DismissOverlayView
+        android:id="@+id/dismiss_overlay"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+
     <TextView
         android:id="@+id/tShare"
         android:layout_width="wrap_content"

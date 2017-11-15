@@ -20,15 +20,18 @@ public class ScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutC
         float centerOffset = ((float) child.getHeight() / 2.0f) / (float) parent.getHeight();
         float yRelativeToCenterOffset = (child.getY() / parent.getHeight()) + centerOffset;
 
-        /*// Normalize for center
-        float mProgressToCenter = Math.abs(0.5f - yRelativeToCenterOffset);
+        // Normalize for center
+        //float mProgressToCenter = Math.abs(0.5f - yRelativeToCenterOffset);
         // Adjust to the maximum scale
-        mProgressToCenter = Math.min(mProgressToCenter, MAX_ICON_PROGRESS);*/
+        //mProgressToCenter = Math.min(mProgressToCenter, MAX_ICON_PROGRESS);
 
         float yProgresstoCenter = (float) Math.sin(yRelativeToCenterOffset*Math.PI);
         float xProgresstoCenter = (float) Math.cos(yRelativeToCenterOffset*Math.PI);
 
+
         child.setScaleX(yProgresstoCenter);
         child.setScaleY(yProgresstoCenter);
+
+
     }
 }

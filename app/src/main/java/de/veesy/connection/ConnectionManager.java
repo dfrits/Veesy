@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
@@ -38,7 +39,6 @@ public class ConnectionManager extends Observable {
     private static final String TAG = "ConnectionManager";
     private static final String appName = "veesy";
 
-    // insecure??
     private static final UUID VEESY_UUID = UUID.fromString("54630abc-3b78-4cf2-9f0d-0b844924cf36");
 
     //TODO den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
@@ -122,7 +122,7 @@ public class ConnectionManager extends Observable {
      * <p>
      * if something goes wrong, this method determines after 10s
      */
-    private static void renameDevice(String name) {
+    private void renameDevice(String name) {
 
         if (!isVeesyDevice(btName_device)) {
             if (btAdapter != null) {
@@ -140,6 +140,8 @@ public class ConnectionManager extends Observable {
                             if (btAdapter.getName().equals(newName)) {
                                 Log.d(TAG, "Set BT name to: " + btAdapter.getName());
                                 btNameCorrect_flag = true;
+                                setChanged();
+                                notifyObservers(MESSAGE.RENAMED_DEVICE);
                             }
                             if (!(btAdapter.getName().equals(newName)) && System.currentTimeMillis() < timeOutMillis) {
                                 timeHandler.postDelayed(this, delayMillis);
@@ -155,6 +157,8 @@ public class ConnectionManager extends Observable {
         } else {
             btNameCorrect_flag = true;
             Log.d(TAG, "Device is already named correctly");
+            setChanged();
+            notifyObservers(MESSAGE.ALREADY_NAMED_CORRECTLY);
         }
     }
 
@@ -167,14 +171,10 @@ public class ConnectionManager extends Observable {
      */
     private static boolean isVeesyDevice(String deviceName) {
         boolean b = false;
-        Log.d(TAG, "isVeesyDevice: " + deviceName);
         try {
             b = deviceName.split(btName_splitter)[0].equals(btName_prefix);
-
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG, "isVessyDevice failed");
-
         }
         return b;
     }
@@ -241,13 +241,6 @@ public class ConnectionManager extends Observable {
                 cancelDiscovery();
             }
         }.start();
-
-        //        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }).start();
     }
 
     //endregion
@@ -256,7 +249,7 @@ public class ConnectionManager extends Observable {
 
     /**
      * btPairWithDevice is called and tries to pair with the device
-     * <p>
+     *
      * if the devices can be paired, the BroadcastReceiver will receive it
      */
     private void btPairWithDevice(BluetoothDevice device) {
@@ -703,40 +696,36 @@ public class ConnectionManager extends Observable {
             if (permissionCheck != 0) {
                 activity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1001); //Any number
             }
-        } else {
-            Log.d(TAG, "btCheckPermissions: No need to check permissions. SDK version < LOLLIPOP.");
         }
     }
+
 
     /**
      * This method should be accessible via the Settings menu
      * because if an user does not want his device to be named
      * "[veesy]- ..", he has the ability to set back the name     *
      */
-    public static void setBackOriginalDeviceName() {
+    public void setBackOriginalDeviceName() {
         renameDevice(originalDeviceName);
     }
 
-    public static String getOriginalDeviceName() {
+    public String getOriginalDeviceName() {
         return originalDeviceName;
     }
 
     /**
      * This method tries to return the "real" device name
      * [veesy]-NAME --> NAME
-     * <p>
+     *
      * if something goes wrong, it will return parameter originalDeviceName
      */
-    public static String getRealDeviceName(String deviceName) {
-
-        String s[] = new String[5];
+    public String getRealDeviceName(String deviceName) {
         try {
-            s = deviceName.split(btName_splitter);
+            String s[] = deviceName.split(btName_splitter);
             deviceName = s[1];
         } catch (Exception e) {
             Log.d(TAG, "getRealDeviceName failed");
         }
-
         return deviceName;
     }
 
