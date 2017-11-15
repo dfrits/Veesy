@@ -32,7 +32,6 @@
 
         <activity android:name=".core.ShareActivity"/>
 
-
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true"/>
