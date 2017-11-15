@@ -2,6 +2,7 @@ package de.veesy.core;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.wear.widget.WearableLinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -11,7 +12,6 @@ import android.view.View;
  */
 
 public class ScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutCallback  {
-    private static final float MAX_ICON_PROGRESS = 0.65f;
 
     @Override
     public void onLayoutFinished(View child, RecyclerView parent) {
@@ -20,17 +20,12 @@ public class ScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutC
         float centerOffset = ((float) child.getHeight() / 2.0f) / (float) parent.getHeight();
         float yRelativeToCenterOffset = (child.getY() / parent.getHeight()) + centerOffset;
 
-        // Normalize for center
-        //float mProgressToCenter = Math.abs(0.5f - yRelativeToCenterOffset);
-        // Adjust to the maximum scale
-        //mProgressToCenter = Math.min(mProgressToCenter, MAX_ICON_PROGRESS);
+        float progresstoCenter = (float) (Math.sin(yRelativeToCenterOffset * Math.PI)+0.1);
 
-        float yProgresstoCenter = (float) Math.sin(yRelativeToCenterOffset*Math.PI);
-        float xProgresstoCenter = (float) Math.cos(yRelativeToCenterOffset*Math.PI);
+        Log.d("OFFSETT", String.valueOf(progresstoCenter));
 
-
-        child.setScaleX(yProgresstoCenter);
-        child.setScaleY(yProgresstoCenter);
+        child.setScaleX(progresstoCenter);
+        child.setScaleY(progresstoCenter);
 
 
     }
