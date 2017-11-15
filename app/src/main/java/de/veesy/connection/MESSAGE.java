@@ -1,4 +1,4 @@
-package de.veesy.util;
+package de.veesy.connection;
 
 /**
  * Created by Martin on 08.11.2017.
