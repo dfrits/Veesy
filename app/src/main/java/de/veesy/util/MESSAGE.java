@@ -19,6 +19,14 @@ public final class MESSAGE {
     public static final int CONNECTING = 3003;
     public static final int CONNECTED = 3004;
 
+
+    public static final int START_DISCOVERING = 4000;
+    public static final int STOP_DISCOVERING = 4001;
+
+    public static final int RENAMED_DEVICE = 5000;
+    public static final int ALREADY_NAMED_CORRECTLY = 5001;
+
+
 }
 
 

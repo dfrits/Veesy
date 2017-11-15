@@ -4,16 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.PermissionRequest;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.security.Permission;
+import java.security.PermissionCollection;
+import java.security.Permissions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -71,6 +77,8 @@ public class ShareActivity extends Activity implements Observer {
         // soll ein neues layout (neuer Screen) "schalt mal Bluetooth visible oder geh zurück zu home" erstellt werden und hier dann aufgerufen werden
         //setContentView(R.layout.feedback_act);
     }
+
+
 
     private void startConnectionManager() {
         connectionManager = ConnectionManager.instance();
@@ -151,6 +159,14 @@ public class ShareActivity extends Activity implements Observer {
                 break;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //TODO permissions abfangen und darauf reagieren
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
 
     /**
      * Übergibt der Liste die neuen Daten
