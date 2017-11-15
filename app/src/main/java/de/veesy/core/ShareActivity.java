@@ -42,6 +42,10 @@ public class ShareActivity extends Activity implements Observer {
 
     static {
         DUMMY_DATA = new ArrayList<>();
+        DUMMY_DATA.add("Martin Stadlmaier");
+        DUMMY_DATA.add("Vivien Bardosi");
+        DUMMY_DATA.add("Daniel Fridge");
+        DUMMY_DATA.add("Tianyi Zhang");
         DUMMY_DATA.add("Noch kein Gerät gefunden!");
         DUMMY_DATA.add("Geräte werden weitergesucht ...");
     }
