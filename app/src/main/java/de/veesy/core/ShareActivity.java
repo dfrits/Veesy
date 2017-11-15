@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -24,7 +23,14 @@ import java.util.TimerTask;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
-import de.veesy.connection.MESSAGE;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
+import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
+import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
+import static de.veesy.connection.MESSAGE.START_DISCOVERING;
+import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -81,8 +87,8 @@ public class ShareActivity extends Activity implements Observer {
         initAnimation();
         initListView();
         setRefreshListener();
-        setList();
-        animationView.setVisibility(View.VISIBLE);
+        //setList();
+        //animationView.setVisibility(VISIBLE);
     }
 
     //endregion
@@ -105,14 +111,20 @@ public class ShareActivity extends Activity implements Observer {
     public void update(Observable o, Object arg) {
 
         switch ((Integer) arg) {
-            case MESSAGE.DEVICE_FOUND:
+            case DEVICE_FOUND:
                 adapter.setDeviceNames(connectionManager.btGetAvailableDeviceNames());
                 break;
-            case MESSAGE.DISCOVERABILITY_ON:
+            case DISCOVERABILITY_ON:
                 initShareActivity_permission_granted();
                 break;
-            case MESSAGE.DISCOVERABILITY_OFF:
-                animationView.setVisibility(View.INVISIBLE);
+            case DISCOVERABILITY_OFF:
+                animationView.setVisibility(INVISIBLE);
+                break;
+            case START_DISCOVERING:
+                animationView.setVisibility(VISIBLE);
+                break;
+            case STOP_DISCOVERING:
+                animationView.setVisibility(INVISIBLE);
                 break;
             default:
                 break;
@@ -140,7 +152,7 @@ public class ShareActivity extends Activity implements Observer {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                animationView.setVisibility(View.VISIBLE);
+                animationView.setVisibility(VISIBLE);
                 connectionManager.discoverBluetoothDevices();
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
