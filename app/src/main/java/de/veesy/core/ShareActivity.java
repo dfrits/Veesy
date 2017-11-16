@@ -30,6 +30,7 @@ import static de.veesy.connection.MESSAGE.*;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static de.veesy.core.FeedbackActivity.FAILURE;
 
 /**
  * Created by dfritsch on 24.10.2017.
