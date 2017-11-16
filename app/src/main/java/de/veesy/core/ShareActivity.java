@@ -24,13 +24,15 @@ import java.util.TimerTask;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 
+import static de.veesy.connection.MESSAGE.*;
+
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
-import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
-import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
-import static de.veesy.connection.MESSAGE.START_DISCOVERING;
-import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
+//import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
+//import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
+//import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
+//import static de.veesy.connection.MESSAGE.START_DISCOVERING;
+//import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -71,7 +73,7 @@ public class ShareActivity extends Activity implements Observer {
      * This method loads the default content for this activity
      * which is described in share_permission_denied
      */
-    private void initShareActivity_permission_denied(){
+    private void initShareActivity_permission_denied() {
         initConnectionManager();
         setContentView(R.layout.share_permission_denied);
     }
@@ -80,15 +82,15 @@ public class ShareActivity extends Activity implements Observer {
      * This method loads the content for this activity
      * which is described in share_permission_granted
      */
-    private void initShareActivity_permission_granted(){
+    private void initShareActivity_permission_granted() {
         startConnectionManager();
         setContentView(R.layout.share_permission_granted);
         initListView();
         initAnimation();
         initListView();
         setRefreshListener();
-        //setList();
-        //animationView.setVisibility(VISIBLE);
+        setList();
+        animationView.setVisibility(VISIBLE);
     }
 
     //endregion
@@ -102,7 +104,7 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.startBluetoothIntent(this, 100);
     }
 
-    private void startConnectionManager(){
+    private void startConnectionManager() {
         connectionManager.btCheckPermissions(this);
         connectionManager.discoverBluetoothDevices();
         connectionManager.btStartListeningForConnectionAttempts();
@@ -121,10 +123,10 @@ public class ShareActivity extends Activity implements Observer {
                 animationView.setVisibility(INVISIBLE);
                 break;
             case START_DISCOVERING:
-                animationView.setVisibility(VISIBLE);
+                //animationView.setVisibility(VISIBLE);
                 break;
             case STOP_DISCOVERING:
-                animationView.setVisibility(INVISIBLE);
+                //animationView.setVisibility(INVISIBLE);
                 break;
             default:
                 break;
@@ -147,7 +149,11 @@ public class ShareActivity extends Activity implements Observer {
         animationView.startAnimation(a);
     }
 
+
+    //TODO dieses ding crasht
+
     private void setRefreshListener() {
+
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshlayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -165,6 +171,8 @@ public class ShareActivity extends Activity implements Observer {
                 }, 1000);
             }
         });
+
+
     }
 
     private void initListView() {
@@ -210,11 +218,6 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.deleteObserver(this);
         super.onDestroy();
     }
-
-
-
-
-
 
 
 }
