@@ -10,7 +10,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import de.veesy.R;
-import de.veesy.connection.ConnectionManager;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -18,7 +17,7 @@ import de.veesy.connection.ConnectionManager;
  * hs-augsburg
  */
 
-/**
+/*
  * Wir müssen uns noch überlegen, wie wir der Feedback Activity mitteilen, ob alles geklappt hat. Macht das der ConnectionManager?
  *
  * An sich muss diese Activity gestartet werden und bereits wissen, ob alles funkioniert hat.
@@ -30,6 +29,8 @@ import de.veesy.connection.ConnectionManager;
  *
  */
 public class FeedbackActivity extends Activity implements Observer {
+    public static final String FAILURE = "FAILURE";
+    public static final String SUCCESS = "SUCCESS";
 
     ImageView feedback_img = null;
 
@@ -38,6 +39,9 @@ public class FeedbackActivity extends Activity implements Observer {
         setContentView(R.layout.feedback_act);
 
         feedback_img = findViewById(R.id.feedback_imgV);
+        if (getIntent().getStringExtra(FAILURE).equals(FAILURE)) {
+            //feedback_img.setImageDrawable(R.drawable.); TODO X-Bild einfügen
+        }
 
     }
 
@@ -59,8 +63,6 @@ public class FeedbackActivity extends Activity implements Observer {
     public void update(Observable observable, Object o) {
 
     }
-
-
 }
 
 

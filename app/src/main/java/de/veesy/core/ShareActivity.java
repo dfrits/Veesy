@@ -2,6 +2,7 @@ package de.veesy.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,14 +24,17 @@ import java.util.TimerTask;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
+import de.veesy.dialog.AlertDialog;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
+import static de.veesy.connection.MESSAGE.NOT_PAIRED;
 import static de.veesy.connection.MESSAGE.START_DISCOVERING;
 import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
+import static de.veesy.core.FeedbackActivity.FAILURE;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -118,7 +122,19 @@ public class ShareActivity extends Activity implements Observer {
                 initShareActivity_permission_granted();
                 break;
             case DISCOVERABILITY_OFF:
-                animationView.setVisibility(INVISIBLE);
+                AlertDialog notDiscoverableDialog = AlertDialog.newInstance("Gerät nicht sichtbar!");
+                notDiscoverableDialog.onDismiss(new DialogInterface() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        finish();
+                    }
+                });
+                notDiscoverableDialog.show(); // Wenn es nicht geht, dann den FM hier übergeben
                 break;
             case START_DISCOVERING:
                 animationView.setVisibility(VISIBLE);
@@ -126,6 +142,22 @@ public class ShareActivity extends Activity implements Observer {
             case STOP_DISCOVERING:
                 animationView.setVisibility(INVISIBLE);
                 break;
+            case NOT_PAIRED:
+                AlertDialog notPairedDialog = AlertDialog.newInstance("Pairing fehlgeschlagen");
+                notPairedDialog.onDismiss(new DialogInterface() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        Intent intent = new Intent(context, FeedbackActivity.class);
+                        intent.putExtra(FAILURE, FAILURE);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             default:
                 break;
         }
@@ -175,7 +207,7 @@ public class ShareActivity extends Activity implements Observer {
         adapter = new ShareAdapter(new ShareAdapter.Callback() {
             @Override
             public void onDeviceClicked(int position, String deviceName) {
-                Toast.makeText(context, "Connecting with" + deviceName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Connecting with " + deviceName, Toast.LENGTH_SHORT).show();
                 onListItemClick(position, deviceName);
             }
         });
@@ -210,11 +242,4 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.deleteObserver(this);
         super.onDestroy();
     }
-
-
-
-
-
-
-
 }

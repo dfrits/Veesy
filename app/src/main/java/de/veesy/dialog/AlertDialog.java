@@ -32,10 +32,10 @@ import de.veesy.R;
 
 
 public class AlertDialog extends DialogFragment implements View.OnClickListener {
+    public final static String TAG = "AlertDialog";
     private static String message;
 
-
-/**
+    /**
      * Erstellt einen neuen AlertDialog.
      * @param message Nachricht, die angezeigt werden soll
      * @return Neuen AlertDialog
@@ -60,6 +60,10 @@ public class AlertDialog extends DialogFragment implements View.OnClickListener 
         View button = view.findViewById(R.id.button);
         button.setOnClickListener(this);
         return view;
+    }
+
+    public void show() {
+        show(getFragmentManager(), TAG);
     }
 }
 
