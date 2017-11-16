@@ -26,15 +26,10 @@ import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.dialog.AlertDialog;
 
+import static de.veesy.connection.MESSAGE.*;
+
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
-import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
-import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
-import static de.veesy.connection.MESSAGE.NOT_PAIRED;
-import static de.veesy.connection.MESSAGE.START_DISCOVERING;
-import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
-import static de.veesy.core.FeedbackActivity.FAILURE;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -178,6 +173,9 @@ public class ShareActivity extends Activity implements Observer {
         final Animation a = AnimationUtils.loadAnimation(this, R.anim.rotate);
         animationView.startAnimation(a);
     }
+
+
+    //TODO dieses ding crasht
 
     private void setRefreshListener() {
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshlayout);
