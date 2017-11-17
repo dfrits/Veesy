@@ -164,7 +164,7 @@ public class MainMenu extends Activity implements Observer {
 
                     @Override
                     public void onFinish() {
-                        counter -= 2;
+                        counter = 0;
                     }
                 }.start();
 

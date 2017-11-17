@@ -2,7 +2,6 @@ package de.veesy.core;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,18 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
-import de.veesy.dialog.AlertDialog;
-
-import static de.veesy.connection.MESSAGE.*;
 
 import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-import static de.veesy.core.FeedbackActivity.FAILURE;
+import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
+import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
+import static de.veesy.connection.MESSAGE.START_DISCOVERING;
+import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -85,7 +81,6 @@ public class ShareActivity extends Activity implements Observer {
         setContentView(R.layout.share_permission_granted);
         initListView();
         initAnimation();
-        initListView();
         startConnectionManager();
         setRefreshListener();
 
@@ -185,10 +180,9 @@ public class ShareActivity extends Activity implements Observer {
         adapter.setDeviceNames(DUMMY_DATA);
     }
 
-
     protected void onListItemClick(int position, String deviceName) {
         connectionManager.btConnectToDevice(deviceName);
-        Intent intent = new Intent(this, FeedbackActivity.class);
+        Intent intent = new Intent(this, ExchangeActivity.class);
         // Intent.putExtra(CONTACT_DATA, deviceName);
         startActivity(intent);
         finish();
