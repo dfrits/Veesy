@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -40,7 +41,7 @@ public class ConnectionManager extends Observable {
 
     //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
-    private static String originalDeviceName;
+    private static String originalDeviceName = "Huawei Watch 2 1413";
 
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
@@ -74,7 +75,7 @@ public class ConnectionManager extends Observable {
             return;
         }
 
-        renameDevice(btName_prefix + btName_splitter + btName_device);
+        renameDevice(btName_prefix + btName_splitter + btName_device, false);
         availableVeesyBTDevices = new ArrayList<>();
         bondedBTDevices = new ArrayList<>();
         bondedBTDevices.addAll(btAdapter.getBondedDevices());
@@ -98,9 +99,11 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "Bluetooth is not supported on this device");
             return false;
         }
-        originalDeviceName = btAdapter.getName();
-        btName_device = originalDeviceName;
+        //originalDeviceName = btAdapter.getName();
+        btName_device = btAdapter.getName();
+
         Log.d(TAG, "Bluetooth initialized");
+        Log.d(TAG, "Bluetooth name is " + btName_device);
         return true;
     }
 
@@ -120,15 +123,17 @@ public class ConnectionManager extends Observable {
      * <p>
      * if something goes wrong, this method determines after 10s
      */
-    private void renameDevice(String name) {
+    private void renameDevice(String name, boolean setBackOriginalName) {
 
-        if (!isVeesyDevice(btName_device)) {
+        if (!isVeesyDevice(btName_device) || setBackOriginalName) {
             if (btAdapter != null) {
                 enableBluetooth();
                 final long timeOutMillis = System.currentTimeMillis() + 10000;
                 final Handler timeHandler = new Handler();
                 final String newName = name;
                 final long delayMillis = 500;
+                btNameCorrect_flag = false;
+                final boolean setBackNameAndShutdown = setBackOriginalName;
 
                 timeHandler.postDelayed(new Runnable() {
                     @Override
@@ -139,7 +144,9 @@ public class ConnectionManager extends Observable {
                                 Log.d(TAG, "Set BT name to: " + btAdapter.getName());
                                 btNameCorrect_flag = true;
                                 setChanged();
-                                notifyObservers(MESSAGE.RENAMED_DEVICE);
+                                if (!setBackNameAndShutdown)
+                                    notifyObservers(MESSAGE.RENAMED_DEVICE);
+                                else notifyObservers(MESSAGE.READY_TO_SHUTDOWN);
                             }
                             if (!(btAdapter.getName().equals(newName)) && System.currentTimeMillis() < timeOutMillis) {
                                 timeHandler.postDelayed(this, delayMillis);
@@ -227,10 +234,11 @@ public class ConnectionManager extends Observable {
 
     private void startDisocveryEndingThread() {
 
-        if(btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
+        if (btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
         btDiscover_countDownTimer = new CountDownTimer(20000, 1000) {
             public void onTick(long millisUntilFinished) {
             }
+
             public void onFinish() {
                 cancelDiscovery();
             }
@@ -736,7 +744,7 @@ public class ConnectionManager extends Observable {
      * "[veesy]- ..", he has the ability to set back the name     *
      */
     public void setBackOriginalDeviceName() {
-        renameDevice(originalDeviceName);
+        renameDevice(originalDeviceName, true);
     }
 
     public String getOriginalDeviceName() {
