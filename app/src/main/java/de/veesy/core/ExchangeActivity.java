@@ -44,13 +44,11 @@ public class ExchangeActivity extends Activity implements Observer {
         }
     }
 
-    protected void onStop() {
-        super.onStop();
-    }
-
-    protected void onDestroy() {
-        connectionManager.unregisterReceiver(this);
-        //connectionManager.deleteObserver(this);
+    protected void onDestroy(){
+        if(connectionManager != null) {
+            connectionManager.unregisterReceiver(this);
+            connectionManager.deleteObserver(this);
+        }
         super.onDestroy();
     }
 
@@ -68,6 +66,7 @@ public class ExchangeActivity extends Activity implements Observer {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
         feedback_intent.putExtra("SUCCESS_FLAG", already_paired_flag);
         startActivity(feedback_intent);
+        finish();
     }
 
     private void initConnectionManager() {
@@ -90,7 +89,6 @@ public class ExchangeActivity extends Activity implements Observer {
             case MESSAGE.CONNECTING:
                 break;
             case MESSAGE.CONNECTED:
-
                 break;
             case MESSAGE.DISCONNECTING:
                 break;
@@ -103,9 +101,7 @@ public class ExchangeActivity extends Activity implements Observer {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         System.out.println("keyCode: " + keyCode + " Event: " + event);
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-
           startFeedbackActivity(true);
-
         }
         return true;
     }

@@ -37,7 +37,6 @@ public class FeedbackActivity extends Activity {
      * @param view .
      */
     public void bHomeClicked(View view){
-        startActivity(new Intent(this, MainMenu.class));
         finish();
     }
 
@@ -46,6 +45,8 @@ public class FeedbackActivity extends Activity {
      * @param view .
      */
     public void bDetailsClicked(View view){
+        //startActivity details
+        finish();
     }
 
     /**

@@ -24,8 +24,11 @@ import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 
 import static android.view.View.INVISIBLE;
+import static de.veesy.connection.MESSAGE.ALREADY_PAIRED;
 import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
+import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
+import static de.veesy.connection.MESSAGE.PAIRED;
 import static de.veesy.connection.MESSAGE.START_DISCOVERING;
 import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
@@ -114,6 +117,10 @@ public class ShareActivity extends Activity implements Observer {
             case DISCOVERABILITY_ON:
                 initShareActivity_permission_granted();
                 break;
+            case DISCOVERABILITY_OFF:
+                setContentView(R.layout.share_permission_denied);
+                connectionManager.startBluetoothIntent(this, 100);
+                break;
             case START_DISCOVERING:
                 if (animationView != null) animationView.startAnimation(radar_animation);
                 break;
@@ -163,7 +170,7 @@ public class ShareActivity extends Activity implements Observer {
         adapter = new ShareAdapter(new ShareAdapter.Callback() {
             @Override
             public void onDeviceClicked(int position, String deviceName) {
-                Toast.makeText(context, "Connecting with " + deviceName, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Connecting with " + deviceName, Toast.LENGTH_SHORT).show();
                 onListItemClick(position, deviceName);
             }
         });
@@ -187,12 +194,10 @@ public class ShareActivity extends Activity implements Observer {
             alreadyPaired = true;
         }
 
-        if(deviceName.equals("Martin Stadlmaier")) alreadyPaired = false;
+        if(!deviceName.equals("Vivien Bardosi")) alreadyPaired = false;
+
         intent.putExtra("ALREADY_PAIRED", alreadyPaired);
-
-        // Intent.putExtra(CONTACT_DATA, deviceName);
         startActivity(intent);
-
         finish();
     }
 
@@ -207,5 +212,6 @@ public class ShareActivity extends Activity implements Observer {
 
     // TODO MARTIN
     public void bShareClicked(View view) {
+        connectionManager.startBluetoothIntent(this, 100);
     }
 }
