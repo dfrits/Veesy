@@ -302,10 +302,20 @@ public class ConnectionManager extends Observable {
                 if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED){
                     btPairWithDevice(d);
                     b = false;
+
+                    // Damit finishe ich die ShareAct
+                    // fall device nicht gepairt ist, kann man mit rechts swipe eins zurück
+                    setChanged();
+                    notifyObservers(MESSAGE.PAIRED);
                     break;
                 }
                 else {
                     btStartConnection();
+
+                    // Damit finishe ich die ShareAct
+                    // fall device nicht gepairt ist, kann man mit rechts swipe eins zurück
+                    setChanged();
+                    notifyObservers(MESSAGE.ALREADY_PAIRED);
                     b = true;
                     break;
                 }

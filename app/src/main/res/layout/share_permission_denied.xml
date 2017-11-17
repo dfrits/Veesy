@@ -8,13 +8,14 @@
 
     <TextView
         android:id="@+id/t_share"
-        android:layout_width="95dp"
-        android:layout_height="22dp"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_above="@+id/bShare"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="27dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/roboto_condensed_regular"
-        android:text="@string/not_paired"
+        android:text="@string/bluetooth_permission_denied"
         android:textAlignment="center"
         android:textSize="18sp" />
 
