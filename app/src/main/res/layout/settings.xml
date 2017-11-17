@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/settings_background"
+              android:orientation="horizontal">
 
-</RelativeLayout>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/share_button_mini"
+        android:onClick="bShareClicked"
+        android:contentDescription="@string/share"/>
+
+    <ListView
+        android:id="@+id/lVSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

@@ -16,6 +16,7 @@ import java.util.Observer;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
+import de.veesy.settings.SettingsActivity;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -36,7 +37,7 @@ public class MainMenu extends Activity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
-        initConnectionManager();
+        //initConnectionManager();
     }
 
     // launching
@@ -47,7 +48,6 @@ public class MainMenu extends Activity implements Observer {
 
     /**
      * Aktion des Share-Buttons.
-     *
      * @param view .
      */
     public void bShareClicked(View view) {
@@ -56,7 +56,6 @@ public class MainMenu extends Activity implements Observer {
 
     /**
      * Aktion des Contacts-Buttons.
-     *
      * @param view .
      */
     public void bContactsClicked(View view) {
@@ -67,13 +66,10 @@ public class MainMenu extends Activity implements Observer {
 
     /**
      * Aktion des Settings-Buttons.
-     *
      * @param view .
      */
     public void bSettingsClicked(View view) {
-        //TODO SettinsgActivity starten und entsprechenden Screen anzeigen
-        //        startActivity(new Intent(this, SettingsActivity.class));
-
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     @Override
@@ -83,13 +79,13 @@ public class MainMenu extends Activity implements Observer {
     }
 
     protected void onStop() {
-        cm.deleteObserver(this);
+        //cm.deleteObserver(this);
         System.out.println("onStop called");
         super.onStop();
     }
 
     protected void onStart() {
-        cm.addObserver(this);
+        //cm.addObserver(this);
         super.onStart();
     }
 
@@ -103,7 +99,6 @@ public class MainMenu extends Activity implements Observer {
     /**
      * diese Methode soll Swipe rechts detektieren
      * funktioniert so lala
-     *
      * @param event
      * @return
      */
@@ -128,7 +123,6 @@ public class MainMenu extends Activity implements Observer {
 
     /**
      * TODO swipe detector, rechts swipe mit finish aufrufen
-     *
      * @param keyCode .
      * @param event   .
      * @return Immer true

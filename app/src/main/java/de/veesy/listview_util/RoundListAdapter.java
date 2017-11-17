@@ -38,7 +38,7 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
     public MetaDataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.device_list_view, parent, false);
+                .inflate(R.layout.round_list_view_row, parent, false);
         return new MetaDataViewHolder(view);
     }
 
