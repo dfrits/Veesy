@@ -38,7 +38,7 @@ public class ConnectionManager extends Observable {
 
     private static final UUID VEESY_UUID = UUID.fromString("54630abc-3b78-4cf2-9f0d-0b844924cf36");
 
-    //TODO den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
+    //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
     private static String originalDeviceName;
 
@@ -58,6 +58,7 @@ public class ConnectionManager extends Observable {
 
     private BluetoothConnectedThread btConnectedThread;
 
+    private CountDownTimer btDiscover_countDownTimer;
 
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> bondedBTDevices;
@@ -69,7 +70,7 @@ public class ConnectionManager extends Observable {
     // Singleton Pattern to ensure only one instance of ConnectionManager is used
     private ConnectionManager() {
         if (!initBluetooth()) {
-            //TODO implement Bluetooth init error
+            //implement Bluetooth init error
             return;
         }
 
@@ -209,10 +210,8 @@ public class ConnectionManager extends Observable {
     public boolean discoverBluetoothDevices() {
         cancelDiscovery();
         availableVeesyBTDevices.clear();
-        if (btAdapter.startDiscovery()){
+        if (btAdapter.startDiscovery()) {
             startDisocveryEndingThread();
-            setChanged();
-            notifyObservers(MESSAGE.START_DISCOVERING);
             Log.d(TAG, " . . . . starting discovery");
             return true;
         }
@@ -223,16 +222,15 @@ public class ConnectionManager extends Observable {
         if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
             Log.d(TAG, " . . . . stopping discovery");
-            setChanged();
-            notifyObservers(MESSAGE.STOP_DISCOVERING);
         }
     }
 
     private void startDisocveryEndingThread() {
-        new CountDownTimer(15000, 1000) {
+
+        if(btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
+        btDiscover_countDownTimer = new CountDownTimer(20000, 1000) {
             public void onTick(long millisUntilFinished) {
             }
-
             public void onFinish() {
                 cancelDiscovery();
             }
@@ -245,7 +243,7 @@ public class ConnectionManager extends Observable {
 
     /**
      * btPairWithDevice is called and tries to pair with the device
-     *
+     * <p>
      * if the devices can be paired, the BroadcastReceiver will receive it
      */
     private void btPairWithDevice(BluetoothDevice device) {
@@ -302,10 +300,15 @@ public class ConnectionManager extends Observable {
         IntentFilter actionFoundFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         IntentFilter actionBondStateFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         IntentFilter actionScanModeChangedFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        IntentFilter actionDiscoveryFinishedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        IntentFilter actionDiscoveryStartedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 
         context.registerReceiver(btReceiver_ACTION_FOUND, actionFoundFilter);
         context.registerReceiver(btReceiver_BOND_STATE, actionBondStateFilter);
         context.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
+        context.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
+        context.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
+
     }
 
     public void unregisterReceiver(Context context) {
@@ -316,7 +319,36 @@ public class ConnectionManager extends Observable {
         context.unregisterReceiver(btReceiver_ACTION_FOUND);
         context.unregisterReceiver(btReceiver_BOND_STATE);
         context.unregisterReceiver(btReceiver_SCAN_MODE);
+        context.unregisterReceiver(btReceiver_ACTION_DISCOVERY_FINISHED);
+        context.unregisterReceiver(btReceiver_ACTION_DISCOVERY_STARTED);
     }
+
+    private final BroadcastReceiver btReceiver_ACTION_DISCOVERY_STARTED = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action) {
+                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                    Log.d(TAG, " . . . . discovery started");
+                    setChanged();
+                    notifyObservers(MESSAGE.START_DISCOVERING);
+                    break;
+            }
+        }
+    };
+
+    private final BroadcastReceiver btReceiver_ACTION_DISCOVERY_FINISHED = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action) {
+                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                    Log.d(TAG, " . . . . discovery stopped");
+                    btDiscover_countDownTimer.cancel();
+                    setChanged();
+                    notifyObservers(MESSAGE.STOP_DISCOVERING);
+                    break;
+            }
+        }
+    };
 
     private final BroadcastReceiver btReceiver_ACTION_FOUND = new BroadcastReceiver() {
 
@@ -416,6 +448,7 @@ public class ConnectionManager extends Observable {
                     case BluetoothAdapter.STATE_CONNECTED:
                         Log.d(TAG, "BroadcastReceiver: Connected.");
                         break;
+
                 }
 
             }
@@ -445,8 +478,8 @@ public class ConnectionManager extends Observable {
 
         public BluetoothAcceptorThread() {
             Log.d(TAG, "BluetoothAcceptorThread started");
-            // Use a temporary object that is later assigned to mmServerSocket
-            // because mmServerSocket is final.
+            // Use a temporary object that is later assigned to btServerSocket
+            // because btServerSocket is final.
             BluetoothServerSocket tmp = null;
             try {
                 // VEESY_UUID is the apps UUID string, also used by the client code.
@@ -697,6 +730,7 @@ public class ConnectionManager extends Observable {
 
 
     /**
+     * TODO
      * This method should be accessible via the Settings menu
      * because if an user does not want his device to be named
      * "[veesy]- ..", he has the ability to set back the name     *
@@ -712,7 +746,7 @@ public class ConnectionManager extends Observable {
     /**
      * This method tries to return the "real" device name
      * [veesy]-NAME --> NAME
-     *
+     * <p>
      * if something goes wrong, it will return parameter originalDeviceName
      */
     public String getRealDeviceName(String deviceName) {
