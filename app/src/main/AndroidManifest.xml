@@ -29,6 +29,17 @@
         <activity
             android:name=".core.FeedbackActivity"
             android:theme="@style/noSwipeTheme"/>
+
+        <activity
+            android:name=".contacts.ContactActivity"
+            android:theme="@style/noSwipeTheme"/>
+
+        <activity
+            android:name=".core.SettingsActivity"
+            android:theme="@style/noSwipeTheme"/>
+
+
+
         <activity android:name=".core.ShareActivity" />
         <activity android:name=".core.ExchangeActivity" />
 
