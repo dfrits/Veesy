@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/bg_view"
         android:layout_width="match_parent"
-        android:background="@drawable/share_background"
+        android:background="@drawable/share_permission_granted_background"
         android:layout_height="match_parent"
         android:contentDescription="bg" />
 

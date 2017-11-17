@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -202,5 +203,9 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.unregisterReceiver(this);
         connectionManager.deleteObserver(this);
         super.onDestroy();
+    }
+
+    // TODO MARTIN
+    public void bShareClicked(View view) {
     }
 }

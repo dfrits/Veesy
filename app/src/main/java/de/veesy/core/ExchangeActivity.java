@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -109,4 +110,12 @@ public class ExchangeActivity extends Activity implements Observer {
         return true;
     }
 
+    public void bPairClicked(View view) {
+    }
+
+    public void bHomeClicked(View view) {
+    }
+
+    public void bCancel(View view) {
+    }
 }

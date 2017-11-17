@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="80dp"
-        android:text="gepaired, animation laden und los" />
+    android:layout_height="match_parent"
+    android:background="@drawable/exchange_paired_hintergrund">
 
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="95dp"
+        android:layout_height="80dp"
+        android:layout_above="@+id/bCancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/share"
+        android:src="@drawable/exchange_paired_animation" />
+
+    <ImageButton
+        android:id="@+id/bCancel"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/cancel"
+        android:onClick="bCancel"
+        android:scaleType="fitCenter"
+        android:src="@drawable/exchange_paired_button" />
+</RelativeLayout>

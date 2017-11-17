@@ -2,7 +2,8 @@
 <resources>
     <string name="contacts">Kontakte</string>
     <string name="settings">Einstellungen</string>
-    <string name="success">Erfolgreich!</string>
+    <string name="success">Erfolg:)</string>
     <string name="backpress_hint">Nochmal drücken zum Beenden!</string>
-    <string name="failure">Fehlschlag!</string>
+    <string name="failure">Fehler:(</string>
+    <string name="not_paired">Bitte pairen</string>
 </resources>
