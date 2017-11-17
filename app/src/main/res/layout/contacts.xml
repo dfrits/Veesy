@@ -16,7 +16,7 @@
             android:contentDescription="@string/settings"
             android:onClick="bSettingsClicked"
             android:scaleType="fitCenter"
-            android:src="@drawable/contacts_share_button" />
+            android:src="@drawable/share_button_mini" />
 
         <android.support.wear.widget.WearableRecyclerView
             xmlns:android="http://schemas.android.com/apk/res/android"
