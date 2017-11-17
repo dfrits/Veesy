@@ -11,7 +11,7 @@
     <string name="data_transmission_success" translatable="false">Data transmission success</string>
     <string name="data_transmission_failure" translatable="false">Data transmission failure</string>
     <string name="failure">Failure:(</string>
-    <string name="not_paired">Please pair</string>
+    <string name="not_paired">Search once more or pair now</string>
     <string name="bluetooth_permission_denied">Please grant bluetooth permission</string>
     <string name="cancel" translatable="false">Cancel</string>
 </resources>

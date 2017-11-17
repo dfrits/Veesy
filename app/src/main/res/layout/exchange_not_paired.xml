@@ -5,36 +5,40 @@
     android:background="@drawable/exchange_not_paired_background">
 
     <ImageButton
+        android:id="@+id/bShare"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/t_exchange"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/share"
+        android:onClick="bShareClicked"
+        android:scaleType="fitCenter"
+        android:src="@drawable/share_button_mini" />
+
+
+    <ImageButton
         android:id="@+id/bPair"
         android:layout_width="30dp"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/details"
         android:onClick="bPairClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/exchange_not_paired_pair_button" />
 
-    <ImageButton
-        android:id="@+id/bHome"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/home"
-        android:onClick="bHomeClicked"
-        android:scaleType="fitCenter"
-        android:src="@drawable/home_button" />
 
     <TextView
         android:id="@+id/t_exchange"
-        android:layout_width="95dp"
-        android:layout_height="22dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="31dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/roboto_condensed_regular"
         android:text="@string/not_paired"

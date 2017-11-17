@@ -5,7 +5,7 @@
     <string name="success">Erfolg:)</string>
     <string name="backpress_hint">Nochmal drücken zum Beenden!</string>
     <string name="failure">Fehler:(</string>
-    <string name="not_paired">Bitte Pairing Anfrage bestätigen</string>
+    <string name="not_paired">Bitte Pairing Anfrage bestätigen oder erneut nach Geräten in der Umgebung suchen</string>
     <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
 
 </resources>

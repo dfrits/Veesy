@@ -41,7 +41,7 @@ public class ConnectionManager extends Observable {
 
     //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
-    private static String originalDeviceName = "Huawei Watch 2 1413";
+    private static String originalDeviceName;
 
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
@@ -99,8 +99,8 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "Bluetooth is not supported on this device");
             return false;
         }
-        //originalDeviceName = btAdapter.getName();
-        btName_device = btAdapter.getName();
+        originalDeviceName = btAdapter.getName();
+        btName_device = originalDeviceName;
 
         Log.d(TAG, "Bluetooth initialized");
         Log.d(TAG, "Bluetooth name is " + btName_device);
