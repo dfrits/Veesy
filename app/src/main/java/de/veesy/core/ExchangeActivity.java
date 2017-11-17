@@ -1,12 +1,13 @@
 package de.veesy.core;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -26,6 +27,8 @@ public class ExchangeActivity extends Activity implements Observer {
 
     private boolean already_paired_flag = true;
 
+    private ImageView animationView;
+    private Animation exchange_animation;
 
     private float x1, x2;
     static final int MIN_DISTANCE = 150;
@@ -60,6 +63,7 @@ public class ExchangeActivity extends Activity implements Observer {
 
     public void initExchangeActivity_paired() {
         setContentView(R.layout.exchange_paired);
+        initAnimation();
     }
 
     private void startFeedbackActivity(boolean success) {
@@ -73,6 +77,12 @@ public class ExchangeActivity extends Activity implements Observer {
         connectionManager = ConnectionManager.instance();
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
+    }
+
+    private void initAnimation() {
+        animationView = findViewById(R.id.exchange_animation_view);
+        exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
+        animationView.startAnimation(exchange_animation);
     }
 
     public void update(Observable observable, Object o) {
@@ -109,9 +119,11 @@ public class ExchangeActivity extends Activity implements Observer {
     public void bPairClicked(View view) {
     }
 
-    public void bHomeClicked(View view) {
+    public void bShareClicked(View view) {
     }
 
     public void bCancel(View view) {
+        startActivity(new Intent(this, ShareActivity.class));
+        finish();
     }
 }

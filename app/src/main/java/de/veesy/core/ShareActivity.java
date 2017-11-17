@@ -141,7 +141,7 @@ public class ShareActivity extends Activity implements Observer {
 
     private void initAnimation() {
         animationView = findViewById(R.id.suchanimation_view);
-        radar_animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        radar_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_radar);
     }
 
     private void setRefreshListener() {
