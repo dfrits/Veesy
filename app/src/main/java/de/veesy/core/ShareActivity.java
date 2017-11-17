@@ -83,7 +83,6 @@ public class ShareActivity extends Activity implements Observer {
         initAnimation();
         startConnectionManager();
         setRefreshListener();
-
         //still good for testing
         setList();
     }
@@ -130,7 +129,6 @@ public class ShareActivity extends Activity implements Observer {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        System.out.println("onRequestPermissionsResult called");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -181,10 +179,19 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     protected void onListItemClick(int position, String deviceName) {
-        connectionManager.btConnectToDevice(deviceName);
         Intent intent = new Intent(this, ExchangeActivity.class);
+        boolean alreadyPaired = false;
+        alreadyPaired = connectionManager.btConnectToDevice(deviceName);
+        if (DUMMY_DATA.contains(deviceName)) {
+            alreadyPaired = true;
+        }
+
+        if(deviceName.equals("Martin Stadlmaier")) alreadyPaired = false;
+        intent.putExtra("ALREADY_PAIRED", alreadyPaired);
+
         // Intent.putExtra(CONTACT_DATA, deviceName);
         startActivity(intent);
+
         finish();
     }
 
