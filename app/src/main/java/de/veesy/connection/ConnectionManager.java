@@ -274,6 +274,8 @@ public class ConnectionManager extends Observable {
         if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED)
             btPairWithDevice(device);
         else {
+            setChanged();
+            notifyObservers(MESSAGE.ALREADY_PAIRED);
             btStartConnection();
         }
     }
@@ -404,6 +406,9 @@ public class ConnectionManager extends Observable {
                     case BluetoothDevice.BOND_BONDED:
                         Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDED");
 
+                        setChanged();
+                        notifyObservers(MESSAGE.PAIRED);
+
                         //TODO think more about this
                         // Devices bonded, try to establish connection
                         if (device.equals(btConnectedDevice)) btStartConnection();
@@ -414,6 +419,8 @@ public class ConnectionManager extends Observable {
                         break;
                     // creating a bond
                     case BluetoothDevice.BOND_BONDING:
+                        setChanged();
+                        notifyObservers(MESSAGE.PAIRING);
                         Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDING");
                         break;
                 }
@@ -428,18 +435,18 @@ public class ConnectionManager extends Observable {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
 
+
+
             if (action != null && action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
 
                 int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
+                int msg = -1;
 
                 switch (mode) {
                     //Device is in Discoverable Mode
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
                         Log.d(TAG, "BroadcastReceiver: Discoverability Enabled.");
-
-                        setChanged();
-                        notifyObservers(MESSAGE.DISCOVERABILITY_ON);
-
+                        msg = MESSAGE.DISCOVERABILITY_ON;
                         break;
                     //Device is NOT in discoverable mode
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
@@ -447,17 +454,26 @@ public class ConnectionManager extends Observable {
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
                         Log.d(TAG, "BroadcastReceiver: Discoverability Disabled. Not able to receive connections.");
-                        setChanged();
-                        notifyObservers(MESSAGE.DISCOVERABILITY_OFF);
+                        msg = MESSAGE.DISCOVERABILITY_OFF;
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
                         Log.d(TAG, "BroadcastReceiver: Connecting....");
+                        msg = MESSAGE.CONNECTING;
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
                         Log.d(TAG, "BroadcastReceiver: Connected.");
+                        msg = MESSAGE.CONNECTED;
+                        break;
+                    case BluetoothAdapter.STATE_DISCONNECTING:
+                        msg = MESSAGE.DISCONNECTING;
+                        break;
+                    case BluetoothAdapter.STATE_DISCONNECTED:
+                        msg = MESSAGE.DISCONNECTED;
                         break;
 
                 }
+                setChanged();
+                notifyObservers(msg);
 
             }
         }

@@ -16,9 +16,7 @@ public final class MESSAGE {
     public static final int PAIRING = 3000;
     public static final int PAIRED = 3001;
     public static final int NOT_PAIRED = 3002;
-    public static final int CONNECTING = 3003;
-    public static final int CONNECTED = 3004;
-
+    public static final int ALREADY_PAIRED = 3003;
 
     public static final int START_DISCOVERING = 4000;
     public static final int STOP_DISCOVERING = 4001;
@@ -26,6 +24,12 @@ public final class MESSAGE {
     public static final int RENAMED_DEVICE = 5000;
     public static final int ALREADY_NAMED_CORRECTLY = 5001;
     public static final int READY_TO_SHUTDOWN = 5002;
+
+    public static final int CONNECTING = 6000;
+    public static final int CONNECTED = 6001;
+    public static final int DISCONNECTING = 6002;
+    public static final int DISCONNECTED = 6003;
+
 
 }
 
