@@ -268,36 +268,50 @@ public class ConnectionManager extends Observable {
      * <p>
      * if the devices are not paired, the connection can not be established
      */
-    public void btConnectToDevice(BluetoothDevice device, UUID uuid) {
+    public boolean btConnectToDevice(BluetoothDevice device, UUID uuid) {
 
         btConnectedDevice = device;
-        if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED)
+        if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED){
             btPairWithDevice(device);
+            return false;
+        }
+
         else {
             setChanged();
             notifyObservers(MESSAGE.ALREADY_PAIRED);
             btStartConnection();
+            return true;
         }
     }
 
     //TODO remove this method and use the other one above
+    // nochmal drüber nachdenken mit dem return wert hier
+    // was passiert wenn das gerät nicht in der liste ist´?
     // diese ganze Methode dient nur Testzwecken
-    public void btConnectToDevice(String deviceName) {
+    public boolean btConnectToDevice(String deviceName) {
 
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
         deviceName = btName_prefix + btName_splitter + deviceName;
         Log.d(TAG, "btConnectTo: " + deviceName);
 
+        boolean b = false;
+
         for (BluetoothDevice d : availableVeesyBTDevices) {
             if (d.getName().equals(deviceName)) {
                 btConnectedDevice = d;
-                if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED)
+                if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED){
                     btPairWithDevice(d);
+                    b = false;
+                    break;
+                }
                 else {
                     btStartConnection();
+                    b = true;
+                    break;
                 }
             }
         }
+        return b;
     }
 
 
