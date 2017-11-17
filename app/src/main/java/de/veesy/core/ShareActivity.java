@@ -1,7 +1,6 @@
 package de.veesy.core;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +20,14 @@ import java.util.Observer;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
+import de.veesy.listview_util.ListItemCallback;
+import de.veesy.listview_util.ScrollingLayoutCallback;
+import de.veesy.listview_util.RoundListAdapter;
 
 import static android.view.View.INVISIBLE;
-import static de.veesy.connection.MESSAGE.ALREADY_PAIRED;
 import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
-import static de.veesy.connection.MESSAGE.PAIRED;
 import static de.veesy.connection.MESSAGE.START_DISCOVERING;
 import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
@@ -40,10 +39,8 @@ import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
 
 public class ShareActivity extends Activity implements Observer {
-    private final Context context = this;
-
     private ConnectionManager connectionManager = null;
-    private ShareAdapter adapter;
+    private RoundListAdapter adapter;
     private ImageView animationView;
     private Animation radar_animation;
     private static List<String> DUMMY_DATA;
@@ -57,8 +54,6 @@ public class ShareActivity extends Activity implements Observer {
         DUMMY_DATA.add("Noch kein Gerät gefunden!");
         DUMMY_DATA.add("Geräte werden weitergesucht ...");
     }
-
-    public static final String CONTACT_DATA = "CONTACT_DATA";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +107,7 @@ public class ShareActivity extends Activity implements Observer {
 
         switch ((Integer) arg) {
             case DEVICE_FOUND:
-                adapter.setDeviceNames(connectionManager.btGetAvailableDeviceNames());
+                adapter.setData(connectionManager.btGetAvailableDeviceNames());
                 break;
             case DISCOVERABILITY_ON:
                 initShareActivity_permission_granted();
@@ -167,11 +162,11 @@ public class ShareActivity extends Activity implements Observer {
         recyclerView.setEdgeItemsCenteringEnabled(true);
         final ScrollingLayoutCallback scrollingLayoutCallback =
                 new ScrollingLayoutCallback();
-        adapter = new ShareAdapter(new ShareAdapter.Callback() {
+        adapter = new RoundListAdapter(new ListItemCallback() {
             @Override
-            public void onDeviceClicked(int position, String deviceName) {
+            public void onItemClicked(int position, String value) {
                 //Toast.makeText(context, "Connecting with " + deviceName, Toast.LENGTH_SHORT).show();
-                onListItemClick(position, deviceName);
+                onListItemClick(position, value);
             }
         });
         recyclerView.setLayoutManager(
@@ -183,13 +178,12 @@ public class ShareActivity extends Activity implements Observer {
      * Übergibt der Liste die neuen Daten
      */
     private void setList() {
-        adapter.setDeviceNames(DUMMY_DATA);
+        adapter.setData(DUMMY_DATA);
     }
 
     protected void onListItemClick(int position, String deviceName) {
         Intent intent = new Intent(this, ExchangeActivity.class);
-        boolean alreadyPaired = false;
-        alreadyPaired = connectionManager.btConnectToDevice(deviceName);
+        boolean alreadyPaired = connectionManager.btConnectToDevice(deviceName);
         if (DUMMY_DATA.contains(deviceName)) {
             alreadyPaired = true;
         }
@@ -213,5 +207,6 @@ public class ShareActivity extends Activity implements Observer {
     // TODO MARTIN
     public void bShareClicked(View view) {
         connectionManager.startBluetoothIntent(this, 100);
+        finish();
     }
 }

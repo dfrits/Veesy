@@ -1,13 +1,10 @@
-package de.veesy.core;
+package de.veesy.listview_util;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -15,29 +12,26 @@ import java.util.List;
 import de.veesy.R;
 
 /**
- * Created by dfritsch on 25.10.2017.
+ * Created by dfritsch on 17.11.2017.
  * veesy.de
  * hs-augsburg
  */
 
-class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MetaDataViewHolder> {
-    private List<String> deviceNames;
-    private final Callback callback;
+public class StraightListAdapter extends RecyclerView.Adapter<StraightListAdapter.MetaDataViewHolder> {
 
-    public interface Callback {
-        void onDeviceClicked(int position, String deviceName);
-    }
+    private List<String> data;
+    private final ListItemCallback callback;
 
     /**
      * Setzt die neuen Daten und refresht die Liste.
-     * @param deviceNames Liste mit Namen der gefundenen Geräten
+     * @param data Liste mit Namen der gefundenen Geräten
      */
-    void setDeviceNames(List<String> deviceNames) {
-        this.deviceNames = deviceNames;
+    public void setData(List<String> data) {
+        this.data = data;
         notifyDataSetChanged();
     }
 
-    ShareAdapter(Callback callback) {
+    public StraightListAdapter(ListItemCallback callback) {
         this.callback = callback;
     }
 
@@ -51,12 +45,12 @@ class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MetaDataViewHolder>
 
     @Override
     public void onBindViewHolder(MetaDataViewHolder holder, int position) {
-        holder.bind(deviceNames.get(position), position);
+        holder.bind(data.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        return deviceNames == null ? 0 : deviceNames.size();
+        return data == null ? 0 : data.size();
     }
 
     public class MetaDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -72,7 +66,7 @@ class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MetaDataViewHolder>
 
         @Override
         public void onClick(View view) {
-            callback.onDeviceClicked(position, item);
+            callback.onItemClicked(position, item);
         }
 
         void bind(String item, int position) {
