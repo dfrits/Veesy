@@ -1,8 +1,10 @@
 package de.veesy.core;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import java.util.Observable;
@@ -19,12 +21,26 @@ import de.veesy.connection.MESSAGE;
 
 public class ExchangeActivity extends Activity implements Observer {
 
+    public static final String ALREADY_PAIRED = "ALREADY_PAIRED";
+
+    private boolean already_paired_flag = true;
+
+
+    private float x1, x2;
+    static final int MIN_DISTANCE = 150;
 
     private ConnectionManager connectionManager = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initExchangeActivity_not_paired();
+
+        already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
+        if (already_paired_flag) {
+            initExchangeActivity_paired();
+        } else {
+            initExchangeActivity_not_paired();
+            already_paired_flag = false;
+        }
     }
 
     protected void onStop() {
@@ -33,7 +49,7 @@ public class ExchangeActivity extends Activity implements Observer {
 
     protected void onDestroy() {
         connectionManager.unregisterReceiver(this);
-        connectionManager.deleteObserver(this);
+        //connectionManager.deleteObserver(this);
         super.onDestroy();
     }
 
@@ -49,7 +65,7 @@ public class ExchangeActivity extends Activity implements Observer {
 
     private void startFeedbackActivity(boolean success) {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
-        feedback_intent.putExtra("SUCCESS_FLAG", success);
+        feedback_intent.putExtra("SUCCESS_FLAG", already_paired_flag);
         startActivity(feedback_intent);
     }
 
@@ -74,8 +90,6 @@ public class ExchangeActivity extends Activity implements Observer {
                 break;
             case MESSAGE.CONNECTED:
 
-
-
                 break;
             case MESSAGE.DISCONNECTING:
                 break;
@@ -84,15 +98,15 @@ public class ExchangeActivity extends Activity implements Observer {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                // nur zu debug zwecken
-                startFeedbackActivity(true);
-                break;
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        System.out.println("keyCode: " + keyCode + " Event: " + event);
+        if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+          startFeedbackActivity(true);
+
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 
 }
