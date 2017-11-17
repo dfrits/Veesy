@@ -119,21 +119,6 @@ public class ShareActivity extends Activity implements Observer {
             case DISCOVERABILITY_ON:
                 initShareActivity_permission_granted();
                 break;
-            case DISCOVERABILITY_OFF:
-                AlertDialog notDiscoverableDialog = AlertDialog.newInstance("Gerät nicht sichtbar!");
-                notDiscoverableDialog.onDismiss(new DialogInterface() {
-                    @Override
-                    public void cancel() {
-
-                    }
-
-                    @Override
-                    public void dismiss() {
-                        finish();
-                    }
-                });
-                notDiscoverableDialog.show(); // Wenn es nicht geht, dann den FM hier übergeben
-                break;
             case START_DISCOVERING:
                 if (animationView != null) animationView.startAnimation(radar_animation);
                 break;
@@ -143,22 +128,6 @@ public class ShareActivity extends Activity implements Observer {
                     animationView.setVisibility(INVISIBLE);
                 }
                 break;
-            case NOT_PAIRED:
-                AlertDialog notPairedDialog = AlertDialog.newInstance("Pairing fehlgeschlagen");
-                notPairedDialog.onDismiss(new DialogInterface() {
-                    @Override
-                    public void cancel() {
-
-                    }
-
-                    @Override
-                    public void dismiss() {
-                        Intent intent = new Intent(context, FeedbackActivity.class);
-                        intent.putExtra(FAILURE, FAILURE);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
             default:
                 break;
         }

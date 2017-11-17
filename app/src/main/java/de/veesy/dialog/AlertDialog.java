@@ -30,7 +30,7 @@ import de.veesy.R;
  * });
  */
 
-
+@Deprecated
 public class AlertDialog extends DialogFragment implements View.OnClickListener {
     public final static String TAG = "AlertDialog";
     private static String message;

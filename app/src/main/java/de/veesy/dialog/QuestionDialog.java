@@ -1,4 +1,3 @@
-/*
 package de.veesy.dialog;
 
 import android.app.DialogFragment;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import de.veesy.R;
 
-*/
 /**
  * Created by dfritsch on 08.11.2017.
  * veesy.de
@@ -24,9 +22,9 @@ import de.veesy.R;
  * dialog.show();
  * <p>
  * Reagieren kann man dann, indem man das Interface implementiert.
- *//*
+ */
 
-
+@Deprecated
 public class QuestionDialog extends DialogFragment implements View.OnClickListener {
     private static String message;
     private static QuestionDialogCallback callback;
@@ -37,12 +35,11 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
         void negativeButtonClicked();
     }
 
-    */
-/**
+    /**
      * Erstellt einen neuen AlertDialog.
      * @param message Nachricht, die angezeigt werden soll
      * @return Neuen AlertDialog
-     *//*
+     */
 
     static QuestionDialog newInstance(String message, QuestionDialogCallback callback) {
         QuestionDialog.message = message;
@@ -74,4 +71,3 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
         return view;
     }
 }
-*/
