@@ -45,6 +45,7 @@ public class ShareActivity extends Activity implements Observer {
     private ConnectionManager connectionManager = null;
     private ShareAdapter adapter;
     private ImageView animationView;
+    private Animation radar_animation;
     private static List<String> DUMMY_DATA;
 
     static {
@@ -71,7 +72,7 @@ public class ShareActivity extends Activity implements Observer {
      * This method loads the default content for this activity
      * which is described in share_permission_denied
      */
-    private void initShareActivity_permission_denied(){
+    private void initShareActivity_permission_denied() {
         initConnectionManager();
         setContentView(R.layout.share_permission_denied);
     }
@@ -80,15 +81,16 @@ public class ShareActivity extends Activity implements Observer {
      * This method loads the content for this activity
      * which is described in share_permission_granted
      */
-    private void initShareActivity_permission_granted(){
-        startConnectionManager();
+    private void initShareActivity_permission_granted() {
         setContentView(R.layout.share_permission_granted);
         initListView();
         initAnimation();
         initListView();
+        startConnectionManager();
         setRefreshListener();
-        //setList();
-        //animationView.setVisibility(VISIBLE);
+
+        //still good for testing
+        setList();
     }
 
     //endregion
@@ -102,7 +104,7 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager.startBluetoothIntent(this, 100);
     }
 
-    private void startConnectionManager(){
+    private void startConnectionManager() {
         connectionManager.btCheckPermissions(this);
         connectionManager.discoverBluetoothDevices();
         connectionManager.btStartListeningForConnectionAttempts();
@@ -133,10 +135,13 @@ public class ShareActivity extends Activity implements Observer {
                 notDiscoverableDialog.show(); // Wenn es nicht geht, dann den FM hier übergeben
                 break;
             case START_DISCOVERING:
-                animationView.setVisibility(VISIBLE);
+                if (animationView != null) animationView.startAnimation(radar_animation);
                 break;
             case STOP_DISCOVERING:
-                animationView.setVisibility(INVISIBLE);
+                if (animationView != null) {
+                    animationView.clearAnimation();
+                    animationView.setVisibility(INVISIBLE);
+                }
                 break;
             case NOT_PAIRED:
                 AlertDialog notPairedDialog = AlertDialog.newInstance("Pairing fehlgeschlagen");
@@ -171,29 +176,18 @@ public class ShareActivity extends Activity implements Observer {
 
     private void initAnimation() {
         animationView = findViewById(R.id.suchanimation_view);
-        final Animation a = AnimationUtils.loadAnimation(this, R.anim.rotate);
-        animationView.startAnimation(a);
+        radar_animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
     }
-
-
-    //TODO dieses ding crasht
 
     private void setRefreshListener() {
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshlayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                animationView.setVisibility(VISIBLE);
                 connectionManager.discoverBluetoothDevices();
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (refreshLayout.isRefreshing()) {
-                            refreshLayout.setRefreshing(false);
-                        }
-                    }
-                }, 1000);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -225,8 +219,6 @@ public class ShareActivity extends Activity implements Observer {
 
     protected void onListItemClick(int position, String deviceName) {
         connectionManager.btConnectToDevice(deviceName);
-
-        //TODO uncomment to start feedback screen
         Intent intent = new Intent(this, FeedbackActivity.class);
         // Intent.putExtra(CONTACT_DATA, deviceName);
         startActivity(intent);
