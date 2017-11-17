@@ -25,7 +25,7 @@ public final class MESSAGE {
 
     public static final int RENAMED_DEVICE = 5000;
     public static final int ALREADY_NAMED_CORRECTLY = 5001;
-
+    public static final int READY_TO_SHUTDOWN = 5002;
 
 }
 
