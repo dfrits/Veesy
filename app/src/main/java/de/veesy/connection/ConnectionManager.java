@@ -350,7 +350,7 @@ public class ConnectionManager extends Observable {
             switch (action) {
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                     Log.d(TAG, " . . . . discovery stopped");
-                    btDiscover_countDownTimer.cancel();
+                    if (btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
                     setChanged();
                     notifyObservers(MESSAGE.STOP_DISCOVERING);
                     break;

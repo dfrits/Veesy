@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
@@ -27,6 +27,9 @@ public class MainMenu extends Activity implements Observer {
     private static int counter = 0;
     ConnectionManager cm;
     CountDownTimer countDownTimer;
+
+    private float x1, x2;
+    static final int MIN_DISTANCE = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,31 @@ public class MainMenu extends Activity implements Observer {
         super.onDestroy();
     }
 
+    /**
+     * diese Methode soll Swipe rechts detektieren
+     * funktioniert so lala
+     *
+     * @param event
+     * @return
+     */
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+                if (Math.abs(deltaX) > MIN_DISTANCE) {
+                    System.out.println("Swipe right detected...");
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
 
     /**
      * TODO swipe detector, rechts swipe mit finish aufrufen
@@ -123,7 +151,7 @@ public class MainMenu extends Activity implements Observer {
             }
 
             if (counter == 2) {
-                if(countDownTimer!= null) countDownTimer.cancel();
+                if (countDownTimer != null) countDownTimer.cancel();
                 System.out.println("Shutting down....");
                 cm.setBackOriginalDeviceName();
 
@@ -136,7 +164,7 @@ public class MainMenu extends Activity implements Observer {
 
                     @Override
                     public void onFinish() {
-                        counter-=2;
+                        counter -= 2;
                     }
                 }.start();
 

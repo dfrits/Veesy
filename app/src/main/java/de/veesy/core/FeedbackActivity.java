@@ -19,6 +19,8 @@ import de.veesy.R;
 
 /*
  * Wir müssen uns noch überlegen, wie wir der Feedback Activity mitteilen, ob alles geklappt hat. Macht das der ConnectionManager?
+ *              ---> Martin: Feedback Activity wird dann über die update Methode von der ShareActivitiy gestartet (vorerst)
+ *
  *
  * An sich muss diese Activity gestartet werden und bereits wissen, ob alles funkioniert hat.
  *
@@ -26,6 +28,10 @@ import de.veesy.R;
  *
  * Falls der ConnectionManager dies macht, dann muss dieser (sobald man sich gepaired hat) die ShareActivity beenden, einen Intent starten,
  * der sozusagen die Animation zu Datenaustausch anzeigt, und sobald dieser vollführt ist, die FeedbackActivity starten
+ *
+ *              ---> Martin: würde vorerst wie oben beschrieben von der ShareActivity starten
+ *              Animation zum Daten austausch könnte man in der ShareActivity über nen anderen Content laden, ähnlihc wie das Radar
+ *              is aber nur ein Vorschlag, müsste man noch drüber nachdenken
  *
  */
 public class FeedbackActivity extends Activity implements Observer {
