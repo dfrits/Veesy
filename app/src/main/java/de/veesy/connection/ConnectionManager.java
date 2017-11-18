@@ -10,8 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.nfc.Tag;
-import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
@@ -19,10 +17,12 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -41,7 +41,7 @@ public class ConnectionManager extends Observable {
 
     //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
-    private static String originalDeviceName;
+    private static String originalDeviceName = "Huawei Watch 2 1413";
 
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
@@ -64,6 +64,12 @@ public class ConnectionManager extends Observable {
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> bondedBTDevices;
 
+    private IntentFilter actionFoundFilter;
+    private IntentFilter actionBondStateFilter;
+    private IntentFilter actionScanModeChangedFilter;
+    private IntentFilter actionDiscoveryFinishedFilter;
+    private IntentFilter actionDiscoveryStartedFilter;
+
     //endregion
 
     //region Initializing
@@ -71,7 +77,7 @@ public class ConnectionManager extends Observable {
     // Singleton Pattern to ensure only one instance of ConnectionManager is used
     private ConnectionManager() {
         if (!initBluetooth()) {
-            //implement Bluetooth init error
+            Log.e(TAG, "bluetooth not supported");
             return;
         }
 
@@ -79,13 +85,24 @@ public class ConnectionManager extends Observable {
         availableVeesyBTDevices = new ArrayList<>();
         bondedBTDevices = new ArrayList<>();
         bondedBTDevices.addAll(btAdapter.getBondedDevices());
-
+        initIntents();
     }
 
     public static ConnectionManager instance() {
         if (unique == null) unique = new ConnectionManager();
         return unique;
     }
+
+
+    private void initIntents() {
+
+        actionFoundFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        actionBondStateFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        actionScanModeChangedFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        actionDiscoveryFinishedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        actionDiscoveryStartedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+    }
+
 
     //endregion
 
@@ -99,8 +116,9 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "Bluetooth is not supported on this device");
             return false;
         }
-        originalDeviceName = btAdapter.getName();
-        btName_device = originalDeviceName;
+        //originalDeviceName = btAdapter.getName();
+        //btName_device = originalDeviceName;
+        btName_device = btAdapter.getName();
 
         Log.d(TAG, "Bluetooth initialized");
         Log.d(TAG, "Bluetooth name is " + btName_device);
@@ -194,13 +212,23 @@ public class ConnectionManager extends Observable {
      * <p>
      * in order to start the User input dialog, we need to pass Context
      */
-    public void startBluetoothIntent(Context context, int visibility_time) {
+    public boolean startBluetoothIntent(Activity activity, int visibility_time) {
+        if (btAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Log.d(TAG, "Already discoverable...");
+
+            setChanged();
+            notifyObservers(MESSAGE.ALREADY_DISCOVERABLE);
+
+            return true;
+        }
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, visibility_time);
-        context.startActivity(discoverableIntent);
+        activity.startActivity(discoverableIntent);
+        return false;
     }
 
-    public static void enableBluetooth() {
+
+    private static void enableBluetooth() {
         if (!btAdapter.isEnabled()) {
             btAdapter.enable();
         }
@@ -271,12 +299,10 @@ public class ConnectionManager extends Observable {
     public boolean btConnectToDevice(BluetoothDevice device, UUID uuid) {
 
         btConnectedDevice = device;
-        if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED){
+        if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
             btPairWithDevice(device);
             return false;
-        }
-
-        else {
+        } else {
             setChanged();
             notifyObservers(MESSAGE.ALREADY_PAIRED);
             btStartConnection();
@@ -291,7 +317,8 @@ public class ConnectionManager extends Observable {
     public boolean btConnectToDevice(String deviceName) {
 
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
-        deviceName = btName_prefix + btName_splitter + deviceName;
+        if(!isVeesyDevice(deviceName))deviceName = btName_prefix + btName_splitter + deviceName;
+
         Log.d(TAG, "btConnectTo: " + deviceName);
 
         boolean b = false;
@@ -299,17 +326,17 @@ public class ConnectionManager extends Observable {
         for (BluetoothDevice d : availableVeesyBTDevices) {
             if (d.getName().equals(deviceName)) {
                 btConnectedDevice = d;
-                if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED){
+                if (btConnectedDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
                     btPairWithDevice(d);
                     b = false;
 
                     // Damit finishe ich die ShareAct
                     // fall device nicht gepairt ist, kann man mit rechts swipe eins zurück
+                    //TODO macht das hier an dieser Stelle Sinn? egl über broadcastReceiver?
                     setChanged();
                     notifyObservers(MESSAGE.PAIRED);
                     break;
-                }
-                else {
+                } else {
                     btStartConnection();
 
                     // Damit finishe ich die ShareAct
@@ -324,48 +351,49 @@ public class ConnectionManager extends Observable {
         return b;
     }
 
+    public void retryPairing(){
+        btConnectToDevice(btConnectedDevice.getName());
+    }
+
 
     //endregion
 
     //region Bluetooth - BroadcastReceiver
 
-    public void registerReceiver(Context context) {
+    public void registerReceiver(Activity activity) {
 
-        IntentFilter actionFoundFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        IntentFilter actionBondStateFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        IntentFilter actionScanModeChangedFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
-        IntentFilter actionDiscoveryFinishedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        IntentFilter actionDiscoveryStartedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 
-        context.registerReceiver(btReceiver_ACTION_FOUND, actionFoundFilter);
-        context.registerReceiver(btReceiver_BOND_STATE, actionBondStateFilter);
-        context.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
-        context.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
-        context.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
+        activity.registerReceiver(btReceiver_ACTION_FOUND, actionFoundFilter);
+        activity.registerReceiver(btReceiver_BOND_STATE, actionBondStateFilter);
+        activity.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
+        activity.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
+        activity.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
 
     }
 
-    public void unregisterReceiver(Context context) {
+    public void unregisterReceiver(Activity activity) {
         if (btAdapter != null) {
             btAdapter.cancelDiscovery();
         }
         // Unregister broadcast listeners
-        context.unregisterReceiver(btReceiver_ACTION_FOUND);
-        context.unregisterReceiver(btReceiver_BOND_STATE);
-        context.unregisterReceiver(btReceiver_SCAN_MODE);
-        context.unregisterReceiver(btReceiver_ACTION_DISCOVERY_FINISHED);
-        context.unregisterReceiver(btReceiver_ACTION_DISCOVERY_STARTED);
+        activity.unregisterReceiver(btReceiver_ACTION_FOUND);
+        activity.unregisterReceiver(btReceiver_BOND_STATE);
+        activity.unregisterReceiver(btReceiver_SCAN_MODE);
+        activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_FINISHED);
+        activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_STARTED);
     }
 
     private final BroadcastReceiver btReceiver_ACTION_DISCOVERY_STARTED = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action) {
-                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                    Log.d(TAG, " . . . . discovery started");
-                    setChanged();
-                    notifyObservers(MESSAGE.START_DISCOVERING);
-                    break;
+            if (action != null) {
+                switch (action) {
+                    case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                        Log.d(TAG, " . . . . discovery started");
+                        setChanged();
+                        notifyObservers(MESSAGE.START_DISCOVERING);
+                        break;
+                }
             }
         }
     };
@@ -373,13 +401,15 @@ public class ConnectionManager extends Observable {
     private final BroadcastReceiver btReceiver_ACTION_DISCOVERY_FINISHED = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action) {
-                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    Log.d(TAG, " . . . . discovery stopped");
-                    if (btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
-                    setChanged();
-                    notifyObservers(MESSAGE.STOP_DISCOVERING);
-                    break;
+            if (action != null) {
+                switch (action) {
+                    case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                        Log.d(TAG, " . . . . discovery stopped");
+                        if (btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
+                        setChanged();
+                        notifyObservers(MESSAGE.STOP_DISCOVERING);
+                        break;
+                }
             }
         }
     };
@@ -390,24 +420,25 @@ public class ConnectionManager extends Observable {
             String action = intent.getAction();
 
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            if (action != null) {
+                switch (action) {
+                    // a new, unpaired device was found
+                    case BluetoothDevice.ACTION_FOUND:
+                        String deviceName = device.getName();
+                        String deviceHardwareAddress = device.getAddress();
 
-            switch (action) {
-                // a new, unpaired device was found
-                case BluetoothDevice.ACTION_FOUND:
-                    String deviceName = device.getName();
-                    String deviceHardwareAddress = device.getAddress();
+                        //Log.d(TAG, "BroadcastReceiver: Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
 
-                    //Log.d(TAG, "BroadcastReceiver: Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
-
-                    if (isVeesyDevice(deviceName)) {
-                        Log.d(TAG, "BroadcastReceiver: Veesy-Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
-                        if (!availableVeesyBTDevices.contains(device)) {
-                            availableVeesyBTDevices.add(device);
-                            setChanged();
-                            notifyObservers(MESSAGE.DEVICE_FOUND);
+                        if (isVeesyDevice(deviceName)) {
+                            Log.d(TAG, "BroadcastReceiver: Veesy-Device found: " + deviceName + "; MAC " + deviceHardwareAddress);
+                            if (!availableVeesyBTDevices.contains(device)) {
+                                availableVeesyBTDevices.add(device);
+                                setChanged();
+                                notifyObservers(MESSAGE.DEVICE_FOUND);
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
             }
         }
     };
@@ -420,33 +451,36 @@ public class ConnectionManager extends Observable {
 
             Log.d(TAG, "btReceiver_BOND_STATE onReceive: " + action);
 
+            if (action != null) {
+                if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    //3 cases:
+                    //case1: bonded already
+                    switch (device.getBondState()) {
+                        // already bonded
+                        case BluetoothDevice.BOND_BONDED:
+                            Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDED");
 
-            if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //3 cases:
-                //case1: bonded already
-                switch (device.getBondState()) {
-                    // already bonded
-                    case BluetoothDevice.BOND_BONDED:
-                        Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDED");
+                            setChanged();
+                            notifyObservers(MESSAGE.PAIRED);
 
-                        setChanged();
-                        notifyObservers(MESSAGE.PAIRED);
-
-                        //TODO think more about this
-                        // Devices bonded, try to establish connection
-                        if (device.equals(btConnectedDevice)) btStartConnection();
-                        break;
-                    // breaking the bond
-                    case BluetoothDevice.BOND_NONE:
-                        Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_NONE");
-                        break;
-                    // creating a bond
-                    case BluetoothDevice.BOND_BONDING:
-                        setChanged();
-                        notifyObservers(MESSAGE.PAIRING);
-                        Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDING");
-                        break;
+                            //TODO think more about this
+                            // Devices bonded, try to establish connection
+                            if (device.equals(btConnectedDevice)) btStartConnection();
+                            break;
+                        // breaking the bond
+                        case BluetoothDevice.BOND_NONE:
+                            Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_NONE");
+                            setChanged();
+                            notifyObservers(MESSAGE.NOT_PAIRED);
+                            break;
+                        // creating a bond
+                        case BluetoothDevice.BOND_BONDING:
+                            setChanged();
+                            notifyObservers(MESSAGE.PAIRING);
+                            Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDING");
+                            break;
+                    }
                 }
             }
         }
@@ -458,7 +492,6 @@ public class ConnectionManager extends Observable {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-
 
 
             if (action != null && action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
@@ -805,6 +838,25 @@ public class ConnectionManager extends Observable {
             Log.d(TAG, "getRealDeviceName failed");
         }
         return deviceName;
+    }
+
+    public void unpairAllDevices() {
+        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+
+                if (!device.getName().equals("z3")) {
+                    try {
+                        Method m = device.getClass()
+                                .getMethod("removeBond", (Class[]) null);
+                        m.invoke(device, (Object[]) null);
+                        Log.d(TAG, "Removed device: "+device.getName() );
+                    } catch (Exception e) {
+                        Log.e(TAG, "Removing has been failed. . . . " + e.getMessage());
+                    }
+                }
+            }
+        }
     }
 
 

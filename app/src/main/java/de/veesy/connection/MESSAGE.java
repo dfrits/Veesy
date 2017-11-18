@@ -12,6 +12,7 @@ public final class MESSAGE {
 
     public static final int DISCOVERABILITY_ON = 2000;
     public static final int DISCOVERABILITY_OFF = 2001;
+    public static final int ALREADY_DISCOVERABLE = 2003;
 
     public static final int PAIRING = 3000;
     public static final int PAIRED = 3001;
