@@ -13,7 +13,7 @@
         android:layout_alignStart="@+id/t_feedback"
         android:layout_marginTop="50dp"
         android:background="@android:color/transparent"
-        android:contentDescription="@string/data_transmission_success"
+        android:contentDescription="@string/data_transmission_failure"
         android:src="@drawable/googleg_standard_color_18" />
 
     <TextView
