@@ -16,9 +16,13 @@ import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
 
+import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
+
 
 /**
- * Created by Martin on 17.11.2017.
+ * Created by dfritsch on 17.11.2017.
+ * veesy.de
+ * hs-augsburg
  */
 
 public class ExchangeActivity extends Activity implements Observer {
@@ -68,7 +72,7 @@ public class ExchangeActivity extends Activity implements Observer {
 
     private void startFeedbackActivity(boolean success) {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
-        feedback_intent.putExtra("SUCCESS_FLAG", already_paired_flag);
+        feedback_intent.putExtra(SUCCESS_FLAG, already_paired_flag);
         startActivity(feedback_intent);
         finish();
     }
