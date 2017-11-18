@@ -41,6 +41,7 @@ public class ExchangeActivity extends Activity implements Observer {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initConnectionManager();
 
         already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
         if (already_paired_flag) {
@@ -60,14 +61,17 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
 
-    public void initExchangeActivity_not_paired() {
-        initConnectionManager();
+    private void initExchangeActivity_not_paired() {
         setContentView(R.layout.exchange_not_paired);
     }
 
-    public void initExchangeActivity_paired() {
+    private void initExchangeActivity_paired() {
         setContentView(R.layout.exchange_paired);
         initAnimation();
+    }
+
+    private void initExchangeActivity_pairing(){
+       setContentView(R.layout.exchange_pairing);
     }
 
     private void startFeedbackActivity(boolean success) {
@@ -92,13 +96,16 @@ public class ExchangeActivity extends Activity implements Observer {
     public void update(Observable observable, Object o) {
         switch ((Integer) o) {
             case MESSAGE.PAIRING:
-                //TODO trying to pair
+                initExchangeActivity_pairing();
                 break;
             case MESSAGE.PAIRED:
                 initExchangeActivity_paired();
                 break;
             case MESSAGE.ALREADY_PAIRED:
                 initExchangeActivity_paired();
+                break;
+            case MESSAGE.NOT_PAIRED:
+                initExchangeActivity_not_paired();
                 break;
             case MESSAGE.CONNECTING:
                 break;
@@ -113,7 +120,6 @@ public class ExchangeActivity extends Activity implements Observer {
 
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        System.out.println("keyCode: " + keyCode + " Event: " + event);
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
           startFeedbackActivity(true);
         }
@@ -121,9 +127,12 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     public void bPairClicked(View view) {
+        connectionManager.retryPairing();
     }
 
     public void bShareClicked(View view) {
+        startActivity(new Intent(this, ShareActivity.class));
+        finish();
     }
 
     public void bCancel(View view) {
