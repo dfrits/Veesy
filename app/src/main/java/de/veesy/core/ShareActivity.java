@@ -20,6 +20,7 @@ import java.util.Observer;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
+import de.veesy.connection.MESSAGE;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.ScrollingLayoutCallback;
 import de.veesy.listview_util.RoundListAdapter;
@@ -28,6 +29,7 @@ import static android.view.View.INVISIBLE;
 import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
+import static de.veesy.connection.MESSAGE.ALREADY_DISCOVERABLE;
 import static de.veesy.connection.MESSAGE.START_DISCOVERING;
 import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
@@ -44,6 +46,8 @@ public class ShareActivity extends Activity implements Observer {
     private ImageView animationView;
     private Animation radar_animation;
     private static List<String> DUMMY_DATA;
+
+    private static int visibility_time = 20;
 
     static {
         DUMMY_DATA = new ArrayList<>();
@@ -71,8 +75,8 @@ public class ShareActivity extends Activity implements Observer {
      * which is described in share_permission_denied
      */
     private void initShareActivity_permission_denied() {
-        initConnectionManager();
         setContentView(R.layout.share_permission_denied);
+        initConnectionManager();
     }
 
     /**
@@ -86,7 +90,7 @@ public class ShareActivity extends Activity implements Observer {
         startConnectionManager();
         setRefreshListener();
         //still good for testing
-//        setList();
+        setList();
     }
 
     //endregion
@@ -97,7 +101,7 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager = ConnectionManager.instance();
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
-        connectionManager.startBluetoothIntent(this, 100);
+        connectionManager.startBluetoothIntent(this, visibility_time);
     }
 
     private void startConnectionManager() {
@@ -116,8 +120,9 @@ public class ShareActivity extends Activity implements Observer {
                 initShareActivity_permission_granted();
                 break;
             case DISCOVERABILITY_OFF:
+                System.out.println("disco off.....moron");
                 setContentView(R.layout.share_permission_denied);
-                connectionManager.startBluetoothIntent(this, 100);
+                connectionManager.startBluetoothIntent(this, visibility_time);
                 break;
             case START_DISCOVERING:
                 if (animationView != null) animationView.startAnimation(radar_animation);
@@ -128,10 +133,21 @@ public class ShareActivity extends Activity implements Observer {
                     animationView.setVisibility(INVISIBLE);
                 }
                 break;
+            case ALREADY_DISCOVERABLE:
+                initShareActivity_permission_granted();
+                break;
+//            case MESSAGE.PAIRED:
+//                break;
+//            case MESSAGE.PAIRING:
+//                break;
+//            case MESSAGE.NOT_PAIRED:
+//                break;
+
             default:
                 break;
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -152,6 +168,8 @@ public class ShareActivity extends Activity implements Observer {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                adapter.clear();
+                adapter.clear();
                 connectionManager.discoverBluetoothDevices();
                 if (refreshLayout.isRefreshing()) {
                     refreshLayout.setRefreshing(false);
@@ -186,30 +204,47 @@ public class ShareActivity extends Activity implements Observer {
 
     protected void onListItemClick(int position, String deviceName) {
         Intent intent = new Intent(this, ExchangeActivity.class);
-        boolean alreadyPaired = connectionManager.btConnectToDevice(deviceName);
+
+
+        //region Debug Kram
+
+        boolean alreadyPaired = false;
+
         if (DUMMY_DATA.contains(deviceName)) {
             alreadyPaired = true;
         }
 
-        if(!deviceName.equals("Vivien Bardosi")) alreadyPaired = false;
+        //if (!deviceName.equals("Vivien Bardosi")) alreadyPaired = false;
+        //endregion
 
         intent.putExtra("ALREADY_PAIRED", alreadyPaired);
         startActivity(intent);
+
+        connectionManager.btConnectToDevice(deviceName);
         finish();
     }
 
     //endregion
 
+    protected void onStop() {
+
+        super.onStop();
+    }
+
 
     protected void onDestroy() {
-        connectionManager.unregisterReceiver(this);
-        connectionManager.deleteObserver(this);
+        try {
+            connectionManager.unregisterReceiver(this);
+            connectionManager.deleteObserver(this);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 
     // TODO MARTIN
     public void bShareClicked(View view) {
-        connectionManager.startBluetoothIntent(this, 100);
+        connectionManager.startBluetoothIntent(this, visibility_time);
         finish();
     }
 }
