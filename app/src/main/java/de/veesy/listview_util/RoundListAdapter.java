@@ -32,6 +32,11 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
         notifyDataSetChanged();
     }
 
+    public void clear(){
+        this.data.clear();
+        notifyDataSetChanged();
+    }
+
     /**
      * Übergibt testweise ein Bild an den Adapter.
      * @param data Liste
