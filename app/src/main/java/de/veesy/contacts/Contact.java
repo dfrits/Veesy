@@ -6,15 +6,39 @@ package de.veesy.contacts;
  * hs-augsburg
  */
 
-public class Contact {
+class Contact {
 
-    public String name = "Epping";
-    public String vorname =  "Andreas";
-    public String telefonnr = "01805445123";
+    private String name;
+    private String vorname;
+    private String telefonnr;
 
-    public Contact(){
-
+    public Contact(String nachname, String vorname, String telefonnr){
+        this.name = nachname;
+        this.vorname = vorname;
+        this.telefonnr = telefonnr;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getVorname() {
+        return vorname;
+    }
+
+    public String getTelefonnr() {
+        return telefonnr;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setVorname(String vorname) {
+        this.vorname = vorname;
+    }
+
+    public void setTelefonnr(String telefonnr) {
+        this.telefonnr = telefonnr;
+    }
 }

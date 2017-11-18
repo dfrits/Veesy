@@ -59,6 +59,9 @@ public class ShareActivity extends Activity implements Observer {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initShareActivity_permission_denied();
+
+        // for testing on emulator
+//        initShareActivity_permission_granted();
     }
 
     //region GUI Handling
@@ -83,7 +86,7 @@ public class ShareActivity extends Activity implements Observer {
         startConnectionManager();
         setRefreshListener();
         //still good for testing
-        setList();
+//        setList();
     }
 
     //endregion

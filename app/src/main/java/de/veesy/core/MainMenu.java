@@ -16,6 +16,7 @@ import java.util.Observer;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
+import de.veesy.contacts.ContactsActivity;
 import de.veesy.settings.SettingsActivity;
 
 /**
@@ -37,7 +38,7 @@ public class MainMenu extends Activity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
-        //initConnectionManager();
+        initConnectionManager();
     }
 
     // launching
@@ -59,9 +60,7 @@ public class MainMenu extends Activity implements Observer {
      * @param view .
      */
     public void bContactsClicked(View view) {
-        //TODO ContactsActivity starten und entsprechenden Screen anzeigen
-        //        startActivity(new Intent(this, ContactsActivity.class));
-
+        startActivity(new Intent(this, ContactsActivity.class));
     }
 
     /**
@@ -79,13 +78,13 @@ public class MainMenu extends Activity implements Observer {
     }
 
     protected void onStop() {
-        //cm.deleteObserver(this);
+        cm.deleteObserver(this);
         System.out.println("onStop called");
         super.onStop();
     }
 
     protected void onStart() {
-        //cm.addObserver(this);
+        cm.addObserver(this);
         super.onStart();
     }
 
