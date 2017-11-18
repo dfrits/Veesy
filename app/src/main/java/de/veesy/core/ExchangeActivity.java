@@ -137,6 +137,7 @@ public class ExchangeActivity extends Activity implements Observer {
             case MESSAGE.CONNECTING:
                 break;
             case MESSAGE.CONNECTED:
+                connectionManager.btSendData("Hallo i bims");
                 break;
             case MESSAGE.DISCONNECTING:
                 break;

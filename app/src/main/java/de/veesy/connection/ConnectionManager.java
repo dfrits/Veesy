@@ -25,6 +25,8 @@ import java.util.Observable;
 import java.util.Set;
 import java.util.UUID;
 
+import static android.bluetooth.BluetoothAdapter.STATE_CONNECTED;
+
 /**
  * Created by Martin on 25.10.2017.
  * veesy.de
@@ -69,6 +71,8 @@ public class ConnectionManager extends Observable {
     private IntentFilter actionScanModeChangedFilter;
     private IntentFilter actionDiscoveryFinishedFilter;
     private IntentFilter actionDiscoveryStartedFilter;
+
+    private boolean connectionEstablished = false;
 
     //endregion
 
@@ -317,7 +321,7 @@ public class ConnectionManager extends Observable {
     public boolean btConnectToDevice(String deviceName) {
 
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
-        if(!isVeesyDevice(deviceName))deviceName = btName_prefix + btName_splitter + deviceName;
+        if (!isVeesyDevice(deviceName)) deviceName = btName_prefix + btName_splitter + deviceName;
 
         Log.d(TAG, "btConnectTo: " + deviceName);
 
@@ -345,7 +349,7 @@ public class ConnectionManager extends Observable {
         return b;
     }
 
-    public void retryPairing(){
+    public void retryPairing() {
         btConnectToDevice(btConnectedDevice.getName());
     }
 
@@ -355,14 +359,11 @@ public class ConnectionManager extends Observable {
     //region Bluetooth - BroadcastReceiver
 
     public void registerReceiver(Activity activity) {
-
-
         activity.registerReceiver(btReceiver_ACTION_FOUND, actionFoundFilter);
         activity.registerReceiver(btReceiver_BOND_STATE, actionBondStateFilter);
         activity.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
-
     }
 
     public void unregisterReceiver(Activity activity) {
@@ -511,15 +512,19 @@ public class ConnectionManager extends Observable {
                         Log.d(TAG, "BroadcastReceiver: Connecting....");
                         msg = MESSAGE.CONNECTING;
                         break;
-                    case BluetoothAdapter.STATE_CONNECTED:
+                    case STATE_CONNECTED:
                         Log.d(TAG, "BroadcastReceiver: Connected.");
+                        connectionEstablished = true;
                         msg = MESSAGE.CONNECTED;
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
                         msg = MESSAGE.DISCONNECTING;
+                        connectionEstablished = false;
+
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
                         msg = MESSAGE.DISCONNECTED;
+                        connectionEstablished = false;
                         break;
 
                 }
@@ -759,19 +764,38 @@ public class ConnectionManager extends Observable {
         public void btCloseConnection() {
             try {
                 btSocket.close();
-                Log.d(TAG, "ConnectedThrad: Socket closed");
+                Log.d(TAG, "ConnectedThread: Socket closed");
             } catch (IOException e) {
-                Log.e(TAG, "ConnectedThrad: Socket could not be closed", e);
+                Log.e(TAG, "ConnectedThread: Socket could not be closed", e);
             }
         }
     }
 
 
-    public void btSendData(byte[] out) {
+    private static Object obj = new Object();
+
+    private void write(byte[] out) {
         //BluetoothConnectedThread r;
 
-        btConnectedThread.write(out);
+        //btConnectedThread.write(out);
 
+        BluetoothConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (obj) {
+            if (!connectionEstablished) {
+                return;
+            }
+            r = btConnectedThread;
+        }
+        // Perform the write unsynchronized
+        r.write(out);
+    }
+
+
+    public void btSendData(String data) {
+        data = data + " (gesendet von: " + btName_device + ")";
+        byte[] b = data.getBytes(Charset.defaultCharset());
+        write(b);
     }
 
 
@@ -844,7 +868,7 @@ public class ConnectionManager extends Observable {
                         Method m = device.getClass()
                                 .getMethod("removeBond", (Class[]) null);
                         m.invoke(device, (Object[]) null);
-                        Log.d(TAG, "Removed device: "+device.getName() );
+                        Log.d(TAG, "Removed device: " + device.getName());
                     } catch (Exception e) {
                         Log.e(TAG, "Removing has been failed. . . . " + e.getMessage());
                     }
@@ -852,6 +876,37 @@ public class ConnectionManager extends Observable {
             }
         }
     }
+
+
+    /**
+     *  VCF to byte array
+     *
+     * This method reads a file from a path and returns it as a
+     * byte array
+     */
+
+//    private static byte[] readBytesFromFile(String filePath) {
+//        FileInputStream fileInputStream = null;
+//        byte[] bytesArray = null;
+//        try {
+//            File file = new File(filePath);
+//            bytesArray = new byte[(int) file.length()];
+//            //read file into bytes[]
+//            fileInputStream = new FileInputStream(file);
+//            fileInputStream.read(bytesArray);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (fileInputStream != null) {
+//                try {
+//                    fileInputStream.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return bytesArray;
+//    }
 
 
     // endregion
