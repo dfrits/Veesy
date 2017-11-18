@@ -37,8 +37,12 @@ public class MainMenu extends Activity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+    }
 
+    protected void onStart(){
+        System.out.println("onStart called");
         initConnectionManager();
+        super.onStart();
     }
 
     // launching
@@ -78,15 +82,11 @@ public class MainMenu extends Activity implements Observer {
     }
 
     protected void onStop() {
-        cm.deleteObserver(this);
+        if (cm != null) cm.deleteObserver(this);
         System.out.println("onStop called");
         super.onStop();
     }
 
-    protected void onStart() {
-        cm.addObserver(this);
-        super.onStart();
-    }
 
 
     @Override
@@ -128,11 +128,8 @@ public class MainMenu extends Activity implements Observer {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        System.out.println("keyCode: " + keyCode + " Event: " + event);
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-
             counter++;
-
             if (counter == 1) {
                 final Context context = this;
                 runOnUiThread(new Runnable() {
