@@ -3,6 +3,7 @@ package de.veesy.core;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import de.veesy.R;
@@ -21,14 +22,18 @@ import de.veesy.R;
  */
 public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
+    private static View feedback_failure;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        feedback_failure = LayoutInflater.from(this).inflate(
+                R.layout.feedback_failure, null);
+
         if (getIntent().getBooleanExtra(SUCCESS_FLAG, false)) {
             setContentView(R.layout.feedback_success);
         } else {
-            setContentView(R.layout.feedback_failure);
+            setContentView(feedback_failure);
         }
     }
 

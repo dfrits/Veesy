@@ -205,7 +205,6 @@ public class ShareActivity extends Activity implements Observer {
     protected void onListItemClick(int position, String deviceName) {
         Intent intent = new Intent(this, ExchangeActivity.class);
 
-
         //region Debug Kram
 
         boolean alreadyPaired = false;
