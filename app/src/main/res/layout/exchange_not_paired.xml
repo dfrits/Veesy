@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/exchange_not_paired_background">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/exchange_not_paired_background">
 
     <ImageButton
         android:id="@+id/bShare"
@@ -14,20 +14,20 @@
         android:contentDescription="@string/details"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/share_button_mini" />
+        android:src="@drawable/share_button_mini"/>
 
     <ImageButton
         android:id="@+id/bPair"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/details"
-        android:layout_centerVertical="true"
         android:onClick="bPairClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/exchange_not_paired_pair_button" />
+        android:src="@drawable/exchange_not_paired_pair_button"/>
 
 
     <TextView
@@ -41,6 +41,32 @@
         android:fontFamily="@font/roboto_condensed_regular"
         android:text="@string/not_paired"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
+
+    <RelativeLayout
+        android:id="@+id/animation_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+
+        <ImageView
+            android:id="@+id/pairing_animation_view_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/pairing_img"/>
+
+        <ImageView
+            android:id="@+id/pairing_animation_view_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/pairing_animation"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

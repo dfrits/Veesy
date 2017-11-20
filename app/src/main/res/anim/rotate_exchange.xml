@@ -11,5 +11,3 @@
     android:repeatCount="infinite"
     android:repeatMode="restart"
     android:toDegrees="0" />
-
-    <!--android:interpolator="@android:anim/linear_interpolator"-->

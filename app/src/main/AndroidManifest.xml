@@ -33,7 +33,7 @@
             android:name=".contacts.ContactsActivity"
             android:theme="@style/noSwipeTheme"/>
 
-             <activity
+        <activity
             android:name=".settings.SettingsActivity"
             android:theme="@style/noSwipeTheme"/>
 
