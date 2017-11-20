@@ -718,46 +718,39 @@ public class ConnectionManager extends Observable {
             int bytes;
             //keep listening to input stream until exception breaks the loop
 
+            while (true) {
+                try {
+                    bytes = btInStream.read(buffer);
 
-//            while (true) {
-//                try {
-//                    //bytes = btInStream.read(buffer);
-//
-//          //TODO bytes to VCF? hier kommen die Daten an, wie reagiert man darauf?
-            //   hier passiert eh noch iwas hässliches, //
-            //   IO Exception  obwohl das eigentlich //
-            //   abgefangen werden sollte durch das catch unten //
+                    //TODO bytes to VCF? hier kommen die Daten an, wie reagiert man darauf?
+                    // hier passiert eh noch iwas hässliches,IO Exception  obwohl das eigentlich
+                    // abgefangen werden sollte durch das catch unten
 
+                    //For testing: Convert to String
 
-//                    //For testing: Convert to String
-//
-//                    //String msg = new String(buffer, 0, bytes);
-//                    //Log.d(TAG, "ConnectedThread: InputStream: " + msg);
-//
-//                } catch (IOException e) {
-//                    Log.e(TAG, "ConnectedThread: IO Error while reading InputStream", e);
-//                    break;
-//                } catch (Exception e){
-//                    Log.e(TAG, "ConnectedThread: Some Error while reading InputStream", e);
-//
-//                    e.printStackTrace();
-//                    break;
-//                }
-//            }
+                    String msg = new String(buffer, 0, bytes);
+                    Log.d(TAG, "ConnectedThread: InputStream: " + msg);
+
+                } catch (IOException e) {
+                    Log.e(TAG, "ConnectedThread: IO Error while reading InputStream", e);
+                    break;
+                } catch (Exception e) {
+                    Log.e(TAG, "ConnectedThread: Some Error while reading InputStream", e);
+
+                    e.printStackTrace();
+                    break;
+                }
+            }
 
 
         }
 
         public void write(byte[] bytes) {
-            //TODO vcf oder so impelementieren, hier werden die Daten verschickt
-
-            String text = new String(bytes, Charset.defaultCharset());
             Log.d(TAG, "ConnectedThread: Writing to outputStream");
             try {
                 btOutStream.write(bytes);
             } catch (IOException e) {
                 Log.e(TAG, "ConnectedThread: Error while writing to OutputStream", e);
-
             }
         }
 
@@ -775,9 +768,6 @@ public class ConnectionManager extends Observable {
     private static Object obj = new Object();
 
     private void write(byte[] out) {
-        //BluetoothConnectedThread r;
-
-        //btConnectedThread.write(out);
 
         BluetoothConnectedThread r;
         // Synchronize a copy of the ConnectedThread
@@ -887,10 +877,10 @@ public class ConnectionManager extends Observable {
 
 //    private static byte[] readBytesFromFile(String filePath) {
 //        FileInputStream fileInputStream = null;
-//        byte[] bytesArray = null;
+//        byte[] bytes = null;
 //        try {
 //            File file = new File(filePath);
-//            bytesArray = new byte[(int) file.length()];
+//            bytes = new byte[(int) file.length()];
 //            //read file into bytes[]
 //            fileInputStream = new FileInputStream(file);
 //            fileInputStream.read(bytesArray);
@@ -905,7 +895,7 @@ public class ConnectionManager extends Observable {
 //                }
 //            }
 //        }
-//        return bytesArray;
+//        return bytes;
 //    }
 
 

@@ -49,6 +49,7 @@ public class MainMenu extends Activity implements Observer {
     private void initConnectionManager() {
         cm = ConnectionManager.instance();
         cm.addObserver(this);
+        cm.btCheckPermissions(this);
     }
 
     /**

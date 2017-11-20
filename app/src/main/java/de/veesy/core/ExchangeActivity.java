@@ -40,6 +40,8 @@ public class ExchangeActivity extends Activity implements Observer {
 
         //TODO fehler handling
         // was passiert wenn pairing kaputt geht?
+        // aktuell wird der not_paired screen aufgerufen
+        // allerdings nur deswegen weil da unten der debuggin kram steht
 
 
         //debug kram
