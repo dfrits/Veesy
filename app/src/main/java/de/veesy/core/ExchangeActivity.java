@@ -32,17 +32,29 @@ public class ExchangeActivity extends Activity implements Observer {
     private boolean already_paired_flag = true;
     private ConnectionManager connectionManager;
     private Animation exchange_animation;
+    private Animation pairing_animation;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initConnectionManager();
 
+        //TODO fehler handling
+        // was passiert wenn pairing kaputt geht?
+
+
+        //debug kram
         already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
         if (already_paired_flag) {
             initExchangeActivity_paired();
         } else {
             initExchangeActivity_not_paired();
         }
+    }
+
+    private void initConnectionManager() {
+        connectionManager = ConnectionManager.instance();
+        connectionManager.addObserver(this);
+        connectionManager.registerReceiver(this);
     }
 
     private void initExchangeActivity_not_paired() {
@@ -54,76 +66,28 @@ public class ExchangeActivity extends Activity implements Observer {
         initExchangeAnimation();
     }
 
+    private void initExchangeActivity_pairing() {
+        setContentView(R.layout.exchange_pairing);
+        initPairingAnimation();
+    }
+
+
     private void initExchangeAnimation() {
         ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
         exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
         exchangeAnimationView.startAnimation(exchange_animation);
     }
 
-    private void initPairingAnimation() {
-        final ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
-        final Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        fadeInAnimation.setAnimationListener(new Animation.AnimationListener(){
-
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                // start fadeOutAnimation when fadeInAnimation ends (continue)
-                pairingAnimationView.startAnimation(fadeOutAnimation);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-        });
-        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener(){
-
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                // start fadeInAnimation when fadeOutAnimation ends (repeat)
-                pairingAnimationView.startAnimation(fadeInAnimation);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-        });
-        pairingAnimationView.startAnimation(fadeInAnimation);
-    }
-
-    private void initExchangeActivity_pairing() {
-        setContentView(R.layout.exchange_pairing);
-    }
-
-    private void initConnectionManager() {
-        connectionManager = ConnectionManager.instance();
-        connectionManager.addObserver(this);
-        connectionManager.registerReceiver(this);
+    private void initPairingAnimation(){
+        ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
+        pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
+        pairingAnimationView.startAnimation(pairing_animation);
     }
 
     public void update(Observable observable, Object o) {
         switch ((Integer) o) {
             case MESSAGE.PAIRING:
                 initExchangeActivity_pairing();
-
                 break;
             case MESSAGE.PAIRED:
                 initExchangeActivity_paired();
@@ -146,7 +110,7 @@ public class ExchangeActivity extends Activity implements Observer {
         }
     }
 
-
+    //debug kram
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
             startFeedbackActivity(true);
