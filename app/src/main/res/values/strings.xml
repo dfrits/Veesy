@@ -14,4 +14,5 @@
     <string name="not_paired">Search once more or pair now</string>
     <string name="bluetooth_permission_denied">Please grant bluetooth permission</string>
     <string name="cancel" translatable="false">Cancel</string>
+    <string name="pairing">Pairing...</string>
 </resources>

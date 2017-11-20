@@ -7,5 +7,6 @@
     <string name="failure">Fehler:(</string>
     <string name="not_paired">Bitte Pairinganfrage bestätigen oder erneut suchen</string>
     <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
+    <string name="pairing">Pairing...</string>
 
 </resources>

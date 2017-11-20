@@ -7,7 +7,7 @@
 
 
     <ImageView
-        android:id="@+id/exchange_animation_view"
+        android:id="@+id/iVExchangeAnimation"
         android:layout_width="95dp"
         android:layout_height="80dp"
         android:layout_above="@+id/bCancel"

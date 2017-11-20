@@ -2,15 +2,12 @@ package de.veesy.core;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -58,9 +55,58 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     private void initExchangeAnimation() {
-        ImageView exchangeAnimationView = findViewById(R.id.exchange_animation_view);
+        ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
         exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
         exchangeAnimationView.startAnimation(exchange_animation);
+    }
+
+    private void initPairingAnimation() {
+        final ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
+        final Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        fadeInAnimation.setAnimationListener(new Animation.AnimationListener(){
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                // start fadeOutAnimation when fadeInAnimation ends (continue)
+                pairingAnimationView.startAnimation(fadeOutAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
+        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener(){
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                // start fadeInAnimation when fadeOutAnimation ends (repeat)
+                pairingAnimationView.startAnimation(fadeInAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
+        pairingAnimationView.startAnimation(fadeInAnimation);
     }
 
     private void initExchangeActivity_pairing() {
