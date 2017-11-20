@@ -33,6 +33,7 @@ public class SettingsActivity extends Activity {
         DUMMY_DATA.add("New Card");
         DUMMY_DATA.add("Bluetooth Settings");
         DUMMY_DATA.add("About Us");
+        DUMMY_DATA.add("Remove bonded devices");
     }
     private StraightListAdapter adapter;
 
