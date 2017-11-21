@@ -14,7 +14,7 @@
         android:layout_marginTop="50dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/data_transmission_failure"
-        android:src="@drawable/googleg_standard_color_18" />
+        android:src="@drawable/feedback_failed_img" />
 
     <TextView
         android:id="@+id/t_feedback"
