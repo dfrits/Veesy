@@ -8,7 +8,12 @@ import android.support.wear.widget.WearableRecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.veesy.R;
+import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.RoundListAdapter;
 import de.veesy.listview_util.ScrollingLayoutCallback;
@@ -28,8 +33,11 @@ public class ContactsActivity extends Activity {
         setContentView(R.layout.contacts);
 
         initListView();
-        adapter.setDataWithDummyImage(contactsManager.getdummydata(),
-                getResources().getDrawable(R.drawable.dummypicture, null));
+        adapter.setData(getData());
+    }
+
+    private List<AdapterObject> getData() {
+        return null;
     }
 
     private void initListView() {
@@ -60,6 +68,29 @@ public class ContactsActivity extends Activity {
             }
         });
         contactsManager.showContact(this, position);
+    }
+
+    /**
+     * Speichert einen Kontakt ab.
+     * @param contact Kontakt
+     */
+    private void saveContact(Contact contact) {
+
+    }
+
+    /**
+     * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
+     * @return Liste mit allen fremden Kontakten
+     */
+    private List<Contact> readContacts() {
+        return new ArrayList<>();
+    }
+
+    /**
+     * Löscht den Kontakt.
+     */
+    private void deleteContact(File file) {
+
     }
 
     public void bSettingsClicked(View view) {
