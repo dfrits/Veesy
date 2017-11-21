@@ -2,6 +2,7 @@ package de.veesy.core;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import java.util.Observer;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
+import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.ScrollingLayoutCallback;
 import de.veesy.listview_util.RoundListAdapter;
@@ -114,7 +116,7 @@ public class ShareActivity extends Activity implements Observer {
 
         switch ((Integer) arg) {
             case DEVICE_FOUND:
-                adapter.setData(connectionManager.btGetAvailableDeviceNames());
+                adapter.setData(getDataList(connectionManager.btGetAvailableDeviceNames()));
                 break;
             case DISCOVERABILITY_ON:
                 initShareActivity_permission_granted();
@@ -196,10 +198,27 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     /**
+     * Erstellt eine Liste für den ListAdapter. Dabei wird jedem String der Punkt hinzufügt. Ist
+     * Liste <b>null</b>, dann werden die Dummydaten verwendet.
+     * @param list Liste mit anzuzeigenden Daten oder null
+     * @return Liste der übergebenen daten plus Punkt
+     */
+    private List<AdapterObject> getDataList(List<String> list) {
+        List<AdapterObject> dataList = new ArrayList<>();
+        Drawable punkt = getResources().getDrawable(R.drawable.share_list_point_img, null);
+
+        List<String> temp = list == null ? DUMMY_DATA : list;
+        for (String item : temp) {
+            dataList.add(new AdapterObject(item, punkt));
+        }
+        return dataList;
+    }
+
+    /**
      * Übergibt der Liste die neuen Daten
      */
     private void setList() {
-        adapter.setData(DUMMY_DATA);
+        adapter.setData(getDataList(null));
     }
 
     protected void onListItemClick(int position, String deviceName) {

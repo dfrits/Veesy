@@ -19,15 +19,14 @@ import de.veesy.R;
  */
 //TODO Klasse generisch machen, sodass sie individuell für BT-Device und Contact verwendet werden kann
 public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.MetaDataViewHolder> {
-    private List<String> data;
-    private Drawable dummyimage = null;
+    private List<AdapterObject> data;
     private final ListItemCallback callback;
 
     /**
      * Setzt die neuen Daten und refresht die Liste.
      * @param data Liste mit Namen der gefundenen Geräten
      */
-    public void setData(List<String> data) {
+    public void setData(List<AdapterObject> data) {
         this.data = data;
         notifyDataSetChanged();
     }
@@ -36,18 +35,6 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
         this.data.clear();
         notifyDataSetChanged();
     }
-
-    /**
-     * Übergibt testweise ein Bild an den Adapter.
-     * @param data Liste
-     * @param dummyimage Dummybild
-     */
-    //TODO Nach Generischierung wieder entfernen
-    public void setDataWithDummyImage(List<String> data, Drawable dummyimage) {
-        this.data = data;
-        this.dummyimage = dummyimage;
-    }
-
 
     public RoundListAdapter(ListItemCallback callback) {
         this.callback = callback;
@@ -63,7 +50,8 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
 
     @Override
     public void onBindViewHolder(MetaDataViewHolder holder, int position) {
-        holder.bind(data.get(position), position, dummyimage);
+        AdapterObject adapterObject = data.get(position);
+        holder.bind(adapterObject.getItemName(), position, adapterObject.getImg());
     }
 
     @Override
@@ -86,12 +74,12 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
             callback.onItemClicked(position, item);
         }
 
-        void bind(String item, int position, Drawable dummyimage) {
+        void bind(String item, int position, Drawable image) {
             this.item = item;
             this.position = position;
             textView.setText(item);
-            if (dummyimage != null) {
-                textView.setCompoundDrawablesWithIntrinsicBounds(dummyimage, null, null, null);
+            if (image != null) {
+                textView.setCompoundDrawablesWithIntrinsicBounds(image, null, null, null);
             }
         }
     }
