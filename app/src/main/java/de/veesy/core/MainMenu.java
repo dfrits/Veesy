@@ -76,8 +76,22 @@ public class MainMenu extends Activity implements Observer {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    public void bShutDownClicked(View view) {
-        finish();
+    /**
+     * Clicking this button will shutdown the app
+     * Therefore, setBackOriginalName() is called which
+     * will notify this observer with MESSAGE.READY_TO_SHUTDOWN
+     * in update() the app calls finish()
+     * @param view
+     */
+    public void bShutdownClicked(View view) {
+        final Context context = this;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "Shutdown", Toast.LENGTH_SHORT).show();
+            }
+        });
+        cm.setBackOriginalDeviceName();
     }
 
     @Override
@@ -126,7 +140,6 @@ public class MainMenu extends Activity implements Observer {
 
 
     /**
-     * TODO swipe detector, rechts swipe mit finish aufrufen
      * @param keyCode .
      * @param event   .
      * @return Immer true
@@ -165,7 +178,6 @@ public class MainMenu extends Activity implements Observer {
 
             }
             if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_UP) {
-
             }
 
         }
