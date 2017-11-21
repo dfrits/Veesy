@@ -15,4 +15,5 @@
     <string name="bluetooth_permission_denied">Please grant bluetooth permission</string>
     <string name="cancel" translatable="false">Cancel</string>
     <string name="pairing">Pairing...</string>
+    <string name="shut_down">shut down</string>
 </resources>

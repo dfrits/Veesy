@@ -76,6 +76,10 @@ public class MainMenu extends Activity implements Observer {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
+    public void bShutDownClicked(View view) {
+        finish();
+    }
+
     @Override
     protected void onPause() {
         counter = 0;
@@ -97,10 +101,10 @@ public class MainMenu extends Activity implements Observer {
     }
 
     /**
-     * diese Methode soll Swipe rechts detektieren
-     * funktioniert so lala
-     * @param event
-     * @return
+     * Diese Methode soll "Swipe rechts" detektieren.
+     * Funktioniert so lala.
+     * @param event .
+     * @return .
      */
 
     @Override
