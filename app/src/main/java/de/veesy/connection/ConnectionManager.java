@@ -85,7 +85,7 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "bluetooth not supported");
             return;
         }
-
+        Log.d(TAG, "Initializing ConnectionManager");
         renameDevice(btName_prefix + btName_splitter + btName_device, false);
         availableVeesyBTDevices = new ArrayList<>();
         bondedBTDevices = new ArrayList<>();
@@ -113,7 +113,7 @@ public class ConnectionManager extends Observable {
     //region Bluetooth - Initializing
 
     // initialize BluetoothAdapter
-    private static boolean initBluetooth() {
+    private boolean initBluetooth() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
             // Bluetooth is not supported
@@ -123,7 +123,6 @@ public class ConnectionManager extends Observable {
         //originalDeviceName = btAdapter.getName();
         //btName_device = originalDeviceName;
         btName_device = btAdapter.getName();
-
         Log.d(TAG, "Bluetooth initialized");
         Log.d(TAG, "Bluetooth name is " + btName_device);
         return true;
@@ -146,7 +145,7 @@ public class ConnectionManager extends Observable {
      * if something goes wrong, this method determines after 10s
      */
     private void renameDevice(String name, boolean setBackOriginalName) {
-
+        Log.d(TAG, "Trying to rename device to " + name);
         if (!isVeesyDevice(btName_device) || setBackOriginalName) {
             if (btAdapter != null) {
                 enableBluetooth();
@@ -189,6 +188,12 @@ public class ConnectionManager extends Observable {
         }
     }
 
+    public boolean checkName(){
+        String name = btAdapter.getName();
+        if(isVeesyDevice(name)) return true;
+        else renameDevice(btName_prefix + btName_splitter + name, false);
+        return false;
+    }
 
     /**
      * TODO deviceName is sometimes null :/
@@ -199,15 +204,14 @@ public class ConnectionManager extends Observable {
      * is the first part btName_prefix?
      */
     private static boolean isVeesyDevice(String deviceName) {
-        boolean b = false;
-        String name = deviceName;
+        boolean namedCorrectly = false;
         try {
-            b = deviceName.split(btName_splitter)[0].equals(btName_prefix);
+            namedCorrectly = deviceName.split(btName_splitter)[0].equals(btName_prefix);
         } catch (Exception e) {
-            Log.d(TAG, "Trying to split name failed: " + name);
+            Log.d(TAG, "Trying to split name failed: " + deviceName);
             e.printStackTrace();
         }
-        return b;
+        return namedCorrectly;
     }
 
 
@@ -524,7 +528,6 @@ public class ConnectionManager extends Observable {
                     case BluetoothAdapter.STATE_DISCONNECTING:
                         msg = MESSAGE.DISCONNECTING;
                         connectionEstablished = false;
-
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
                         msg = MESSAGE.DISCONNECTED;
@@ -645,13 +648,16 @@ public class ConnectionManager extends Observable {
             try {
                 btSocket.connect();
                 Log.d(TAG, "BluetoothConnectorThread: Connection established !!!");
+
+                btManageConnection(btSocket, btConnectedDevice);
+
             } catch (IOException e) {
                 closeBluetoothSocket();
                 Log.d(TAG, "BluetoothConnectorThread: Could no connect to UUID: " + VEESY_UUID);
             }
 
             //oben reinschreiben bei try
-            btManageConnection(btSocket, btConnectedDevice);
+            //btManageConnection(btSocket, btConnectedDevice);
 
         }
 
@@ -690,6 +696,9 @@ public class ConnectionManager extends Observable {
         btConnectedThread = new BluetoothConnectedThread(btSocket);
         btConnectedThread.start();
 
+        setChanged();
+        notifyObservers(MESSAGE.CONNECTED);
+
     }
 
     //endregion
@@ -716,8 +725,9 @@ public class ConnectionManager extends Observable {
             ObjectOutputStream tmp_out = null;
 
             try {
-                tmp_in = new ObjectInputStream(btSocket.getInputStream());
                 tmp_out = new ObjectOutputStream(btSocket.getOutputStream());
+                tmp_out.flush();
+                tmp_in =  new ObjectInputStream (btSocket.getInputStream());
             } catch (IOException e) {
 
                 Log.e(TAG, "Object stream init error");
@@ -741,9 +751,8 @@ public class ConnectionManager extends Observable {
                 } catch (IOException e) {
                     Log.e(TAG, "ConnectedThread: IO Error while reading InputStream", e);
                     break;
-                } catch (Exception e) {
+                } catch (ClassNotFoundException e) {
                     Log.e(TAG, "ConnectedThread: Some Error while reading InputStream", e);
-
                     e.printStackTrace();
                     break;
                 }
@@ -789,16 +798,18 @@ public class ConnectionManager extends Observable {
 
     private void write(Contact contact) {
 
-        BluetoothConnectedThread r;
-        // Synchronize a copy of the ConnectedThread
-        synchronized (obj) {
-            if (!connectionEstablished) {
-                return;
-            }
-            r = btConnectedThread;
-        }
-        // Perform the write unsynchronized
-        r.write(contact);
+        btConnectedThread.write(contact);
+
+//        BluetoothConnectedThread r;
+//        // Synchronize a copy of the ConnectedThread
+//        synchronized (obj) {
+//            if (!connectionEstablished) {
+//                return;
+//            }
+//            r = btConnectedThread;
+//        }
+//        // Perform the write unsynchronized
+//        r.write(contact);
     }
 
 /* Debug

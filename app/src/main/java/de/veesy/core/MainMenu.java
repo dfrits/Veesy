@@ -57,7 +57,16 @@ public class MainMenu extends Activity implements Observer {
      * @param view .
      */
     public void bShareClicked(View view) {
-        startActivity(new Intent(this, ShareActivity.class));
+        if(cm.checkName()) startActivity(new Intent(this, ShareActivity.class));
+        else{
+            final Context context = this;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "try again in 2 seconds", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     /**
