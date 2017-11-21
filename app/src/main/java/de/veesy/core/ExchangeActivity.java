@@ -15,6 +15,7 @@ import java.util.Observer;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
+import de.veesy.contacts.Contact;
 
 import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
 
@@ -101,9 +102,13 @@ public class ExchangeActivity extends Activity implements Observer {
                 initExchangeActivity_not_paired();
                 break;
             case MESSAGE.CONNECTING:
+
                 break;
             case MESSAGE.CONNECTED:
-                connectionManager.btSendData("Hallo i bims");
+
+                System.out.println("Trying to send a contact");
+                connectionManager.btSendData(new Contact("Maddl", "Huawa", "0190666666"));
+
                 break;
             case MESSAGE.DISCONNECTING:
                 break;
