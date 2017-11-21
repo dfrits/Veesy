@@ -12,10 +12,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
@@ -24,6 +27,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 import java.util.UUID;
+
+import de.veesy.contacts.Contact;
 
 import static android.bluetooth.BluetoothAdapter.STATE_CONNECTED;
 
@@ -99,7 +104,6 @@ public class ConnectionManager extends Observable {
 
 
     private void initIntents() {
-
         actionFoundFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         actionBondStateFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         actionScanModeChangedFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
@@ -191,6 +195,8 @@ public class ConnectionManager extends Observable {
 
 
     /**
+     * TODO deviceName is sometimes null :/
+     *
      * this method provides a possibility to track if a discovered BT device is
      * part of the veesy environment
      * this method determines, whether the name of a Device could be split by btName_splitter, and if,
@@ -198,9 +204,11 @@ public class ConnectionManager extends Observable {
      */
     private static boolean isVeesyDevice(String deviceName) {
         boolean b = false;
+        String name = deviceName;
         try {
             b = deviceName.split(btName_splitter)[0].equals(btName_prefix);
         } catch (Exception e) {
+            Log.d(TAG, "Trying to split name failed: " + name);
             e.printStackTrace();
         }
         return b;
@@ -217,14 +225,15 @@ public class ConnectionManager extends Observable {
      * in order to start the User input dialog, we need to pass Context
      */
     public boolean startBluetoothIntent(Activity activity, int visibility_time) {
-        if (btAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+        //TODO uncomment, commented to debug
+/*        if (btAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Log.d(TAG, "Already discoverable...");
 
             setChanged();
             notifyObservers(MESSAGE.ALREADY_DISCOVERABLE);
 
             return true;
-        }
+        }*/
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, visibility_time);
         activity.startActivity(discoverableIntent);
@@ -265,7 +274,6 @@ public class ConnectionManager extends Observable {
     }
 
     private void startDisocveryEndingThread() {
-
         if (btDiscover_countDownTimer != null) btDiscover_countDownTimer.cancel();
         btDiscover_countDownTimer = new CountDownTimer(20000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -616,8 +624,10 @@ public class ConnectionManager extends Observable {
     private class BluetoothConnectorThread extends Thread {
         private BluetoothSocket btSocket;
 
+
         public BluetoothConnectorThread(BluetoothDevice device, UUID uuid) {
             Log.d(TAG, "BluetoothConnectorThread started");
+            //TODO quatsch??
             btConnectedDevice = device;
             btConnectedDeviceUUID = uuid;
         }
@@ -644,6 +654,7 @@ public class ConnectionManager extends Observable {
                 Log.d(TAG, "BluetoothConnectorThread: Could no connect to UUID: " + VEESY_UUID);
             }
 
+            //oben reinschreiben bei try
             btManageConnection(btSocket, btConnectedDevice);
 
         }
@@ -691,46 +702,46 @@ public class ConnectionManager extends Observable {
 
     private class BluetoothConnectedThread extends Thread {
         private final BluetoothSocket btSocket;
-        private final InputStream btInStream;
-        private final OutputStream btOutStream;
+        //private final InputStream btInStream;
+        //private final OutputStream btOutStream;
+
+        private final ObjectInputStream btObjectStream_in;
+        private final ObjectOutputStream btObjectStream_out;
+
+
+        //initializing input and output stream
 
         public BluetoothConnectedThread(BluetoothSocket socket) {
             Log.d(TAG, "ConnectedThread started");
             btSocket = socket;
-            InputStream tmp_in = null;
-            OutputStream tmp_out = null;
+            //InputStream tmp_in = null;
+            //OutputStream tmp_out = null;
+            ObjectInputStream tmp_in = null;
+            ObjectOutputStream tmp_out = null;
 
             try {
-                tmp_in = btSocket.getInputStream();
-                tmp_out = btSocket.getOutputStream();
+                tmp_in = new ObjectInputStream(btSocket.getInputStream());
+                tmp_out = new ObjectOutputStream(btSocket.getOutputStream());
             } catch (IOException e) {
+
+                Log.e(TAG, "Object stream init error");
                 e.printStackTrace();
             }
 
-            btInStream = tmp_in;
-            btOutStream = tmp_out;
+            //btInStream = tmp_in;
+            //btOutStream = tmp_out;
+
+            btObjectStream_in = tmp_in;
+            btObjectStream_out = tmp_out;
         }
 
         public void run() {
-            //buffer store for the stream
-            byte[] buffer = new byte[1024];
-            // bytes returned from read
-            int bytes;
-            //keep listening to input stream until exception breaks the loop
 
+            Log.d(TAG, "ConnectedThread: waiting for InputStream: ");
             while (true) {
                 try {
-                    bytes = btInStream.read(buffer);
-
-                    //TODO bytes to VCF? hier kommen die Daten an, wie reagiert man darauf?
-                    // hier passiert eh noch iwas hässliches,IO Exception  obwohl das eigentlich
-                    // abgefangen werden sollte durch das catch unten
-
-                    //For testing: Convert to String
-
-                    String msg = new String(buffer, 0, bytes);
-                    Log.d(TAG, "ConnectedThread: InputStream: " + msg);
-
+                    Contact contact = (Contact) btObjectStream_in.readObject();
+                    Log.d(TAG, "ConnectedThread: InputStream: " + contact.toString());
                 } catch (IOException e) {
                     Log.e(TAG, "ConnectedThread: IO Error while reading InputStream", e);
                     break;
@@ -745,10 +756,23 @@ public class ConnectionManager extends Observable {
 
         }
 
+/* Debug
         public void write(byte[] bytes) {
             Log.d(TAG, "ConnectedThread: Writing to outputStream");
             try {
                 btOutStream.write(bytes);
+            } catch (IOException e) {
+                Log.e(TAG, "ConnectedThread: Error while writing to OutputStream", e);
+            }
+        }
+*/
+
+        public void write(Contact contact) {
+            Log.d(TAG, "ConnectedThread: Writing to outputStream");
+            try {
+                //btOutStream.write(bytes);
+
+                btObjectStream_out.writeObject(contact);
             } catch (IOException e) {
                 Log.e(TAG, "ConnectedThread: Error while writing to OutputStream", e);
             }
@@ -767,6 +791,21 @@ public class ConnectionManager extends Observable {
 
     private static Object obj = new Object();
 
+    private void write(Contact contact) {
+
+        BluetoothConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (obj) {
+            if (!connectionEstablished) {
+                return;
+            }
+            r = btConnectedThread;
+        }
+        // Perform the write unsynchronized
+        r.write(contact);
+    }
+
+/* Debug
     private void write(byte[] out) {
 
         BluetoothConnectedThread r;
@@ -780,13 +819,22 @@ public class ConnectionManager extends Observable {
         // Perform the write unsynchronized
         r.write(out);
     }
+*/
 
+    public void btSendData(Contact contact) {
+        String data = contact.toString() + " (gesendet von: " + btName_device + ")";
+        write(contact);
+        Log.d(TAG, "sending...:" + data);
+    }
 
+/* Debug
     public void btSendData(String data) {
         data = data + " (gesendet von: " + btName_device + ")";
         byte[] b = data.getBytes(Charset.defaultCharset());
         write(b);
+        Log.d(TAG, "sending...:" +data);
     }
+*/
 
 
     //endregion
@@ -819,7 +867,6 @@ public class ConnectionManager extends Observable {
 
 
     /**
-     * TODO
      * This method should be accessible via the Settings menu
      * because if an user does not want his device to be named
      * "[veesy]- ..", he has the ability to set back the name     *
