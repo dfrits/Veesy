@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/background_all_black">
 
 
     <ImageView
@@ -11,17 +11,19 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/pairing"
-        android:src="@drawable/pairing_animation" />
+        android:src="@drawable/pairing_animation"/>
 
     <TextView
-        android:paddingTop="5dp"
-        android:textAlignment="center"
-        android:fontFamily="@font/roboto_condensed_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/iVPairingAnimation"
         android:layout_alignStart="@+id/iVPairingAnimation"
         android:layout_below="@+id/iVPairingAnimation"
-        android:text="@string/pairing"/>
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto_condensed_regular"
+        android:paddingTop="5dp"
+        android:text="@string/pairing"
+        android:textAlignment="center"/>
 </RelativeLayout>

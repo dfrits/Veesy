@@ -8,5 +8,11 @@
     <string name="not_paired">Pairinganfrage bitte bestätigen und erneut versuchen</string>
     <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
     <string name="pairing">Pairing...</string>
+    <string name="vorname">Vorname</string>
+    <string name="nachname">Nachname</string>
+    <string name="save">Speichern</string>
+    <string name="phone">Telefonnummer</string>
+    <string name="shut_down">Beenden</string>
+    <string name="error_reading_card">veesy-Kontakt ist nicht lesbar</string>
 
 </resources>

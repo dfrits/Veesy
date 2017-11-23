@@ -70,7 +70,7 @@ public class Contact implements Serializable{
     }
 
     public String toString(){
-        return vorname + " " + name + ": " + telefonnr;
+        return vorname + " " + nachname + ": " + telefonnr;
     }
 
     public void setBild(Uri bild) {

@@ -1,6 +1,7 @@
 package de.veesy.settings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,18 +15,20 @@ import android.widget.TextView;
 
 import de.veesy.R;
 
+import static de.veesy.contacts.ContactsManager.INTENT_RESULT;
+
 /**
  * Created by dfritsch on 21.11.2017.
  * veesy.de
  * hs-augsburg
- *
+ * <p>
  * Die Klasse ist zuständig für die Verwaltung einer Eingabe. Die einzelnen Elemente sind
  * individuell anpassbar. Einfach beim Starten der Activity den Text mit
  * {@link Intent#putExtra(String, String) putExtra()} mitgeben. Dabei aber beachten die
  * entsprechenden Namen zu verwenden.
  * <p>
  * Starten die Activity dann mit {@link Activity#startActivityForResult(Intent, int)
- * startActivityForResult(intent , InputActivity.REQUEST_CODE);}
+ * startActivityForResult(intent , INPUT_ACTIVITY_REQUEST_CODE);}
  * <p>
  * Das Ergebnis erhält man dann in der {@link Activity#onActivityResult onActivityResult-Methode()}.
  * Dort kann dann auf den RequestCode reagiert werden. Beispiel:
@@ -34,17 +37,25 @@ import de.veesy.R;
  */
 
 public class InputActivity extends Activity {
+    public static final String INPUT_TYPE_NUMBER = "INPUT_TYPE_NUMBER";
+    public static final String INPUT_TYPE_TEXT = "INPUT_TYPE_TEXT";
+    public static final int INPUT_ACTIVITY_REQUEST_CODE = 1;
+    private static final String BUTTON_TEXT = "BUTTON_TEXT";
+    private static final String INFO_TEXT = "INFO_TEXT";
+    private static final String INPUT_TYPE = "INPUT_TYPE";
     private Intent intent;
     private EditText inputField;
     private Button button;
 
-    public static final String BUTTON_TEXT = "BUTTON_TEXT";
-    public static final String INFO_TEXT = "INFO_TEXT";
-    public static final String INPUT_TYPE = "INPUT_TYPE";
-    public static final String INPUT_TYPE_NUMBER = "INPUT_TYPE_NUMBER";
-    public static final String INPUT_TYPE_TEXT = "INPUT_TYPE_TEXT";
-    public static final int REQUEST_CODE = 1;
-    public static final String INPUT_RESULT = "INPUT_RESULT";
+    public static Intent getIntent(Context context, int infoText,
+                                   int buttonText, String inputType) {
+        Intent intent = new Intent(context, InputActivity.class);
+        intent.putExtra(INFO_TEXT, infoText);
+        intent.putExtra(BUTTON_TEXT, buttonText);
+        intent.putExtra(INPUT_TYPE, inputType);
+
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,15 +69,15 @@ public class InputActivity extends Activity {
         intent = getIntent();
 
         // Den Text des Buttons ändern, falls einer mitgegeben wurde
-        String extraButtonText = intent.getStringExtra(BUTTON_TEXT);
-        if (!(extraButtonText == null || extraButtonText.isEmpty())) {
+        int extraButtonText = intent.getIntExtra(BUTTON_TEXT, 0);
+        if (extraButtonText != 0) {
             button.setText(extraButtonText);
         }
 
         // Text des InfoTexts setzen
-        String extraInfoText = intent.getStringExtra(INFO_TEXT);
-        if (!(extraInfoText == null || extraInfoText.isEmpty())) {
-            infoText.setText(extraButtonText);
+        int extraInfoText = intent.getIntExtra(INFO_TEXT, 0);
+        if (extraInfoText != 0) {
+            infoText.setText(extraInfoText);
         }
 
         //Listener an das Textfeld hängen, sodass der Button deaktiviert wird,
@@ -79,7 +90,7 @@ public class InputActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(s.toString().trim().length()==0){
+                if (s.toString().trim().length() == 0) {
                     button.setEnabled(false);
                 } else {
                     button.setEnabled(true);
@@ -103,9 +114,13 @@ public class InputActivity extends Activity {
         }
     }
 
+    /**
+     * Beendet die Activity und gibt den Wert vom Textfeld an die aufrufende Activity zurück.
+     * @param view .
+     */
     public void bSaveClicked(View view) {
-        intent.putExtra(INPUT_RESULT, inputField.getText().toString());
-        setResult(REQUEST_CODE, intent);
+        intent.putExtra(INTENT_RESULT, inputField.getText().toString());
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

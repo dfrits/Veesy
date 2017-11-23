@@ -17,7 +17,6 @@ import de.veesy.R;
  * veesy.de
  * hs-augsburg
  */
-//TODO Klasse generisch machen, sodass sie individuell für BT-Device und Contact verwendet werden kann
 public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.MetaDataViewHolder> {
     private List<AdapterObject> data;
     private final ListItemCallback callback;
@@ -31,7 +30,7 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
         notifyDataSetChanged();
     }
 
-    public void clear(){
+    public void clear() {
         this.data.clear();
         notifyDataSetChanged();
     }
@@ -58,6 +57,7 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
     public int getItemCount() {
         return data == null ? 0 : data.size();
     }
+
     public class MetaDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
         private String item;

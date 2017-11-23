@@ -2,13 +2,13 @@ package de.veesy.contacts;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +17,7 @@ import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.RoundListAdapter;
 import de.veesy.listview_util.ScrollingLayoutCallback;
+import de.veesy.util.Util;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -30,14 +31,10 @@ public class ContactsActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contacts);
+        setContentView(R.layout.contacts_list_view);
 
         initListView();
-        adapter.setData(getData());
-    }
-
-    private List<AdapterObject> getData() {
-        return null;
+        setData();
     }
 
     private void initListView() {
@@ -56,41 +53,34 @@ public class ContactsActivity extends Activity {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Holt die aktuellen Kontakte vom Manager und zeigt diese an.
+     */
+    private void setData() {
+        List<Contact> contacts = contactsManager.getContacts();
+        List<AdapterObject> list = new ArrayList<>();
+        //TODO Bild vom Kontakt oder neutraleres DummyBild anzeigen
+        Drawable drawable = getResources().getDrawable(R.drawable.dummypicture, null);
+
+        contacts = contacts.isEmpty() ? contactsManager.getdummydata() : contacts; //TODO einfach nichts anzeigen dann?
+        for (Contact contact : contacts) {
+            String name = contact.getVorname() + " " + contact.getNachname();
+            list.add(new AdapterObject(name, drawable));
+        }
+
+        adapter.setData(list);
+    }
+
+    /**
+     * Startet die ViewAct, um denn Kontakt anzuzeigen.
+     * @param position Position in der Liste
+     */
     private void onListItemClick(final int position) {
         final Context context = this;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(context,
-                        "Clicked on " + contactsManager.getdummydata().get(position),
-                        Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
-        contactsManager.showContact(this, position);
-    }
-
-    /**
-     * Speichert einen Kontakt ab.
-     * @param contact Kontakt
-     */
-    private void saveContact(Contact contact) {
-
-    }
-
-    /**
-     * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
-     * @return Liste mit allen fremden Kontakten
-     */
-    private List<Contact> readContacts() {
-        return new ArrayList<>();
-    }
-
-    /**
-     * Löscht den Kontakt.
-     */
-    private void deleteContact(File file) {
-
+        Util.showToast(this,
+                "Clicked on " + contactsManager.getdummydata().get(position),
+                Toast.LENGTH_LONG);
+        //contactsManager.showContact(this, position);
     }
 
     public void bSettingsClicked(View view) {

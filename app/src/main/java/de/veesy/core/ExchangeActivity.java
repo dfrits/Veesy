@@ -107,8 +107,8 @@ public class ExchangeActivity extends Activity implements Observer {
             case MESSAGE.CONNECTED:
 
                 System.out.println("Trying to send a contact");
-                connectionManager.btSendData(new Contact("Maddl", "Huawa", "0190666666"));
-
+                connectionManager.btSendData(new Contact("Maddl", "Huawa",
+                        "0190666666", null, null));
                 break;
             case MESSAGE.DISCONNECTING:
                 break;
