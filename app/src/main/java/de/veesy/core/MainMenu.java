@@ -18,6 +18,7 @@ import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
 import de.veesy.contacts.ContactsActivity;
 import de.veesy.settings.SettingsActivity;
+import de.veesy.util.Util;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -25,13 +26,7 @@ import de.veesy.settings.SettingsActivity;
  * hs-augsburg
  */
 public class MainMenu extends Activity implements Observer {
-    // Counter für das Beenden der App
-    private static int counter = 0;
-    ConnectionManager cm;
-    CountDownTimer countDownTimer;
-
-    private float x1, x2;
-    static final int MIN_DISTANCE = 150;
+    private ConnectionManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +34,7 @@ public class MainMenu extends Activity implements Observer {
         setContentView(R.layout.main_menu);
     }
 
-    protected void onStart(){
+    protected void onStart() {
         System.out.println("onStart called");
         initConnectionManager();
         super.onStart();
@@ -54,23 +49,19 @@ public class MainMenu extends Activity implements Observer {
 
     /**
      * Aktion des Share-Buttons.
+     *
      * @param view .
      */
     public void bShareClicked(View view) {
-        if(cm.checkName()) startActivity(new Intent(this, ShareActivity.class));
-        else{
-            final Context context = this;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, "try again in 2 seconds", Toast.LENGTH_SHORT).show();
-                }
-            });
+        if (cm.checkName()) startActivity(new Intent(this, ShareActivity.class));
+        else {
+            Util.showToast(this, "try again in 2 second", Toast.LENGTH_SHORT);
         }
     }
 
     /**
      * Aktion des Contacts-Buttons.
+     *
      * @param view .
      */
     public void bContactsClicked(View view) {
@@ -79,6 +70,7 @@ public class MainMenu extends Activity implements Observer {
 
     /**
      * Aktion des Settings-Buttons.
+     *
      * @param view .
      */
     public void bSettingsClicked(View view) {
@@ -90,70 +82,43 @@ public class MainMenu extends Activity implements Observer {
      * Therefore, setBackOriginalName() is called which
      * will notify this observer with MESSAGE.READY_TO_SHUTDOWN
      * in update() the app calls finish()
+     *
      * @param view
      */
     public void bShutdownClicked(View view) {
-        final Context context = this;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(context, "Shutdown", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Util.showToast(this, "Shutdown", Toast.LENGTH_SHORT);
+        // We do this to clean up
+        cm.unpairAllDevices();
         cm.setBackOriginalDeviceName();
     }
 
     @Override
     protected void onPause() {
-        counter = 0;
         super.onPause();
     }
 
     protected void onStop() {
         if (cm != null) cm.deleteObserver(this);
-        System.out.println("onStop called");
         super.onStop();
     }
 
 
-
     @Override
     protected void onDestroy() {
-        System.out.println("onDestroy called");
+        // We need to do this because somehow it happens that the connection manager is still alive
+        cm.finish();
         super.onDestroy();
     }
 
-    /**
-     * Diese Methode soll "Swipe rechts" detektieren.
-     * Funktioniert so lala.
-     * @param event .
-     * @return .
-     */
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                x1 = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                x2 = event.getX();
-                float deltaX = x2 - x1;
-                if (Math.abs(deltaX) > MIN_DISTANCE) {
-                    System.out.println("Swipe right detected...");
-                }
-                break;
+    public void update(Observable observable, Object o) {
+        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
+            finish();
         }
-        return super.onTouchEvent(event);
     }
 
-
-    /**
-     * @param keyCode .
-     * @param event   .
-     * @return Immer true
-     */
-    @Override
+/*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
             counter++;
@@ -191,12 +156,5 @@ public class MainMenu extends Activity implements Observer {
 
         }
         return true;
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
-            finish();
-        }
-    }
+    }*/
 }
