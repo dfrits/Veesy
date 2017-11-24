@@ -2,6 +2,7 @@ package de.veesy.contacts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -108,8 +109,12 @@ public class ContactsManager {
      * @return Kontakobjekt mit hinterlegten Daten
      * @throws IOException .
      */
-    public Contact readContact(File path) throws IOException {
+    public Contact readContact(@NonNull File path) throws IOException {
         VCard vCard = Ezvcard.parse(path).first();
+        if (vCard == null) {
+            throw new IOException("No such Card");
+        }
+
         StructuredName structuredName = vCard.getStructuredName();
         String vorname = structuredName.getGiven();
         String nachname = structuredName.getFamily();
@@ -136,11 +141,15 @@ public class ContactsManager {
         String filename = FILE_NAME_OWN + FILE_ENDING;
         File file = new File(cardDir, filename);
 
-        if (file.exists()) {
-            return readContact(file);
-        } else {
+        Contact contact = new Contact("", "", "", null, file);
+        if (!file.exists()) {
             if (!file.createNewFile()) throw new IOException("Can't create new file");
-            return new Contact("", "", "", null, file);
+            return contact;
+        }
+        try {
+            return readContact(file);
+        } catch (IOException e) {
+            return contact;
         }
     }
 }
