@@ -44,7 +44,7 @@ public class ConnectionManager extends Observable {
 
     //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
-    private static String originalDeviceName = "Huawei Watch 2 1413";
+    private static String originalDeviceName = "Huawei Watch 2 1941";
 
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
@@ -83,13 +83,12 @@ public class ConnectionManager extends Observable {
 
     // Singleton Pattern to ensure only one instance of ConnectionManager is used
     private ConnectionManager() {
+        Log.d(TAG, "Initializing ConnectionManager");
         if (!initBluetooth()) {
             Log.e(TAG, "bluetooth not supported");
             return;
         }
         renameDevice(btName_prefix + btName_splitter + btName_device, false);
-
-        Log.d(TAG, "Initializing ConnectionManager");
         availableVeesyBTDevices = new ArrayList<>();
         originallyBondedBTDevices = new ArrayList<>();
         originallyBondedBTDevices.addAll(btAdapter.getBondedDevices());
@@ -97,6 +96,7 @@ public class ConnectionManager extends Observable {
     }
 
     public static ConnectionManager instance() {
+        if (unique != null) Log.d(TAG, "ConnectionManager is already initialized");
         if (unique == null) {
             unique = new ConnectionManager();
         }
@@ -105,6 +105,7 @@ public class ConnectionManager extends Observable {
 
     public void finish() {
         unique = null;
+        Log.d(TAG, "Destroying ConnectionManager and executing shutdown");
     }
 
 

@@ -26,7 +26,7 @@ import de.veesy.util.Util;
  * hs-augsburg
  */
 public class MainMenu extends Activity implements Observer {
-    private ConnectionManager cm;
+    private ConnectionManager cm = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
