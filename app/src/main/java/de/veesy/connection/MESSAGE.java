@@ -30,6 +30,11 @@ public final class MESSAGE {
     public static final int CONNECTED = 6001;
     public static final int DISCONNECTING = 6002;
     public static final int DISCONNECTED = 6003;
+    public static final int RESPOND_AS_CLIENT = 6004;
+
+    public static final int DATA_TRANSMISSION_SUCCESSFUL = 7000;
+    public static final int DATA_TRANSMISSION_FAILED = 7001;
+
 
 
 }

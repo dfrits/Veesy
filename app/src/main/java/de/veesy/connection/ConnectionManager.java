@@ -27,7 +27,6 @@ import java.util.UUID;
 import de.veesy.contacts.Contact;
 import de.veesy.util.Constants;
 
-import static android.bluetooth.BluetoothAdapter.STATE_CONNECTED;
 
 /**
  * Created by Martin on 25.10.2017.
@@ -39,8 +38,8 @@ public class ConnectionManager extends Observable {
     //region Class members
 
     private static final String TAG = "ConnectionManager";
-
     private static final UUID VEESY_UUID = UUID.fromString("54630abc-3b78-4cf2-9f0d-0b844924cf36");
+
 
     //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
@@ -49,7 +48,7 @@ public class ConnectionManager extends Observable {
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
 
-    private static boolean btClientMode = false;
+    private static boolean btClientMode_flag = false;
 
     private static String btName_device = "no name";
     private static String btName_prefix = "[veesy]";
@@ -69,13 +68,19 @@ public class ConnectionManager extends Observable {
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> originallyBondedBTDevices;
 
-    private IntentFilter actionFoundFilter;
-    private IntentFilter actionBondStateFilter;
-    private IntentFilter actionScanModeChangedFilter;
-    private IntentFilter actionDiscoveryFinishedFilter;
-    private IntentFilter actionDiscoveryStartedFilter;
+    private IntentFilter actionFoundFilter, actionBondStateFilter, actionScanModeChangedFilter, actionDiscoveryFinishedFilter, actionDiscoveryStartedFilter, actionConnectionStateFilter;
 
     private boolean connectionEstablished = false;
+
+    private boolean btConnectorThread_runningFlag = false;
+
+
+    private Contact receivedContact;
+    private Contact sendContact = new Contact("sagt", "1941",
+            "sers", null, null);
+
+
+
 
     //endregion
 
@@ -125,7 +130,6 @@ public class ConnectionManager extends Observable {
         //btName_device = originalDeviceName;
         btName_device = btAdapter.getName();
         Log.d(TAG, "Bluetooth initialized");
-        Log.d(TAG, "Bluetooth name is " + btName_device);
         return true;
     }
 
@@ -147,9 +151,9 @@ public class ConnectionManager extends Observable {
      */
     private void renameDevice(String name, boolean setBackOriginalName) {
 
-        Log.d(TAG, "Current name is " + btAdapter.getName());
-        Log.d(TAG, "Setting back orignal name " + setBackOriginalName);
-        Log.d(TAG, "Trying to rename device to " + name);
+        Log.d(TAG, "Current device name is:      " + btAdapter.getName());
+        Log.d(TAG, "Setting back orignal name:   " + setBackOriginalName);
+        Log.d(TAG, "Trying to rename device to:  " + name);
 
         if (!isVeesyDevice(btAdapter.getName()) || setBackOriginalName) {
             if (btAdapter != null) {
@@ -167,7 +171,7 @@ public class ConnectionManager extends Observable {
                         if (!btNameCorrect_flag) {
                             btAdapter.setName(newName);
                             if (btAdapter.getName().equals(newName)) {
-                                Log.d(TAG, "Set BT name to: " + btAdapter.getName());
+                                Log.d(TAG, "Renaming bluetooth device . . . done: " + btAdapter.getName());
                                 btNameCorrect_flag = true;
                                 setChanged();
                                 if (!setBackNameAndShutdown)
@@ -336,7 +340,7 @@ public class ConnectionManager extends Observable {
         //Achtung hier muss man den [veesy] zusatz wieder dazu tun
         if (!isVeesyDevice(deviceName)) deviceName = btName_prefix + btName_splitter + deviceName;
 
-        Log.d(TAG, "btConnectTo: " + deviceName);
+        Log.d(TAG, "Starting connection attempt to: " + deviceName + " from: " + btAdapter.getName());
 
         boolean b = false;
 
@@ -348,13 +352,13 @@ public class ConnectionManager extends Observable {
                     b = false;
                     break;
                 } else {
-                    btStartConnection();
-
-                    // Damit finishe ich die ShareAct
-                    // fall device nicht gepairt ist, kann man mit rechts swipe eins zurück
+                    Log.d(TAG, "Devices are already paired");
                     setChanged();
                     notifyObservers(MESSAGE.ALREADY_PAIRED);
                     b = true;
+                    btStartConnection();
+                    // Damit finishe ich die ShareAct
+                    // fall device nicht gepairt ist, kann man mit rechts swipe eins zurück
                     break;
                 }
             }
@@ -374,9 +378,15 @@ public class ConnectionManager extends Observable {
 
 
     private void btStartConnection() {
-        Log.d(TAG, "Starting Connection Attempt with: " + btConnectedDevice.getName());
-        btConnectorThread = new BluetoothConnectorThread(btConnectedDevice, VEESY_UUID);
-        btConnectorThread.start();
+        /**
+         * wird tatsächlich 2 mal aufgerufen, da BOND_BONDED vom broadcast Receiver 2x empfangen wird
+         */
+
+        if (!btConnectorThread_runningFlag) {
+            Log.d(TAG, "Starting Connection Attempt with: " + btConnectedDevice.getName());
+            btConnectorThread = new BluetoothConnectorThread(btConnectedDevice, VEESY_UUID);
+            btConnectorThread.start();
+        }
     }
 
 
@@ -411,18 +421,17 @@ public class ConnectionManager extends Observable {
                     Log.d(TAG, "BluetoothAcceptorThread: ServerSocket started.....");
                     btSocket = btServerSocket.accept();
                     Log.d(TAG, "BluetoothAcceptorThread: ServerSocket accepted connection");
-                    btClientMode = true;
+                    btClientMode_flag = true;
+                    Log.d(TAG, "Device is acting as client");
                 } catch (IOException e) {
                     Log.e(TAG, "BluetoothAcceptorThread: ServerSocket's accept() method failed", e);
                     break;
                 }
 
                 if (btSocket != null) {
-
                     // A connection was accepted. Perform work associated with
                     // the connection in a separate thread.
                     btManageConnection(btSocket, btConnectedDevice);
-
                     closeServerSocket();
                     break;
                 }
@@ -455,6 +464,7 @@ public class ConnectionManager extends Observable {
             //TODO quatsch??
             btConnectedDevice = device;
             btConnectedDeviceUUID = uuid;
+            btConnectorThread_runningFlag = true;
         }
 
         public void run() {
@@ -474,9 +484,8 @@ public class ConnectionManager extends Observable {
             try {
                 btSocket.connect();
                 Log.d(TAG, "BluetoothConnectorThread: Connection established !!!");
-
                 btManageConnection(btSocket, btConnectedDevice);
-
+                Log.d(TAG, "Device is acting as Server");
             } catch (IOException e) {
                 closeBluetoothSocket();
                 Log.d(TAG, "BluetoothConnectorThread: Could no connect to UUID: " + VEESY_UUID);
@@ -506,6 +515,7 @@ public class ConnectionManager extends Observable {
         // if any thread is trying to establish a connection, kill it
         if (btConnectorThread != null) {
             btConnectorThread.closeBluetoothSocket();
+            btConnectorThread_runningFlag = false;
             btConnectorThread = null;
         }
         if (btAcceptorThread == null) {
@@ -518,13 +528,9 @@ public class ConnectionManager extends Observable {
 
     private void btManageConnection(BluetoothSocket btSocket, BluetoothDevice btDevice) {
         Log.d(TAG, "Starting connection . . . ");
-
         btConnectedThread = new BluetoothConnectedThread(btSocket);
         btConnectedThread.start();
-
-        setChanged();
-        notifyObservers(MESSAGE.CONNECTED);
-
+        connectionEstablished = true;
     }
 
     //endregion
@@ -533,47 +539,46 @@ public class ConnectionManager extends Observable {
 
     private class BluetoothConnectedThread extends Thread {
         private final BluetoothSocket btSocket;
-        //private final InputStream btInStream;
-        //private final OutputStream btOutStream;
-
         private final ObjectInputStream btObjectStream_in;
         private final ObjectOutputStream btObjectStream_out;
 
-
         //initializing input and output stream
-
         public BluetoothConnectedThread(BluetoothSocket socket) {
             Log.d(TAG, "ConnectedThread started");
             btSocket = socket;
-            //InputStream tmp_in = null;
-            //OutputStream tmp_out = null;
             ObjectInputStream tmp_in = null;
             ObjectOutputStream tmp_out = null;
-
             try {
                 tmp_out = new ObjectOutputStream(btSocket.getOutputStream());
                 tmp_out.flush();
                 tmp_in = new ObjectInputStream(btSocket.getInputStream());
             } catch (IOException e) {
-
                 Log.e(TAG, "Object stream init error");
                 e.printStackTrace();
             }
-
-            //btInStream = tmp_in;
-            //btOutStream = tmp_out;
-
             btObjectStream_in = tmp_in;
             btObjectStream_out = tmp_out;
         }
 
         public void run() {
-
+            setChanged();
+            notifyObservers(MESSAGE.CONNECTED);
             Log.d(TAG, "ConnectedThread: waiting for InputStream: ");
             while (true) {
                 try {
-                    Contact contact = (Contact) btObjectStream_in.readObject();
-                    Log.d(TAG, "ConnectedThread: InputStream: " + contact.toString());
+                    receivedContact = (Contact) btObjectStream_in.readObject();
+
+                    if(btClientMode_flag){
+                        setChanged();
+                        notifyObservers(MESSAGE.RESPOND_AS_CLIENT);
+                    }
+
+                    else {
+                        setChanged();
+                        notifyObservers(MESSAGE.DATA_TRANSMISSION_SUCCESSFUL);
+                    }
+
+                    Log.d(TAG, "ConnectedThread: InputStream: " + receivedContact.toString());
                 } catch (IOException e) {
                     Log.e(TAG, "ConnectedThread: IO Error while reading InputStream", e);
                     break;
@@ -583,33 +588,18 @@ public class ConnectionManager extends Observable {
                     break;
                 }
             }
-
-
         }
-
-/* Debug
-        public void write(byte[] bytes) {
-            Log.d(TAG, "ConnectedThread: Writing to outputStream");
-            try {
-                btOutStream.write(bytes);
-            } catch (IOException e) {
-                Log.e(TAG, "ConnectedThread: Error while writing to OutputStream", e);
-            }
-        }
-*/
 
         public void write(Contact contact) {
             Log.d(TAG, "ConnectedThread: Writing to outputStream");
             try {
-                //btOutStream.write(bytes);
-
                 btObjectStream_out.writeObject(contact);
             } catch (IOException e) {
                 Log.e(TAG, "ConnectedThread: Error while writing to OutputStream", e);
             }
         }
 
-        public void btCloseConnection() {
+        public void closeConnection() {
             try {
                 btSocket.close();
                 Log.d(TAG, "ConnectedThread: Socket closed");
@@ -619,29 +609,25 @@ public class ConnectionManager extends Observable {
         }
     }
 
+    public void btCloseConnection() {
+        btConnectedThread.closeConnection();
+    }
 
-    private static Object obj = new Object();
+    public void btSendData(Contact contact) {
+        btConnectedThread.write(contact);
+    }
 
-    private void write(Contact contact) {
+    public void btSendData(){
+        btConnectedThread.write(sendContact);
+    }
+
+    /*    private static Object obj = new Object();
+
+    private void btSendData(Contact contact) {
 
         btConnectedThread.write(contact);
 
-//        BluetoothConnectedThread r;
-//        // Synchronize a copy of the ConnectedThread
-//        synchronized (obj) {
-//            if (!connectionEstablished) {
-//                return;
-//            }
-//            r = btConnectedThread;
-//        }
-//        // Perform the write unsynchronized
-//        r.write(contact);
-    }
-
-/* Debug
-    private void write(byte[] out) {
-
-        BluetoothConnectedThread r;
+      *//*  BluetoothConnectedThread r;
         // Synchronize a copy of the ConnectedThread
         synchronized (obj) {
             if (!connectionEstablished) {
@@ -650,25 +636,8 @@ public class ConnectionManager extends Observable {
             r = btConnectedThread;
         }
         // Perform the write unsynchronized
-        r.write(out);
-    }
-*/
-
-    public void btSendData(Contact contact) {
-        String data = contact.toString() + " (gesendet von: " + btName_device + ")";
-        write(contact);
-        Log.d(TAG, "sending...:" + data);
-    }
-
-/* Debug
-    public void btSendData(String data) {
-        data = data + " (gesendet von: " + btName_device + ")";
-        byte[] b = data.getBytes(Charset.defaultCharset());
-        write(b);
-        Log.d(TAG, "sending...:" +data);
-    }
-*/
-
+        r.write(contact);*//*
+    }*/
 
     //endregion
 
@@ -683,6 +652,17 @@ public class ConnectionManager extends Observable {
         return list;
     }
 
+    public boolean btIsInClientMode(){
+        return btClientMode_flag;
+    }
+
+    public Contact getReceivedContact(){
+        return receivedContact;
+    }
+
+    public void setSendContact(Contact contact){
+        this.sendContact = contact;
+    }
 
     /**
      * This method is required for all devices running API23+
@@ -732,8 +712,8 @@ public class ConnectionManager extends Observable {
         Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
-
-                if (!originallyBondedBTDevices.contains(device)) {
+                //if (!originallyBondedBTDevices.contains(device)) {
+                if (!device.getName().equals("z3")) {
                     try {
                         Method m = device.getClass()
                                 .getMethod("removeBond", (Class[]) null);
@@ -758,6 +738,8 @@ public class ConnectionManager extends Observable {
         actionScanModeChangedFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         actionDiscoveryFinishedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         actionDiscoveryStartedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        actionConnectionStateFilter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        actionConnectionStateFilter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
     }
 
 
@@ -767,6 +749,7 @@ public class ConnectionManager extends Observable {
         activity.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
+        activity.registerReceiver(btReceiver_ACTION_CONNECTION_STATE, actionConnectionStateFilter);
     }
 
     public void unregisterReceiver(Activity activity) {
@@ -779,6 +762,7 @@ public class ConnectionManager extends Observable {
         activity.unregisterReceiver(btReceiver_SCAN_MODE);
         activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_FINISHED);
         activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_STARTED);
+        activity.unregisterReceiver(btReceiver_ACTION_CONNECTION_STATE);
     }
 
     private final BroadcastReceiver btReceiver_ACTION_DISCOVERY_STARTED = new BroadcastReceiver() {
@@ -846,9 +830,7 @@ public class ConnectionManager extends Observable {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-
             Log.d(TAG, "btReceiver_BOND_STATE onReceive: " + action);
-
             if (action != null) {
                 if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -886,13 +868,9 @@ public class ConnectionManager extends Observable {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-
-
             if (action != null && action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
-
                 int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
                 int msg = -1;
-
                 switch (mode) {
                     //Device is in Discoverable Mode
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
@@ -907,30 +885,47 @@ public class ConnectionManager extends Observable {
                         Log.d(TAG, "BroadcastReceiver: Discoverability Disabled. Not able to receive connections.");
                         msg = MESSAGE.DISCOVERABILITY_OFF;
                         break;
+                }
+                setChanged();
+                notifyObservers(msg);
 
-                    //TODO funktioniert nicht
+            }
+        }
+    };
+    //TODO funktioniert aus irgendwelchen gründen nicht
+    private final BroadcastReceiver btReceiver_ACTION_CONNECTION_STATE = new BroadcastReceiver() {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            Log.d(TAG, "BroadcastReceiver Connection-STATE: " + action);
+
+            if (action != null && action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
+               /* int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
+                int msg = -1;
+                switch (mode) {
                     case BluetoothAdapter.STATE_CONNECTING:
-                        Log.d(TAG, "BroadcastReceiver: Connecting....");
+                        Log.d(TAG, "BroadcastReceiver STATE: Connecting....");
                         msg = MESSAGE.CONNECTING;
                         break;
                     case STATE_CONNECTED:
-                        Log.d(TAG, "BroadcastReceiver: Connected.");
+                        Log.d(TAG, "BroadcastReceiver STATE: Connected.");
                         connectionEstablished = true;
                         msg = MESSAGE.CONNECTED;
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
+                        Log.d(TAG, "BroadcastReceiver STATE: Disconnecting....");
                         msg = MESSAGE.DISCONNECTING;
                         connectionEstablished = false;
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
+                        Log.d(TAG, "BroadcastReceiver STATE: Disconnected.");
                         msg = MESSAGE.DISCONNECTED;
                         connectionEstablished = false;
                         break;
-
                 }
                 setChanged();
-                notifyObservers(msg);
+                notifyObservers(msg);*/
 
             }
         }

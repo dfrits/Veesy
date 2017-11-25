@@ -15,7 +15,6 @@ import java.util.Observer;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
-import de.veesy.contacts.Contact;
 
 import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
 
@@ -38,15 +37,16 @@ public class ExchangeActivity extends Activity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initConnectionManager();
+
+
         already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
         if (already_paired_flag) initExchangeActivity_paired();
         else initExchangeActivity_pairing();
 
-        initConnectionManager();
 
         //TODO fehler handling
         // was passiert wenn pairing kaputt geht?
-
     }
 
     private void initConnectionManager() {
@@ -68,7 +68,6 @@ public class ExchangeActivity extends Activity implements Observer {
         setContentView(R.layout.exchange_pairing);
         initPairingAnimation();
     }
-
 
     private void initExchangeAnimation() {
         ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
@@ -96,18 +95,23 @@ public class ExchangeActivity extends Activity implements Observer {
             case MESSAGE.NOT_PAIRED:
                 initExchangeActivity_not_paired();
                 break;
-            case MESSAGE.CONNECTING:
-
-                break;
             case MESSAGE.CONNECTED:
-                System.out.println("Trying to send a contact");
-                connectionManager.btSendData(new Contact("sagt", "1413",
-                        "servus", null, null));
+                System.out.println("MESSAGE.CONNECTED in Exchange Act");
+                if (!connectionManager.btIsInClientMode()) {
+                    connectionManager.btSendData();
+                }
                 break;
-            case MESSAGE.DISCONNECTING:
+            case MESSAGE.RESPOND_AS_CLIENT:
+                System.out.println("MESSAGE.RESPOND in Exchange Act");
+                connectionManager.btSendData();
+                startFeedbackActivity(true);
                 break;
-            case MESSAGE.DISCONNECTED:
+            case MESSAGE.DATA_TRANSMISSION_SUCCESSFUL:
+                System.out.println("MESSAGE.DATA_SUCCESS in Exchange Act");
+                connectionManager.btCloseConnection();
+                startFeedbackActivity(true);
                 break;
+
         }
     }
 
@@ -123,13 +127,14 @@ public class ExchangeActivity extends Activity implements Observer {
         if (connectionManager != null) {
             connectionManager.unregisterReceiver(this);
             connectionManager.deleteObserver(this);
+            connectionManager.btCloseConnection();
         }
         super.onDestroy();
     }
 
     private void startFeedbackActivity(boolean success) {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
-        feedback_intent.putExtra(SUCCESS_FLAG, already_paired_flag);
+        feedback_intent.putExtra(SUCCESS_FLAG, success);
         startActivity(feedback_intent);
         finish();
     }

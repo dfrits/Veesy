@@ -50,6 +50,7 @@ public class FeedbackActivity extends Activity {
      * @param view .
      */
     public void bDetailsClicked(View view){
+        //TODO Daniel, Details der empfangenen visitenkarte anzeigen
         //startActivity details
         finish();
     }
