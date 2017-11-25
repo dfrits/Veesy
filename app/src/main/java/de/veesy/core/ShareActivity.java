@@ -191,6 +191,11 @@ public class ShareActivity extends Activity implements Observer {
                 //Toast.makeText(context, "Connecting with " + deviceName, Toast.LENGTH_SHORT).show();
                 onListItemClick(position, value);
             }
+
+            @Override
+            public void onItemLongClicked(int position, String value) {
+                return;
+            }
         });
         recyclerView.setLayoutManager(
                 new WearableLinearLayoutManager(this, scrollingLayoutCallback));

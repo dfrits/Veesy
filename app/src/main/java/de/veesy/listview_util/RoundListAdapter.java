@@ -58,7 +58,8 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
         return data == null ? 0 : data.size();
     }
 
-    public class MetaDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MetaDataViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         private final TextView textView;
         private String item;
         private int position;
@@ -67,11 +68,18 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
             super(itemView);
             textView = itemView.findViewById(R.id.lVDevices_row);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             callback.onItemClicked(position, item);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            callback.onItemLongClicked(position, item);
+            return true;
         }
 
         void bind(String item, int position, Drawable image) {

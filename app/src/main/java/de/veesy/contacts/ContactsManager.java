@@ -77,8 +77,13 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     void showContact(Context context, int position) {
-        context.startActivity(ContactViewActivity.getIntent(context, contacts.get(position),
-                false));
+        if (contacts != null && !contacts.isEmpty()) {
+            context.startActivity(ContactViewActivity.getIntent(context, contacts.get(position),
+                    false));
+        } else {
+            context.startActivity(ContactViewActivity.getIntent(context, getdummydata().get(position),
+                    false));
+        }
     }
 
     /**
@@ -123,9 +128,11 @@ public class ContactsManager {
 
     /**
      * Löscht den Kontakt.
+     * @param position Position in der Liste
      */
-    public boolean deleteContact(File file) {
-        return false;
+    public boolean deleteContact(int position) {
+        Contact contact = contacts.get(position);
+        return contact.getContactPath() != null && contact.getContactPath().delete();
     }
 
     public Contact getOwnContact(Context context) throws IOException {

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.veesy.R;
+import de.veesy.dialog.QuestionDialog;
 import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.RoundListAdapter;
@@ -38,14 +39,38 @@ public class ContactsActivity extends Activity {
     }
 
     private void initListView() {
-        WearableRecyclerView recyclerView = findViewById(R.id.lVContacts);
+        final WearableRecyclerView recyclerView = findViewById(R.id.lVContacts);
         recyclerView.setEdgeItemsCenteringEnabled(true);
         final ScrollingLayoutCallback scrollingLayoutCallback =
                 new ScrollingLayoutCallback();
+        final Activity activity = this;
         adapter = new RoundListAdapter(new ListItemCallback() {
             @Override
             public void onItemClicked(int position, String value) {
                 onListItemClick(position);
+            }
+
+            @Override
+            public void onItemLongClicked(final int position, String value) {
+                String message = value + " wirklich löschen?";
+                final QuestionDialog dialog = QuestionDialog.newInstance(message,
+                        new QuestionDialog.QuestionDialogCallback() {
+                            @Override
+                            public void positiveButtonClicked() {
+                                if (contactsManager.deleteContact(position)) {
+                                    Util.showToast(activity, "Gelöscht", Toast.LENGTH_SHORT);
+                                    setData();
+                                } else {
+                                    Util.showToast(activity, "Nicht gelöscht", Toast.LENGTH_SHORT);
+                                }
+                            }
+
+                            @Override
+                            public void negativeButtonClicked() {
+
+                            }
+                        });
+                dialog.show();
             }
         });
         recyclerView.setLayoutManager(
@@ -80,7 +105,7 @@ public class ContactsActivity extends Activity {
         Util.showToast(this,
                 "Clicked on " + contactsManager.getdummydata().get(position),
                 Toast.LENGTH_LONG);
-        //contactsManager.showContact(this, position);
+        contactsManager.showContact(this, position);
     }
 
     public void bSettingsClicked(View view) {

@@ -8,4 +8,6 @@ package de.veesy.listview_util;
 
 public interface ListItemCallback {
     void onItemClicked(int position, String value);
+
+    void onItemLongClicked(int position, String value);
 }

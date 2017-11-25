@@ -24,10 +24,10 @@ import de.veesy.R;
  * Reagieren kann man dann, indem man das Interface implementiert.
  */
 
-@Deprecated
 public class QuestionDialog extends DialogFragment implements View.OnClickListener {
     private static String message;
     private static QuestionDialogCallback callback;
+    private static final String TAG = "QuestionDialog";
 
     public interface QuestionDialogCallback {
         void positiveButtonClicked();
@@ -40,8 +40,7 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
      * @param message Nachricht, die angezeigt werden soll
      * @return Neuen AlertDialog
      */
-
-    static QuestionDialog newInstance(String message, QuestionDialogCallback callback) {
+    public static QuestionDialog newInstance(String message, QuestionDialogCallback callback) {
         QuestionDialog.message = message;
         QuestionDialog.callback = callback;
         return new QuestionDialog();
@@ -69,5 +68,9 @@ public class QuestionDialog extends DialogFragment implements View.OnClickListen
         button = view.findViewById(R.id.button_no);
         button.setOnClickListener(this);
         return view;
+    }
+
+    public void show() {
+        show(getFragmentManager(), TAG);
     }
 }
