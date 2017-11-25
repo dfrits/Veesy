@@ -52,6 +52,7 @@ public class ShareActivity extends Activity implements Observer {
     private static int visibility_time = 20;
 
     private boolean exchangeActivityAlreadyStarted = false;
+    private boolean alreadyPaired_flag = false;
 
     static {
         DUMMY_DATA = new ArrayList<>();
@@ -149,6 +150,7 @@ public class ShareActivity extends Activity implements Observer {
                 break;
             case MESSAGE.ALREADY_PAIRED:
                 startExchangeActivity_flag = true;
+                alreadyPaired_flag = true;
                 break;
             default:
                 break;
@@ -257,6 +259,9 @@ public class ShareActivity extends Activity implements Observer {
         exchangeActivityAlreadyStarted = true;
         finish();
         Intent intent = new Intent(this, ExchangeActivity.class);
+        if(alreadyPaired_flag){
+            intent.putExtra("ALREADY_PAIRED", alreadyPaired_flag);
+        }
         startActivity(intent);
     }
 

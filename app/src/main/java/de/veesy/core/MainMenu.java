@@ -88,6 +88,7 @@ public class MainMenu extends Activity implements Observer {
     public void bShutdownClicked(View view) {
         Util.showToast(this, "Shutdown", Toast.LENGTH_SHORT);
         // We do this to clean up
+        //cm.btCloseConnection();
         cm.unpairAllDevices();
         cm.setBackOriginalDeviceName();
     }

@@ -37,21 +37,16 @@ public class ExchangeActivity extends Activity implements Observer {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
+        if (already_paired_flag) initExchangeActivity_paired();
+        else initExchangeActivity_pairing();
+
         initConnectionManager();
 
         //TODO fehler handling
         // was passiert wenn pairing kaputt geht?
-        // aktuell wird der not_paired screen aufgerufen
-        // allerdings nur deswegen weil da unten der debuggin kram steht
 
-
-        //debug kram
-        already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
-        if (already_paired_flag) {
-            initExchangeActivity_paired();
-        } else {
-            initExchangeActivity_not_paired();
-        }
     }
 
     private void initConnectionManager() {
@@ -81,7 +76,7 @@ public class ExchangeActivity extends Activity implements Observer {
         exchangeAnimationView.startAnimation(exchange_animation);
     }
 
-    private void initPairingAnimation(){
+    private void initPairingAnimation() {
         ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
         pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
         pairingAnimationView.startAnimation(pairing_animation);
@@ -105,10 +100,9 @@ public class ExchangeActivity extends Activity implements Observer {
 
                 break;
             case MESSAGE.CONNECTED:
-
                 System.out.println("Trying to send a contact");
-                connectionManager.btSendData(new Contact("Maddl", "Huawa",
-                        "0190666666", null, null));
+                connectionManager.btSendData(new Contact("sagt", "1413",
+                        "servus", null, null));
                 break;
             case MESSAGE.DISCONNECTING:
                 break;
