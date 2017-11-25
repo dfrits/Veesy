@@ -1,7 +1,6 @@
 package de.veesy.contacts;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import java.io.File;
@@ -36,7 +35,6 @@ public class ContactsManager {
     private static final String FILE_ENDING = ".vcf";
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
-    public static final String INTENT_RESULT = "INTENT_RESULT";
 
     private ContactsManager() {
         updateContactList();

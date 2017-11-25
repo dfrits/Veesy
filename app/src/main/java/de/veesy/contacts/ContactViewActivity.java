@@ -17,8 +17,8 @@ import java.io.Serializable;
 import de.veesy.R;
 import de.veesy.settings.InputActivity;
 
-import static de.veesy.contacts.ContactsManager.INTENT_RESULT;
-import static de.veesy.settings.InputActivity.INPUT_ACTIVITY_REQUEST_CODE;
+import static de.veesy.util.Constants.INTENT_RESULT;
+import static de.veesy.util.Constants.INPUT_ACTIVITY_REQUEST_CODE;
 
 /**
  * Created by dfritsch on 18.11.2017.
@@ -29,7 +29,6 @@ import static de.veesy.settings.InputActivity.INPUT_ACTIVITY_REQUEST_CODE;
  */
 
 public class ContactViewActivity extends Activity {
-    public static final int SHOW_CONTACT_REQUEST_CODE = 1;
     private static final String IS_OWN_CARD = "IS_OWN_CARD";
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private boolean isOwnCard;

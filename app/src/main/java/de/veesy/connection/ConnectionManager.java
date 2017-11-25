@@ -12,16 +12,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -29,6 +25,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import de.veesy.contacts.Contact;
+import de.veesy.util.Constants;
 
 import static android.bluetooth.BluetoothAdapter.STATE_CONNECTED;
 
@@ -42,7 +39,6 @@ public class ConnectionManager extends Observable {
     //region Class members
 
     private static final String TAG = "ConnectionManager";
-    private static final String appName = "veesy";
 
     private static final UUID VEESY_UUID = UUID.fromString("54630abc-3b78-4cf2-9f0d-0b844924cf36");
 
@@ -571,7 +567,7 @@ public class ConnectionManager extends Observable {
             BluetoothServerSocket tmp = null;
             try {
                 // VEESY_UUID is the apps UUID string, also used by the client code.
-                tmp = btAdapter.listenUsingRfcommWithServiceRecord(appName, VEESY_UUID);
+                tmp = btAdapter.listenUsingRfcommWithServiceRecord(Constants.appName, VEESY_UUID);
                 Log.d(TAG, "BluetoothAcceptorThread: ServerSocket runing with UUID: " + VEESY_UUID);
             } catch (IOException e) {
                 Log.e(TAG, "BluetoothAcceptorThread: ServerSocket's listen() method failed", e);

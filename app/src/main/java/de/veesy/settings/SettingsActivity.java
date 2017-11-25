@@ -21,7 +21,7 @@ import de.veesy.contacts.ContactsManager;
 import de.veesy.listview_util.StraightListAdapter;
 import de.veesy.util.Util;
 
-import static de.veesy.contacts.ContactViewActivity.SHOW_CONTACT_REQUEST_CODE;
+import static de.veesy.util.Constants.SHOW_CONTACT_REQUEST_CODE;
 import static de.veesy.settings.ESettingItems.MY_CARD;
 
 /**

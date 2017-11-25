@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import de.veesy.R;
 
-import static de.veesy.contacts.ContactsManager.INTENT_RESULT;
+import static de.veesy.util.Constants.INTENT_RESULT;
 
 /**
  * Created by dfritsch on 21.11.2017.
@@ -39,10 +39,11 @@ import static de.veesy.contacts.ContactsManager.INTENT_RESULT;
 public class InputActivity extends Activity {
     public static final String INPUT_TYPE_NUMBER = "INPUT_TYPE_NUMBER";
     public static final String INPUT_TYPE_TEXT = "INPUT_TYPE_TEXT";
-    public static final int INPUT_ACTIVITY_REQUEST_CODE = 1;
+
     private static final String BUTTON_TEXT = "BUTTON_TEXT";
     private static final String INFO_TEXT = "INFO_TEXT";
     private static final String INPUT_TYPE = "INPUT_TYPE";
+
     private Intent intent;
     private EditText inputField;
     private Button button;
