@@ -51,6 +51,8 @@ public class ShareActivity extends Activity implements Observer {
 
     private static int visibility_time = 20;
 
+    private boolean exchangeActivityAlreadyStarted = false;
+
     static {
         DUMMY_DATA = new ArrayList<>();
         DUMMY_DATA.add("Martin Stadlmaier");
@@ -92,7 +94,7 @@ public class ShareActivity extends Activity implements Observer {
         startConnectionManager();
         setRefreshListener();
         //still good for testing
-        setList();
+        //setList();
     }
 
     //endregion
@@ -107,12 +109,13 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     private void startConnectionManager() {
-        connectionManager.btCheckPermissions(this);
         connectionManager.discoverBluetoothDevices();
         connectionManager.btStartListeningForConnectionAttempts();
     }
 
     public void update(Observable o, Object arg) {
+
+        boolean startExchangeActivity_flag = false;
 
         switch ((Integer) arg) {
             case DEVICE_FOUND:
@@ -122,7 +125,6 @@ public class ShareActivity extends Activity implements Observer {
                 initShareActivity_permission_granted();
                 break;
             case DISCOVERABILITY_OFF:
-                System.out.println("disco off.....moron");
                 setContentView(R.layout.share_permission_denied);
                 connectionManager.startBluetoothIntent(this, visibility_time);
                 break;
@@ -138,15 +140,21 @@ public class ShareActivity extends Activity implements Observer {
             case ALREADY_DISCOVERABLE:
                 initShareActivity_permission_granted();
                 break;
-//            case MESSAGE.PAIRED:
-//                break;
-//            case MESSAGE.PAIRING:
-//                break;
-//            case MESSAGE.NOT_PAIRED:
-//                break;
-
+            case MESSAGE.PAIRED:
+                break;
+            case MESSAGE.PAIRING:
+                startExchangeActivity_flag = true;
+                break;
+            case MESSAGE.NOT_PAIRED:
+                break;
+            case MESSAGE.ALREADY_PAIRED:
+                startExchangeActivity_flag = true;
+                break;
             default:
                 break;
+        }
+        if (startExchangeActivity_flag) {
+            startExchangeActivity();
         }
     }
 
@@ -170,7 +178,6 @@ public class ShareActivity extends Activity implements Observer {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                adapter.clear();
                 adapter.clear();
                 connectionManager.discoverBluetoothDevices();
                 if (refreshLayout.isRefreshing()) {
@@ -205,6 +212,7 @@ public class ShareActivity extends Activity implements Observer {
     /**
      * Erstellt eine Liste für den ListAdapter. Dabei wird jedem String der Punkt hinzufügt. Ist
      * Liste <b>null</b>, dann werden die Dummydaten verwendet.
+     *
      * @param list Liste mit anzuzeigenden Daten oder null
      * @return Liste der übergebenen daten plus Punkt
      */
@@ -227,8 +235,8 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     protected void onListItemClick(int position, String deviceName) {
-        Intent intent = new Intent(this, ExchangeActivity.class);
-
+        startExchangeActivity();
+        connectionManager.btConnectToDevice(deviceName);
         //region Debug Kram
 
         boolean alreadyPaired = false;
@@ -238,24 +246,31 @@ public class ShareActivity extends Activity implements Observer {
         }
 
         //if (!deviceName.equals("Vivien Bardosi")) alreadyPaired = false;
-        //endregion
 
-        intent.putExtra("ALREADY_PAIRED", alreadyPaired);
-        startActivity(intent);
 
-        connectionManager.btConnectToDevice(deviceName);
+        //intent.putExtra("ALREADY_PAIRED", alreadyPaired);*/
+//endregion
+    }
+
+    private void startExchangeActivity() {
+        if (exchangeActivityAlreadyStarted) return;
+        exchangeActivityAlreadyStarted = true;
         finish();
+        Intent intent = new Intent(this, ExchangeActivity.class);
+        startActivity(intent);
     }
 
     //endregion
 
     protected void onStop() {
-
         super.onStop();
     }
 
 
     protected void onDestroy() {
+
+        System.out.println("ShareActivity onDestroy called");
+
         try {
             connectionManager.unregisterReceiver(this);
             connectionManager.deleteObserver(this);
