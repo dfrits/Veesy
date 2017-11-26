@@ -76,14 +76,21 @@ public class ContactsManager {
      * @param context  Context der ContactsActivity
      * @param position Position in der Liste
      */
-    void showContact(Context context, int position) {
+    public void showContact(Context context, int position) {
         if (contacts != null && !contacts.isEmpty()) {
-            context.startActivity(ContactViewActivity.getIntent(context, contacts.get(position),
-                    false));
+            showContact(context, contacts.get(position));
         } else {
-            context.startActivity(ContactViewActivity.getIntent(context, getdummydata().get(position),
-                    false));
+            showContact(context, getdummydata().get(position));
         }
+    }
+
+    /**
+     * Startet die ViewActivity mit dem angetippten Kontakt, um ihn anzuzeigen.
+     * @param context  Context der ContactsActivity
+     * @param contact Kontakt, der angezeigt werden soll
+     */
+    public void showContact(Context context, @NonNull Contact contact) {
+        context.startActivity(ContactViewActivity.getIntent(context, contact, false));
     }
 
     /**

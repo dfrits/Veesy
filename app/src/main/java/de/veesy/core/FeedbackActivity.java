@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import de.veesy.R;
+import de.veesy.connection.ConnectionManager;
+import de.veesy.contacts.ContactsManager;
+import de.veesy.util.Util;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -22,12 +26,11 @@ import de.veesy.R;
  */
 public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
-    private static View feedback_failure;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        feedback_failure = LayoutInflater.from(this).inflate(
+        View feedback_failure = LayoutInflater.from(this).inflate(
                 R.layout.feedback_failure, null);
 
         if (getIntent().getBooleanExtra(SUCCESS_FLAG, false)) {
@@ -51,8 +54,14 @@ public class FeedbackActivity extends Activity {
      */
     public void bDetailsClicked(View view){
         //TODO Daniel, Details der empfangenen visitenkarte anzeigen
-        //startActivity details
-        finish();
+        ConnectionManager connM = ConnectionManager.instance();
+        ContactsManager contM = ContactsManager.instance();
+        if (connM.getReceivedContact() != null) {
+            contM.showContact(this, connM.getReceivedContact());
+            finish();
+        } else {
+            Util.showToast(this, "No Contact received", Toast.LENGTH_SHORT);
+        }
     }
 
     /**
