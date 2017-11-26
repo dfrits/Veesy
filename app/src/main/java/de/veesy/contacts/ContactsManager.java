@@ -36,8 +36,16 @@ public class ContactsManager {
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
 
+    private List<Contact> dummylist;
+
+    //TODO dummydaten entfernen
     private ContactsManager() {
         updateContactList();
+        dummylist = new ArrayList<>();
+        dummylist.add(new Contact("Fritz", "Markus", "438920", null, null));
+        dummylist.add(new Contact("Meier", "Voltin", "458912345", null, null));
+        dummylist.add(new Contact("Beutlin", "Angelika", "0987654", null, null));
+        dummylist.add(new Contact("Katole", "Johanna", "12345678", null, null));
     }
 
     public static ContactsManager instance() {
@@ -45,14 +53,9 @@ public class ContactsManager {
         return unique;
     }
 
-    //TODO entfernen irgendwann...
     List<Contact> getdummydata() {
-        List<Contact> list = new ArrayList<>();
-        list.add(new Contact("Fritz", "Markus", "438920", null, null));
-        list.add(new Contact("Meier", "Voltin", "458912345", null, null));
-        list.add(new Contact("Beutlin", "Angelika", "0987654", null, null));
-        list.add(new Contact("Katole", "Johanna", "12345678", null, null));
-        return list;
+        if (dummylist == null) return new ArrayList<>();
+        return dummylist;
     }
 
     /**
@@ -86,7 +89,7 @@ public class ContactsManager {
 
     /**
      * Startet die ViewActivity mit dem angetippten Kontakt, um ihn anzuzeigen.
-     * @param context  Context der ContactsActivity
+     * @param context Context der ContactsActivity
      * @param contact Kontakt, der angezeigt werden soll
      */
     public void showContact(Context context, @NonNull Contact contact) {
@@ -138,8 +141,13 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     public boolean deleteContact(int position) {
+        /*if (contacts == null || contacts.isEmpty()) {
+            dummylist.remove(position);
+            return true;
+        }
         Contact contact = contacts.get(position);
-        return contact.getContactPath() != null && contact.getContactPath().delete();
+        return contact.getContactPath() != null && contact.getContactPath().delete();*/
+        return false;
     }
 
     public Contact getOwnContact(Context context) throws IOException {

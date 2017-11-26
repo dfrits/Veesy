@@ -28,7 +28,7 @@ import static de.veesy.util.Constants.INPUT_ACTIVITY_REQUEST_CODE;
  * Zeigt den übergebenen Kontakt an. Ist es die eigene, kann man die Felder bearbeiten.
  */
 
-class ContactViewActivity extends Activity {
+public class ContactViewActivity extends Activity {
     private static final String IS_OWN_CARD = "IS_OWN_CARD";
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private boolean isOwnCard;
