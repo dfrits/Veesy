@@ -8,12 +8,13 @@
 
     <ImageView
         android:id="@+id/img_feedback"
-        android:layout_width="95dp"
-        android:layout_height="80dp"
-        android:layout_alignStart="@+id/t_feedback"
-        android:layout_marginTop="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="63dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/data_transmission_failure"
+        android:scaleType="fitCenter"
         android:src="@drawable/feedback_failed_img" />
 
     <TextView
@@ -22,6 +23,7 @@
         android:layout_height="22dp"
         android:layout_below="@+id/img_feedback"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/roboto_condensed_regular"
         android:text="@string/failure"
