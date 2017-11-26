@@ -36,8 +36,16 @@ public class ContactsManager {
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
 
+    private List<Contact> dummylist;
+
+    //TODO dummydaten entfernen
     private ContactsManager() {
         updateContactList();
+        dummylist = new ArrayList<>();
+        dummylist.add(new Contact("Fritz", "Markus", "438920", null, null));
+        dummylist.add(new Contact("Meier", "Voltin", "458912345", null, null));
+        dummylist.add(new Contact("Beutlin", "Angelika", "0987654", null, null));
+        dummylist.add(new Contact("Katole", "Johanna", "12345678", null, null));
     }
 
     public static ContactsManager instance() {
@@ -45,14 +53,9 @@ public class ContactsManager {
         return unique;
     }
 
-    //TODO entfernen irgendwann...
     List<Contact> getdummydata() {
-        List<Contact> list = new ArrayList<>();
-        list.add(new Contact("Fritz", "Markus", "0151438920", null, null));
-        list.add(new Contact("Meier", "Voltin", "0151458912", null, null));
-        list.add(new Contact("Beutlin", "Angelika", "0151098765", null, null));
-        list.add(new Contact("Katole", "Johanna", "0151123456", null, null));
-        return list;
+        if (dummylist == null) return new ArrayList<>();
+        return dummylist;
     }
 
     /**
@@ -76,14 +79,21 @@ public class ContactsManager {
      * @param context  Context der ContactsActivity
      * @param position Position in der Liste
      */
-    void showContact(Context context, int position) {
+    public void showContact(Context context, int position) {
         if (contacts != null && !contacts.isEmpty()) {
-            context.startActivity(ContactViewActivity.getIntent(context, contacts.get(position),
-                    false));
+            showContact(context, contacts.get(position));
         } else {
-            context.startActivity(ContactViewActivity.getIntent(context, getdummydata().get(position),
-                    false));
+            showContact(context, getdummydata().get(position));
         }
+    }
+
+    /**
+     * Startet die ViewActivity mit dem angetippten Kontakt, um ihn anzuzeigen.
+     * @param context Context der ContactsActivity
+     * @param contact Kontakt, der angezeigt werden soll
+     */
+    public void showContact(Context context, @NonNull Contact contact) {
+        context.startActivity(ContactViewActivity.getIntent(context, contact, false));
     }
 
     /**
@@ -131,8 +141,13 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     public boolean deleteContact(int position) {
+        /*if (contacts == null || contacts.isEmpty()) {
+            dummylist.remove(position);
+            return true;
+        }
         Contact contact = contacts.get(position);
-        return contact.getContactPath() != null && contact.getContactPath().delete();
+        return contact.getContactPath() != null && contact.getContactPath().delete();*/
+        return false;
     }
 
     public Contact getOwnContact(Context context) throws IOException {
