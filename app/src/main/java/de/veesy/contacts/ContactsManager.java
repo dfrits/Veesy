@@ -48,10 +48,10 @@ public class ContactsManager {
     //TODO entfernen irgendwann...
     List<Contact> getdummydata() {
         List<Contact> list = new ArrayList<>();
-        list.add(new Contact("Fritz", "Markus", "438920", null, null));
-        list.add(new Contact("Meier", "Voltin", "458912345", null, null));
-        list.add(new Contact("Beutlin", "Angelika", "0987654", null, null));
-        list.add(new Contact("Katole", "Johanna", "12345678", null, null));
+        list.add(new Contact("Fritz", "Markus", "0151438920", null, null));
+        list.add(new Contact("Meier", "Voltin", "0151458912", null, null));
+        list.add(new Contact("Beutlin", "Angelika", "0151098765", null, null));
+        list.add(new Contact("Katole", "Johanna", "0151123456", null, null));
         return list;
     }
 
