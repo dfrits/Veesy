@@ -72,7 +72,7 @@ public class ContactViewActivity extends Activity {
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
         } else {
-            layout.setBackgroundResource(R.drawable.dummypicture);
+            layout.setBackgroundResource(R.drawable.contacts_show_background);
         }
     }
 
