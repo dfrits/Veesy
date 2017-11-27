@@ -16,14 +16,18 @@
         android:contentDescription="@string/share"
         android:src="@drawable/exchanging_animation" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+
+    <Button
+        android:id="@+id/bCancel"
+        style="@android:style/Widget.Button.Transparent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:textSize="20dp"
-        android:text="@string/cancel" />
+        android:layout_centerHorizontal="true"
+        android:onClick="bCancel"
+        android:background="@null"
+        android:text="@string/cancel"
+        android:textAppearance="@android:style/TextAppearance"
+        android:textSize="22sp" />
 
 </RelativeLayout>
