@@ -42,10 +42,18 @@ public class ContactsManager {
     private ContactsManager() {
         updateContactList();
         dummylist = new ArrayList<>();
-        dummylist.add(new Contact("Fritz", "Markus", "438920", null, null));
-        dummylist.add(new Contact("Meier", "Voltin", "458912345", null, null));
-        dummylist.add(new Contact("Beutlin", "Angelika", "0987654", null, null));
-        dummylist.add(new Contact("Katole", "Johanna", "12345678", null, null));
+        dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
+                "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
+                "Markusfritz Weg 24, 81765 München", "www.markusfritz.de", "12.08.1967",
+                "Angeln", null, null));
+        dummylist.add(new Contact("Fritz", "Markus", null, null, null,
+                "015278492837", null, null, null, null, null, null, null));
+        dummylist.add(new Contact("Meier", "Voltin", "Student", "Hochschule Augsburg", "Interaktive Mediensysteme", "0158726308",
+                "voltin.meier@hs-augsburg.de", null, null, null, null, null, null));
+        dummylist.add(new Contact("Beutlin", "Angelika", null, null, null, null,
+                null, null, null, null, null, null, null));
+        dummylist.add(new Contact("Katole", "Johanna", null, null, null, null,
+                null, null, "www.johanna-katole.de", null, null, null, null));
     }
 
     public static ContactsManager instance() {
@@ -108,11 +116,11 @@ public class ContactsManager {
 
         VCard vCard = new VCard(VCardVersion.V4_0);
         StructuredName structuredName = new StructuredName();
-        structuredName.setFamily(contact.getNachname());
-        structuredName.setGiven(contact.getVorname());
+        structuredName.setFamily(contact.getLast_name());
+        structuredName.setGiven(contact.getFirst_name());
         vCard.setStructuredName(structuredName);
-        vCard.setFormattedName(contact.getVorname() + " " + contact.getNachname());
-        vCard.addTelephoneNumber(contact.getTelefonnr(), TelephoneType.CELL);
+        vCard.setFormattedName(contact.getFirst_name() + " " + contact.getLast_name());
+        vCard.addTelephoneNumber(contact.getPhone_number(), TelephoneType.CELL);
         Ezvcard.write(vCard).go(contact.getContactPath());
     }
 
@@ -129,11 +137,12 @@ public class ContactsManager {
         }
 
         StructuredName structuredName = vCard.getStructuredName();
-        String vorname = structuredName.getGiven();
-        String nachname = structuredName.getFamily();
-        String telnr = vCard.getTelephoneNumbers().get(0).getText();
+        String first_name = structuredName.getGiven();
+        String last_name = structuredName.getFamily();
+        String phone_number = vCard.getTelephoneNumbers().get(0).getText();
         //TODO Richtiges Bild auslesen
-        return new Contact(nachname, vorname, telnr, null, path);
+        return new Contact(first_name, last_name, null, null, null, phone_number,
+                null, null, null, null, null, null, path);
     }
 
     /**
@@ -161,7 +170,8 @@ public class ContactsManager {
         String filename = FILE_NAME_OWN + FILE_ENDING;
         File file = new File(cardDir, filename);
 
-        Contact contact = new Contact("", "", "", null, file);
+        Contact contact = new Contact("", "", "", "", "", "",
+                "", "", "", "", "", null, null);
         if (!file.exists()) {
             if (!file.createNewFile()) throw new IOException("Can't create new file");
             return contact;

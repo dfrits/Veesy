@@ -12,68 +12,147 @@ import java.io.File;
  * hs-augsburg
  */
 
-public class Contact implements Serializable{
+public class Contact implements Serializable {
 
-    private String nachname;
-    private String vorname;
-    private String telefonnr;
-    private Uri bild;
+    private String last_name;
+    private String first_name;
+    private String occupation;
+    private String company;
+    private String business_area;
+    private String phone_number;
+    private String mail;
+    private String address;
+    private String website;
+    private String birthday;
+    private String hobbies;
+    private Uri picture;
     private File contactPath;
 
-    public Contact(){
 
-    }
+    public Contact(String last_name, String first_name, String occupation, String company,
+                   String business_area, String phone_number, String mail, String address,
+                   String website, String birthday, String hobbies, Uri picture, File contactPath) {
+        this.last_name = last_name;
+        this.first_name = first_name;
+        this.occupation = occupation;
+        this.company = company;
+        this.business_area = business_area;
+        this.phone_number = phone_number;
+        this.mail = mail;
+        this.address = address;
+        this.website = website;
 
-    public Contact(String nachname, String vorname, String telefonnr,
-                   Uri bild, File contactPath) {
-        this.nachname = nachname;
-        this.vorname = vorname;
-        this.telefonnr = telefonnr;
-        this.bild = bild;
+        this.birthday = birthday;
+        this.hobbies = hobbies;
+        this.picture = picture;
         this.contactPath = contactPath;
     }
 
-    /* Getter */
-
-    public String getNachname() {
-        return nachname;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public String getVorname() {
-        return vorname;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
-    public String getTelefonnr() {
-        return telefonnr;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public Uri getBild() {
-        return bild;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getBusiness_area() {
+        return business_area;
+    }
+
+    public void setBusiness_area(String business_area) {
+        this.business_area = business_area;
+    }
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(String hobbies) {
+        this.hobbies = hobbies;
+    }
+
+    public Uri getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Uri picture) {
+        this.picture = picture;
     }
 
     public File getContactPath() {
         return contactPath;
     }
 
-    /* Setter */
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
+    public void setContactPath(File contactPath) {
+        this.contactPath = contactPath;
     }
 
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
-    }
-
-    public void setTelefonnr(String telefonnr) {
-        this.telefonnr = telefonnr;
-    }
-
-    public String toString(){
-        return vorname + " " + nachname + ": " + telefonnr;
-    }
-
-    public void setBild(Uri bild) {
-        this.bild = bild;
+    public String toString() {
+        return first_name + " " + last_name + ": " + phone_number;
     }
 }

@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_all_black">
 
 
-    <ImageView
-        android:id="@+id/iVPairingAnimation"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/pairing"
-        android:src="@drawable/pairing_animation"/>
+        android:layout_centerHorizontal="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/iVPairingAnimation"
-        android:layout_alignStart="@+id/iVPairingAnimation"
-        android:layout_below="@+id/iVPairingAnimation"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/roboto_condensed_regular"
-        android:paddingTop="5dp"
-        android:text="@string/pairing"
-        android:textAlignment="center"/>
+        <ImageView
+            android:id="@+id/iVPairingAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/pairing"
+            android:src="@drawable/pairing_animation">
+
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:text="@string/pairing"
+            android:layout_marginVertical="10dp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
 </RelativeLayout>

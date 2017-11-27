@@ -33,9 +33,19 @@ public class ContactViewActivity extends Activity {
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private boolean isOwnCard;
     private Contact contact;
-    private TextView tVorname;
-    private TextView tNachname;
+    private TextView tFirst_name;
+    private TextView tLast_name;
     private TextView tPhone;
+    private TextView tOccupation;
+    private TextView tCompany;
+    private TextView tBusiness_area;
+    private TextView tMail;
+    private TextView tAddress;
+    private TextView tWebsite;
+    private TextView tBirthday;
+    private TextView tHobbies;
+
+
 
     /**
      * Erstellt automatisch einen Intent mit den nötigen Extras.
@@ -59,16 +69,33 @@ public class ContactViewActivity extends Activity {
         Intent intent = getIntent();
         isOwnCard = intent.getBooleanExtra(IS_OWN_CARD, false);
         getContactExtra(intent);
-        tVorname = findViewById(R.id.tVorname);
-        tNachname = findViewById(R.id.tNachname);
+        tFirst_name = findViewById(R.id.tVorname);
+        tLast_name = findViewById(R.id.tNachname);
+        tOccupation = findViewById(R.id.tOccupation);
+        tCompany = findViewById(R.id.tCompany);
+        tBusiness_area = findViewById(R.id.tBusiness_area);
         tPhone = findViewById(R.id.tPhone);
+        tMail = findViewById(R.id.tMail);
+        tAddress = findViewById(R.id.tAddress);
+        tWebsite = findViewById(R.id.tWebsite);
+        tBirthday = findViewById(R.id.tBirthday);
+        tHobbies = findViewById(R.id.tHobbies);
 
-        tVorname.setText(contact.getVorname());
-        tNachname.setText(contact.getNachname());
-        tPhone.setText(contact.getTelefonnr());
+        tFirst_name.setText(contact.getFirst_name());
+        tLast_name.setText(contact.getLast_name());
+        tLast_name.setText(contact.getLast_name());
+        tOccupation.setText(contact.getOccupation());
+        tCompany.setText(contact.getCompany());
+        tBusiness_area.setText(contact.getBusiness_area());
+        tPhone.setText(contact.getPhone_number());
+        tMail.setText(contact.getMail());
+        tAddress.setText(contact.getAddress());
+        tWebsite.setText(contact.getWebsite());
+        tBirthday.setText(contact.getBirthday());
+        tHobbies.setText(contact.getHobbies());
 
         LinearLayout layout = findViewById(R.id.showContactBackground);
-        Uri image = contact.getBild();
+        Uri image = contact.getPicture();
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
         } else {
@@ -94,14 +121,14 @@ public class ContactViewActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INPUT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (id == tVorname.getId()) {
-                contact.setVorname(data.getStringExtra(INTENT_RESULT));
-                tVorname.setText(data.getStringExtra(INTENT_RESULT));
-            } else if (id == tNachname.getId()) {
-                contact.setNachname(data.getStringExtra(INTENT_RESULT));
-                tNachname.setText(data.getStringExtra(INTENT_RESULT));
+            if (id == tFirst_name.getId()) {
+                contact.setFirst_name(data.getStringExtra(INTENT_RESULT));
+                tFirst_name.setText(data.getStringExtra(INTENT_RESULT));
+            } else if (id == tLast_name.getId()) {
+                contact.setLast_name(data.getStringExtra(INTENT_RESULT));
+                tLast_name.setText(data.getStringExtra(INTENT_RESULT));
             } else if (id == tPhone.getId()) {
-                contact.setTelefonnr(data.getStringExtra(INTENT_RESULT));
+                contact.setPhone_number(data.getStringExtra(INTENT_RESULT));
                 tPhone.setText(data.getStringExtra(INTENT_RESULT));
             }
             final Context context = this;
@@ -122,7 +149,7 @@ public class ContactViewActivity extends Activity {
     public void tVornameClicked(View view) {
         if (isOwnCard) {
             id = view.getId();
-            startActivityForResult(InputActivity.getIntent(this, R.string.vorname,
+            startActivityForResult(InputActivity.getIntent(this, R.string.first_name,
                     R.string.save, InputActivity.INPUT_TYPE_TEXT), INPUT_ACTIVITY_REQUEST_CODE);
         }
     }
@@ -130,7 +157,7 @@ public class ContactViewActivity extends Activity {
     public void tNachnameClicked(View view) {
         if (isOwnCard) {
             id = view.getId();
-            startActivityForResult(InputActivity.getIntent(this, R.string.nachname,
+            startActivityForResult(InputActivity.getIntent(this, R.string.last_name,
                     R.string.save, InputActivity.INPUT_TYPE_TEXT), INPUT_ACTIVITY_REQUEST_CODE);
         }
     }

@@ -76,8 +76,9 @@ public class ConnectionManager extends Observable {
 
 
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "1941",
-            "sers", null, null);
+    private Contact sendContact = new Contact("sagt", "sers",
+            null, null, null, null, null, null,
+            null, null, null, null, null);
 
 
 

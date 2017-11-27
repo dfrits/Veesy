@@ -11,14 +11,22 @@
     <string name="data_transmission_success" translatable="false">Data transmission success</string>
     <string name="data_transmission_failure" translatable="false">Data transmission failure</string>
     <string name="failure">Failed</string>
-    <string name="not_paired">Search once more or pair now</string>
+    <string name="not_paired">Restart searching or pair now</string>
     <string name="bluetooth_permission_denied">For sharing contacts bluetooth is required</string>
     <string name="cancel" translatable="false">Cancel</string>
     <string name="pairing">Pairing...</string>
     <string name="shut_down">shut down</string>
-    <string name="vorname">Given Name</string>
-    <string name="nachname">Last Name</string>
+    <string name="first_name">Given Name</string>
+    <string name="last_name">Last Name</string>
     <string name="save">Save</string>
     <string name="phone">Phone Number</string>
+    <string name="mail">Email address</string>
+    <string name="occupation">Occupation</string>
+    <string name="company">Company</string>
+    <string name="website" translatable="false">Website</string>
+    <string name="address">Address</string>
+    <string name="business_area">Business area</string>
+    <string name="birthday">Birthday</string>
+    <string name="hobbies">Hobbies</string>
     <string name="error_reading_card">Can\'t read the veesy contact</string>
 </resources>

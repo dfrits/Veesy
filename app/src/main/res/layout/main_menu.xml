@@ -18,8 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
-        android:layout_toEndOf="@+id/bContacts"
-        android:layout_toStartOf="@+id/bSettings"
         android:background="@android:color/transparent"
         android:fontFamily="@font/roboto"
         android:text="@string/share"

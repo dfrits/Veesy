@@ -10,23 +10,20 @@
         android:id="@+id/iVExchangeAnimation"
         android:layout_width="95dp"
         android:layout_height="80dp"
-        android:layout_above="@+id/bCancel"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="50dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/share"
         android:src="@drawable/exchanging_animation" />
 
-    <ImageButton
-        android:id="@+id/bCancel"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/cancel"
-        android:onClick="bCancel"
-        android:scaleType="fitCenter"
-        android:src="@drawable/exchange_paired_button" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp"
+        android:text="@string/cancel" />
+
 </RelativeLayout>
