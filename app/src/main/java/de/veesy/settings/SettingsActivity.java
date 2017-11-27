@@ -52,10 +52,10 @@ public class SettingsActivity extends Activity {
         connectionManager = ConnectionManager.instance();
         contactsManager = ContactsManager.instance();
 
-        initListView();
+        //initListView();
     }
 
-    private void initListView() {
+/*    private void initListView() {
         ListView listView = findViewById(R.id.lVSettings);
         StraightListAdapter adapter = new StraightListAdapter(this, R.layout.straight_list_view_row,
                 listItems);
@@ -82,7 +82,7 @@ public class SettingsActivity extends Activity {
 
             }
         });
-    }
+    }*/
 
     private void showOwnContact() {
         try {
