@@ -285,7 +285,6 @@ public class ShareActivity extends Activity implements Observer {
         super.onDestroy();
     }
 
-    // TODO MARTIN
     public void bShareClicked(View view) {
         connectionManager.startBluetoothIntent(this, visibility_time);
         finish();

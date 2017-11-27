@@ -43,7 +43,6 @@ public class ConnectionManager extends Observable {
 
     //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
     // soll dann über die Einstellungen wieder umbenannt werden können
-    private static String originalDeviceName = "Huawei Watch 2 1941";
 
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
@@ -68,19 +67,19 @@ public class ConnectionManager extends Observable {
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> originallyBondedBTDevices;
 
-    private IntentFilter actionFoundFilter, actionBondStateFilter, actionScanModeChangedFilter, actionDiscoveryFinishedFilter, actionDiscoveryStartedFilter, actionConnectionStateFilter;
+    private IntentFilter actionFoundFilter, actionBondStateFilter, actionScanModeChangedFilter, actionDiscoveryFinishedFilter, actionDiscoveryStartedFilter, actionConnectionStateFilter, actionPairingRequestFilter;
 
     private boolean connectionEstablished = false;
 
     private boolean btConnectorThread_runningFlag = false;
 
 
+    private static String originalDeviceName = "Huawei Watch 2 1941";
+
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "sers",
-            null, null, null, null, null, null,
+    private Contact sendContact = new Contact("sagt", "hallo",
+            null, null, null, "1941", null, null,
             null, null, null, null, null);
-
-
 
 
     //endregion
@@ -383,6 +382,11 @@ public class ConnectionManager extends Observable {
          * wird tatsächlich 2 mal aufgerufen, da BOND_BONDED vom broadcast Receiver 2x empfangen wird
          */
 
+        if(btConnectedDevice == null) {
+            Log.d(TAG, "btConnectedDevice is null");
+            return;
+        }
+
         if (!btConnectorThread_runningFlag) {
             Log.d(TAG, "Starting Connection Attempt with: " + btConnectedDevice.getName());
             btConnectorThread = new BluetoothConnectorThread(btConnectedDevice, VEESY_UUID);
@@ -569,12 +573,10 @@ public class ConnectionManager extends Observable {
                 try {
                     receivedContact = (Contact) btObjectStream_in.readObject();
 
-                    if(btClientMode_flag){
+                    if (btClientMode_flag) {
                         setChanged();
                         notifyObservers(MESSAGE.RESPOND_AS_CLIENT);
-                    }
-
-                    else {
+                    } else {
                         setChanged();
                         notifyObservers(MESSAGE.DATA_TRANSMISSION_SUCCESSFUL);
                     }
@@ -601,6 +603,7 @@ public class ConnectionManager extends Observable {
         }
 
         public void closeConnection() {
+            if (btSocket == null) return;
             try {
                 btSocket.close();
                 Log.d(TAG, "ConnectedThread: Socket closed");
@@ -611,14 +614,14 @@ public class ConnectionManager extends Observable {
     }
 
     public void btCloseConnection() {
-        btConnectedThread.closeConnection();
+        if (btConnectedThread != null) btConnectedThread.closeConnection();
     }
 
     public void btSendData(Contact contact) {
         btConnectedThread.write(contact);
     }
 
-    public void btSendData(){
+    public void btSendData() {
         btConnectedThread.write(sendContact);
     }
 
@@ -653,15 +656,15 @@ public class ConnectionManager extends Observable {
         return list;
     }
 
-    public boolean btIsInClientMode(){
+    public boolean btIsInClientMode() {
         return btClientMode_flag;
     }
 
-    public Contact getReceivedContact(){
+    public Contact getReceivedContact() {
         return receivedContact;
     }
 
-    public void setSendContact(Contact contact){
+    public void setSendContact(Contact contact) {
         this.sendContact = contact;
     }
 
@@ -740,7 +743,7 @@ public class ConnectionManager extends Observable {
         actionDiscoveryFinishedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         actionDiscoveryStartedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         actionConnectionStateFilter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        actionConnectionStateFilter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        actionPairingRequestFilter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
     }
 
 
@@ -748,9 +751,10 @@ public class ConnectionManager extends Observable {
         activity.registerReceiver(btReceiver_ACTION_FOUND, actionFoundFilter);
         activity.registerReceiver(btReceiver_BOND_STATE, actionBondStateFilter);
         activity.registerReceiver(btReceiver_SCAN_MODE, actionScanModeChangedFilter);
+        activity.registerReceiver(btReceiver_ACTION_CONNECTION_STATE, actionConnectionStateFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
-        activity.registerReceiver(btReceiver_ACTION_CONNECTION_STATE, actionConnectionStateFilter);
+        activity.registerReceiver(btReceiver_ACTION_PAIRING_REQUEST, actionPairingRequestFilter);
     }
 
     public void unregisterReceiver(Activity activity) {
@@ -764,7 +768,24 @@ public class ConnectionManager extends Observable {
         activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_FINISHED);
         activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_STARTED);
         activity.unregisterReceiver(btReceiver_ACTION_CONNECTION_STATE);
+        activity.unregisterReceiver(btReceiver_ACTION_PAIRING_REQUEST);
     }
+
+
+    private final BroadcastReceiver btReceiver_ACTION_PAIRING_REQUEST = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+            if (action != null) {
+                switch (action) {
+                    case BluetoothDevice.ACTION_PAIRING_REQUEST:
+                        Log.d(TAG, "Receiving pairing request from: " +device.getName());
+                        break;
+                }
+            }
+        }
+    };
 
     private final BroadcastReceiver btReceiver_ACTION_DISCOVERY_STARTED = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -843,7 +864,8 @@ public class ConnectionManager extends Observable {
                             Log.d(TAG, "BroadcastReceiver: btConnectedDevice BOND_BONDED");
                             setChanged();
                             notifyObservers(MESSAGE.PAIRED);
-                            if (device.equals(btConnectedDevice)) btStartConnection();
+                            //if (device.equals(btConnectedDevice))
+                            btStartConnection();
                             break;
                         // breaking the bond
                         case BluetoothDevice.BOND_NONE:
@@ -902,14 +924,14 @@ public class ConnectionManager extends Observable {
             Log.d(TAG, "BroadcastReceiver Connection-STATE: " + action);
 
             if (action != null && action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-               /* int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
+                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_STATE, BluetoothAdapter.ERROR);
                 int msg = -1;
                 switch (mode) {
                     case BluetoothAdapter.STATE_CONNECTING:
                         Log.d(TAG, "BroadcastReceiver STATE: Connecting....");
                         msg = MESSAGE.CONNECTING;
                         break;
-                    case STATE_CONNECTED:
+                    case BluetoothAdapter.STATE_CONNECTED:
                         Log.d(TAG, "BroadcastReceiver STATE: Connected.");
                         connectionEstablished = true;
                         msg = MESSAGE.CONNECTED;
@@ -926,10 +948,11 @@ public class ConnectionManager extends Observable {
                         break;
                 }
                 setChanged();
-                notifyObservers(msg);*/
+                notifyObservers(msg);
 
             }
         }
     };
+
     // endregion
 }
