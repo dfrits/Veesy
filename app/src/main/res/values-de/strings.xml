@@ -2,12 +2,9 @@
 <resources>
     <string name="contacts">Kontakte</string>
     <string name="settings">Einstellungen</string>
-    <string name="success">Erfolg:)</string>
     <string name="backpress_hint">Nochmal drücken zum Beenden!</string>
-    <string name="failure">Fehler:(</string>
     <string name="not_paired">Pairinganfrage bitte bestätigen und erneut versuchen</string>
     <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
-    <string name="pairing">Pairing...</string>
     <string name="first_name">Vorname</string>
     <string name="last_name">Nachname</string>
     <string name="save">Speichern</string>
