@@ -29,4 +29,8 @@
     <string name="birthday">Birthday</string>
     <string name="hobbies">Hobbies</string>
     <string name="error_reading_card">Can\'t read veesy contact</string>
+    <string name="no_first_name">No first name</string>
+    <string name="no_last_name">No last name</string>
+    <string name="delete_contact_error">Can\'t delete contact</string>
+    <string name="error_safe_contact">Can\'t save contact</string>
 </resources>

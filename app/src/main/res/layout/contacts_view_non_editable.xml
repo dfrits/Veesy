@@ -17,7 +17,6 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/roboto_condensed_regular"
-        android:onClick="tVornameClicked"
         android:gravity="center"
         android:textColor="#0ba29a"
         android:textSize="20sp"
@@ -30,7 +29,6 @@
         android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
         android:fontFamily="@font/roboto_condensed_regular"
-        android:onClick="tNachnameClicked"
         android:gravity="center"
         android:textColor="#0ba29a"
         android:textSize="20sp"
@@ -62,7 +60,6 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:gravity="center_vertical"
-                    android:onClick="tPhoneClicked"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     tools:text="Sales Manager" />
@@ -81,7 +78,6 @@
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:gravity="center_vertical"
-                    android:onClick="tPhoneClicked"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:text="orderbird AG München" />
@@ -101,7 +97,6 @@
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:gravity="center_vertical"
-                    android:onClick="tPhoneClicked"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:text="Softwareentwickler" />
@@ -141,7 +136,6 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:gravity="center_vertical"
-                        android:onClick="tPhoneClicked"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="015119403060" />
@@ -182,7 +176,6 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:gravity="center_vertical"
-                        android:onClick="tPhoneClicked"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="andreas.epping@gmail.com" />
@@ -224,7 +217,6 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:gravity="center_vertical"
-                        android:onClick="tPhoneClicked"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="Kleinstraße 17, 81298 München" />
@@ -266,7 +258,6 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:gravity="center_vertical"
-                        android:onClick="tPhoneClicked"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="www.andreas-epping.de" />
@@ -293,7 +284,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/mail"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_cake" />
+                        android:src="@drawable/contacts_birthday" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -308,7 +299,6 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:gravity="center_vertical"
-                        android:onClick="tPhoneClicked"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="12.08.1977" />
@@ -350,7 +340,6 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:gravity="center_vertical"
-                        android:onClick="tPhoneClicked"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="Angeln" />
@@ -392,17 +381,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
-    <!--<TextView
-        android:id="@+id/tMail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:drawableStart="@drawable/contacts_mail_img"
-        android:onClick="tMailClicked"
-        android:textAlignment="center"
-        android:textSize="20sp"/>-->
 </LinearLayout>

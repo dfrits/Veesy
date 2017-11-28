@@ -17,6 +17,10 @@
     <string name="address">Adresse</string>
     <string name="business_area">Geschäftsfeld</string>
     <string name="birthday">Geburtstag</string>
-    <string name="hobbies">Hobbys</string>
+    <string name="hobbies">Hobbies</string>
+    <string name="no_first_name">Kein Vorname</string>
+    <string name="no_last_name">Kein Nachname</string>
+    <string name="delete_contact_error">Kann Kontakt nicht löschen</string>
+    <string name="error_safe_contact">Kann Kontakt nicht speichern</string>
 
 </resources>

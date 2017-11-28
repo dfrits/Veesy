@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -16,13 +14,12 @@ import java.util.List;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.contacts.Contact;
-import de.veesy.contacts.ContactViewActivity;
+import de.veesy.contacts.ViewContactEditableActivity;
 import de.veesy.contacts.ContactsManager;
-import de.veesy.listview_util.StraightListAdapter;
 import de.veesy.util.Util;
 
-import static de.veesy.util.Constants.SHOW_CONTACT_REQUEST_CODE;
 import static de.veesy.settings.ESettingItems.MY_CARD;
+import static de.veesy.util.Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE;
 
 /**
  * Created by dfritsch on 17.11.2017.
@@ -105,15 +102,16 @@ public class SettingsActivity extends Activity {
     private void showOwnContact() {
         try {
             Contact ownContact = contactsManager.getOwnContact(this);
-            Intent intent = ContactViewActivity.getIntent(this, ownContact,true);
-            startActivityForResult(intent, SHOW_CONTACT_REQUEST_CODE);
+            Intent intent = ViewContactEditableActivity.getIntent(this, ownContact);
+            startActivityForResult(intent, SHOW_CONTACT_EDITABLE_REQUEST_CODE);
         } catch (IOException e) {
+            Util.showToast(this, "Error reading your card", Toast.LENGTH_SHORT);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SHOW_CONTACT_REQUEST_CODE && resultCode == RESULT_CANCELED) {
+        if (requestCode == SHOW_CONTACT_EDITABLE_REQUEST_CODE && resultCode == RESULT_CANCELED) {
             Util.showToast(this, R.string.error_reading_card, Toast.LENGTH_SHORT);
         }
     }
