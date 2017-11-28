@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import de.veesy.R;
@@ -29,6 +30,8 @@ public class FeedbackActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
         View feedback_failure = LayoutInflater.from(this).inflate(
                 R.layout.feedback_failure, null);

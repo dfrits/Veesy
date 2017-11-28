@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.Observable;
@@ -32,6 +33,7 @@ public class MainMenu extends Activity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     protected void onStart() {
@@ -54,9 +56,7 @@ public class MainMenu extends Activity implements Observer {
      */
     public void bShareClicked(View view) {
         if (cm.checkName()) startActivity(new Intent(this, ShareActivity.class));
-        else {
-            Util.showToast(this, "try again in 2 second", Toast.LENGTH_SHORT);
-        }
+        else Util.showToast(this, "Renaming device... try again", Toast.LENGTH_SHORT);
     }
 
     /**
@@ -87,8 +87,6 @@ public class MainMenu extends Activity implements Observer {
      */
     public void bShutdownClicked(View view) {
         Util.showToast(this, "Shutdown", Toast.LENGTH_SHORT);
-        // We do this to clean up
-        //cm.btCloseConnection();
         cm.unpairAllDevices();
         cm.setBackOriginalDeviceName();
     }

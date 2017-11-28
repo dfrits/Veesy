@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.ScrollingLayoutCallback;
 import de.veesy.listview_util.RoundListAdapter;
+import de.veesy.util.Util;
 
 import static android.view.View.INVISIBLE;
 import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
@@ -68,6 +70,8 @@ public class ShareActivity extends Activity implements Observer {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initShareActivity_permission_denied();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
         // for testing on emulator
 //        initShareActivity_permission_granted();
@@ -106,7 +110,8 @@ public class ShareActivity extends Activity implements Observer {
         connectionManager = ConnectionManager.instance();
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
-        connectionManager.startBluetoothIntent(this, visibility_time);
+        boolean already_discoverable = connectionManager.startBluetoothIntent(this, visibility_time);
+        if (already_discoverable) initShareActivity_permission_granted();
     }
 
     private void startConnectionManager() {
@@ -130,23 +135,29 @@ public class ShareActivity extends Activity implements Observer {
                 connectionManager.startBluetoothIntent(this, visibility_time);
                 break;
             case START_DISCOVERING:
-                if (animationView != null) animationView.startAnimation(radar_animation);
+                if (animationView != null) {
+
+                    Util.runOnUiAnimation(this, animationView, radar_animation);
+                 /*   runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            animationView.startAnimation(radar_animation);
+                        }
+                    });*/
+                }
                 break;
             case STOP_DISCOVERING:
                 if (animationView != null) {
                     animationView.clearAnimation();
                     animationView.setVisibility(INVISIBLE);
                 }
-                break;
-            case ALREADY_DISCOVERABLE:
-                initShareActivity_permission_granted();
-                break;
-            case MESSAGE.PAIRED:
+
+                //TODO
+                /* hier bräuchten wir vllt eine meldung an den User dass keine geräte gefunden wurden*/
+
                 break;
             case MESSAGE.PAIRING:
                 startExchangeActivity_flag = true;
-                break;
-            case MESSAGE.NOT_PAIRED:
                 break;
             case MESSAGE.ALREADY_PAIRED:
                 startExchangeActivity_flag = true;
@@ -259,7 +270,7 @@ public class ShareActivity extends Activity implements Observer {
         exchangeActivityAlreadyStarted = true;
         finish();
         Intent intent = new Intent(this, ExchangeActivity.class);
-        if(alreadyPaired_flag){
+        if (alreadyPaired_flag) {
             intent.putExtra("ALREADY_PAIRED", alreadyPaired_flag);
         }
         startActivity(intent);

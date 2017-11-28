@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import java.util.Observer;
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
+import de.veesy.util.Util;
 
 import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
 
@@ -33,9 +35,13 @@ public class ExchangeActivity extends Activity implements Observer {
     private ConnectionManager connectionManager;
     private Animation exchange_animation;
     private Animation pairing_animation;
+    private ImageView exchangeAnimationView;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         initConnectionManager();
 
@@ -50,6 +56,7 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     private void initConnectionManager() {
+        System.out.println("initConnectionManager");
         connectionManager = ConnectionManager.instance();
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
@@ -65,20 +72,21 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     private void initExchangeActivity_pairing() {
+        System.out.println("setContentView pairing");
         setContentView(R.layout.exchange_pairing);
         initPairingAnimation();
     }
 
     private void initExchangeAnimation() {
-        ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
+        exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
         exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
-        exchangeAnimationView.startAnimation(exchange_animation);
+        Util.runOnUiAnimation(this, exchangeAnimationView, exchange_animation);
     }
 
     private void initPairingAnimation() {
-        ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
+        final ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
         pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
-        pairingAnimationView.startAnimation(pairing_animation);
+        Util.runOnUiAnimation(this, pairingAnimationView, pairing_animation);
     }
 
     public void update(Observable observable, Object o) {
