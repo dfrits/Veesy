@@ -148,7 +148,7 @@ public class ExchangeActivity extends Activity implements Observer {
         finish();
     }
 
-    public void bCancel(View view) {
+    public void bCancelClicked(View view) {
         startActivity(new Intent(this, ShareActivity.class));
         finish();
     }

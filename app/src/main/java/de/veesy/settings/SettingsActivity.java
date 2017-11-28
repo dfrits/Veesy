@@ -55,6 +55,24 @@ public class SettingsActivity extends Activity {
         //initListView();
     }
 
+    public void bMyCardClicked(View view){
+        showOwnContact();
+    }
+
+    public void bBluetoothSettingsClicked(View view){
+        //TODO bluetooth einstellungen
+    }
+
+    public void bRemoveDevicesClicked(View view){
+        if (connectionManager != null) {
+            connectionManager.unpairAllDevices();
+        }
+    }
+
+    public void bAboutClicked(View view){
+        //TODO about us info
+    }
+
 /*    private void initListView() {
         ListView listView = findViewById(R.id.lVSettings);
         StraightListAdapter adapter = new StraightListAdapter(this, R.layout.straight_list_view_row,

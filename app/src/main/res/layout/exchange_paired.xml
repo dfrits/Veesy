@@ -19,14 +19,13 @@
 
     <Button
         android:id="@+id/bCancel"
-        style="@android:style/Widget.Button.Transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="bCancel"
+        android:layout_alignParentStart="true"
         android:background="@null"
-        android:text="@string/cancel"
+        android:onClick="bCancelClicked"
+        android:text="Cancel"
         android:textAppearance="@android:style/TextAppearance"
         android:textSize="22sp" />
 

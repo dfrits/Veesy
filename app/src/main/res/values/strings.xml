@@ -29,5 +29,4 @@
     <string name="birthday">Birthday</string>
     <string name="hobbies">Hobbies</string>
     <string name="error_reading_card">Can\'t read the veesy contact</string>
-    <string name="cancel">Cancel</string>
 </resources>
