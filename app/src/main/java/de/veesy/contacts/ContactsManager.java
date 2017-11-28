@@ -214,7 +214,7 @@ public class ContactsManager {
         File file = new File(cardDir, filename);
 
         Contact contact = new Contact("", "", "", "", "", "",
-                "", "", "", "", "", null, null);
+                "", "", "", "", "", null, file);
         if (!file.exists()) {
             if (!file.createNewFile()) throw new IOException("Can't create new file");
             return contact;
