@@ -61,7 +61,7 @@ public class ViewContactNonEditableActivity extends Activity {
 
         Intent intent = getIntent();
 
-        setContentView(R.layout.contacts_show_contact);
+        setContentView(R.layout.contacts_view_non_editable);
 
         getContactExtra(intent);
 

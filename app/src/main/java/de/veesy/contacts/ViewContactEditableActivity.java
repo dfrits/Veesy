@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.EditText;
+
+import java.io.Serializable;
 
 import de.veesy.R;
-import de.veesy.settings.InputActivity;
-
-import static de.veesy.util.Constants.INPUT_ACTIVITY_REQUEST_CODE;
+import de.veesy.util.Constants;
 
 /**
  * Created by Daniel on 28.11.2017.
@@ -19,68 +20,157 @@ import static de.veesy.util.Constants.INPUT_ACTIVITY_REQUEST_CODE;
  */
 
 public class ViewContactEditableActivity extends Activity {
+    private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
+
+    private Contact contact;
+    private EditText tFirstName;
+    private EditText tLastName;
+    private EditText tPhone;
+    private EditText tOccupation;
+    private EditText tCompany;
+    private EditText tBusinessArea;
+    private EditText tMail;
+    private EditText tAddress;
+    private EditText tWebsite;
+    private EditText tBirthday;
+    private EditText tHobbies;
+
+    public static Intent getIntent(Context context, Contact contact) {
+        Intent intent = new Intent(context, ViewContactEditableActivity.class);
+        intent.putExtra(CONTACT_EXTRA, contact);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getContactExtra(getIntent());
 
+        initFields();
+
+        // Werte setzen
+        setValues();
     }
 
-
-    private int id;
+    private void initFields() {
+        tFirstName = findViewById(R.id.tVorname);
+        tLastName = findViewById(R.id.tNachname);
+        tOccupation = findViewById(R.id.tOccupation);
+        tCompany = findViewById(R.id.tCompany);
+        tBusinessArea = findViewById(R.id.tBusiness_area);
+        tPhone = findViewById(R.id.tPhone);
+        tMail = findViewById(R.id.tMail);
+        tAddress = findViewById(R.id.tAddress);
+        tWebsite = findViewById(R.id.tWebsite);
+        tBirthday = findViewById(R.id.tBirthday);
+        tHobbies = findViewById(R.id.tHobbies);
+    }
 
     /**
-     * Wird aufgerufen, wenn die InputActivity beendet wird. Setzt dann beim entsprechenden Textfeld
-     * den neuen Wert und speichert die VK automatisch ab.
+     * Setzt Werte in die Felder. Sind noch keine Werte vorhanden, wird nichts gesetzt, sodass
+     * weiterhin der Hint angezeigt wird.
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*if (requestCode == INPUT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (id == tFirstName.getId()) {
-                contact.setFirstName(data.getStringExtra(INTENT_RESULT));
-                tFirstName.setText(data.getStringExtra(INTENT_RESULT));
-            } else if (id == tLastName.getId()) {
-                contact.setLastName(data.getStringExtra(INTENT_RESULT));
-                tLastName.setText(data.getStringExtra(INTENT_RESULT));
-            } else if (id == tPhone.getId()) {
-                contact.setPhoneNumber(data.getStringExtra(INTENT_RESULT));
-                tPhone.setText(data.getStringExtra(INTENT_RESULT));
-            }
-            final Context context = this;
-            try {
-                ContactsManager contactsManager = ContactsManager.instance();
-                contactsManager.safeContact(contact);
-            } catch (IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "Fehler", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }*/
+    private void setValues() {
+        String s = contact.getFirstName();
+        if (s != null && !s.isEmpty()) {
+            tFirstName.setText(s);
+        } else {
+            tFirstName.setText("");
+        }
+        s = contact.getLastName();
+        if (s != null && !s.isEmpty()) {
+            tLastName.setText(s);
+        } else {
+            tLastName.setText("");
+        }
+        s = contact.getPhoneNumber();
+        if (s != null && !s.isEmpty()) {
+            tPhone.setText(s);
+        } else {
+            tPhone.setText("");
+        }
+        s = contact.getOccupation();
+        if (s != null && !s.isEmpty()) {
+            tOccupation.setText(s);
+        } else {
+            tOccupation.setText("");
+        }
+        s = contact.getCompany();
+        if (s != null && !s.isEmpty()) {
+            tCompany.setText(s);
+        } else {
+            tCompany.setText("");
+        }
+        s = contact.getBusinessArea();
+        if (s != null && !s.isEmpty()) {
+            tBusinessArea.setText(s);
+        } else {
+            tBusinessArea.setText("");
+        }
+        s = contact.getMail();
+        if (s != null && !s.isEmpty()) {
+            tMail.setText(s);
+        } else {
+            tMail.setText("");
+        }
+        s = contact.getAddress();
+        if (s != null && !s.isEmpty()) {
+            tAddress.setText(s);
+        } else {
+            tAddress.setText("");
+        }
+        s = contact.getWebsite();
+        if (s != null && !s.isEmpty()) {
+            tWebsite.setText(s);
+        } else {
+            tWebsite.setText("");
+        }
+        s = contact.getBirthday();
+        if (s != null && !s.isEmpty()) {
+            tBirthday.setText(s);
+        } else {
+            tBirthday.setText("");
+        }
+        s = contact.getHobbies();
+        if (s != null && !s.isEmpty()) {
+            tHobbies.setText(s);
+        } else {
+            tHobbies.setText("");
+        }
     }
 
-    public void tVornameClicked(View view) {
-        id = view.getId();
-        startActivityForResult(InputActivity.getIntent(this, R.string.first_name,
-                R.string.save, InputActivity.INPUT_TYPE_TEXT), INPUT_ACTIVITY_REQUEST_CODE);
+    private void getContactExtra(Intent intent) {
+        Serializable extra = intent.getSerializableExtra(CONTACT_EXTRA);
+        if (extra != null && extra instanceof Contact) {
+            contact = (Contact) extra;
+        } else {
+            setResult(RESULT_CANCELED, intent);
+            finish();
+        }
     }
 
-    public void tNachnameClicked(View view) {
-        id = view.getId();
-        startActivityForResult(InputActivity.getIntent(this, R.string.last_name,
-                R.string.save, InputActivity.INPUT_TYPE_TEXT), INPUT_ACTIVITY_REQUEST_CODE);
+    public void bSaved(View view) {
+        Intent intent = getIntent();
+
+        getEditedContact();
+
+        intent.putExtra(Constants.INTENT_RESULT, contact);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
-    public void tPhoneClicked(View view) {
-        id = view.getId();
-        startActivityForResult(InputActivity.getIntent(this, R.string.phone,
-                R.string.save, InputActivity.INPUT_TYPE_NUMBER), INPUT_ACTIVITY_REQUEST_CODE);
-    }
-
-    public static Intent getIntent(Context context, Contact contact) {
-        return null;
+    public void getEditedContact() {
+        contact.setFirstName(tFirstName.getText().toString());
+        contact.setLastName(tLastName.getText().toString());
+        contact.setOccupation(tOccupation.getText().toString());
+        contact.setCompany(tCompany.getText().toString());
+        contact.setAddress(tAddress.getText().toString());
+        contact.setBirthday(tBirthday.getText().toString());
+        contact.setBusinessArea(tBusinessArea.getText().toString());
+        contact.setHobbies(tHobbies.getText().toString());
+        contact.setMail(tMail.getText().toString());
+        contact.setWebsite(tWebsite.getText().toString());
+        contact.setPhoneNumber(tPhone.getText().toString());
     }
 }

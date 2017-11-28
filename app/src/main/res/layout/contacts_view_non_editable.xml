@@ -284,7 +284,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/mail"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_cake" />
+                        android:src="@drawable/contacts_birthday" />
                 </FrameLayout>
 
                 <FrameLayout
