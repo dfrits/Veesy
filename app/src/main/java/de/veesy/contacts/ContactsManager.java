@@ -1,18 +1,28 @@
 package de.veesy.contacts;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 import ezvcard.VCardVersion;
+import ezvcard.parameter.ImageType;
 import ezvcard.parameter.TelephoneType;
+import ezvcard.property.Address;
+import ezvcard.property.Birthday;
+import ezvcard.property.Email;
+import ezvcard.property.Geo;
+import ezvcard.property.Organization;
+import ezvcard.property.Photo;
 import ezvcard.property.StructuredName;
+import ezvcard.property.Xml;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -121,6 +131,23 @@ public class ContactsManager {
         vCard.setStructuredName(structuredName);
         vCard.setFormattedName(contact.getFirstName() + " " + contact.getLastName());
         vCard.addTelephoneNumber(contact.getPhoneNumber(), TelephoneType.CELL);
+        vCard.addHobby(contact.getHobbies());
+        vCard.addEmail(new Email(contact.getMail()));
+        Address address = new Address();
+        address.setStreetAddress(contact.getAddress());
+        vCard.addAddress(address);
+        if (contact.getPicture() != null) {
+            Photo picture = new Photo(contact.getPicture().toString(), ImageType.PNG);
+            vCard.addPhoto(picture);
+        }
+        Birthday birthday = new Birthday(contact.getBirthday());
+        vCard.setBirthday(birthday);
+        vCard.addUrl(contact.getWebsite());
+        Organization organization = new Organization();
+        organization.getValues().add(contact.getCompany());
+        organization.getValues().add(contact.getOccupation());
+        organization.getValues().add(contact.getBusinessArea());
+        vCard.setOrganization(organization);
         Ezvcard.write(vCard).go(contact.getContactPath());
     }
 
@@ -137,12 +164,21 @@ public class ContactsManager {
         }
 
         StructuredName structuredName = vCard.getStructuredName();
-        String first_name = structuredName.getGiven();
-        String last_name = structuredName.getFamily();
-        String phone_number = vCard.getTelephoneNumbers().get(0).getText();
-        //TODO Richtiges Bild auslesen
-        return new Contact(first_name, last_name, null, null, null, phone_number,
-                null, null, null, null, null, null, path);
+        String firstName = structuredName.getGiven();
+        String lastName = structuredName.getFamily();
+        String phoneNumber = vCard.getTelephoneNumbers().get(0).getText();
+        String company=vCard.getOrganization().getValues().get(0);
+        String occupation=vCard.getOrganization().getValues().get(1);
+        String businessArea=vCard.getOrganization().getValues().get(2);
+        String birthday = vCard.getBirthday().getText();
+        String address = vCard.getAddresses().get(0).getStreetAddress();
+        String mail = vCard.getEmails().get(0).getValue();
+        String website = vCard.getUrls().get(0).getValue();
+        String hobbies = vCard.getHobbies().get(0).getValue();
+        Uri picture= Uri.parse(vCard.getPhotos().get(0).getUrl());
+
+        return new Contact(firstName, lastName, occupation, company, businessArea, phoneNumber,
+                mail, address, website, birthday, hobbies, picture, path);
     }
 
     /**
@@ -150,15 +186,18 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     public boolean deleteContact(int position) {
-        /*if (contacts == null || contacts.isEmpty()) {
+        if (contacts == null || contacts.isEmpty()) {
             dummylist.remove(position);
             return true;
         }
         Contact contact = contacts.get(position);
-        return contact.getContactPath() != null && contact.getContactPath().delete();*/
-        return false;
+        return contact.getContactPath() != null && deleteContact(contact);
     }
 
+    /**
+     * Löscht den Kontakt.
+     * @param position Position in der Liste
+     */
     public boolean deleteContact(@NonNull Contact contact) {
         return contact.getContactPath().delete();
     }
