@@ -39,8 +39,9 @@
 
         <activity android:name=".core.ShareActivity"/>
         <activity android:name=".core.ExchangeActivity"/>
-        <activity android:name=".contacts.ContactViewActivity" />
         <activity android:name=".settings.InputActivity"/>
+        <activity android:name=".contacts.ViewContactEditableActivity" />
+        <activity android:name=".contacts.ViewContactNonEditableActivity" />
 
         <meta-data
             android:name="com.google.android.wearable.standalone"

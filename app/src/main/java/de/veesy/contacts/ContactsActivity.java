@@ -65,7 +65,7 @@ public class ContactsActivity extends Activity {
 
         contacts = contacts.isEmpty() ? contactsManager.getdummydata() : contacts; //TODO einfach nichts anzeigen dann?
         for (Contact contact : contacts) {
-            String name = contact.getFirst_name() + " " + contact.getLast_name();
+            String name = contact.getFirstName() + " " + contact.getLastName();
             list.add(new AdapterObject(name, drawable));
         }
 

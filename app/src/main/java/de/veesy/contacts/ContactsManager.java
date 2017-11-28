@@ -101,7 +101,7 @@ public class ContactsManager {
      * @param contact Kontakt, der angezeigt werden soll
      */
     public void showContact(Context context, @NonNull Contact contact) {
-        context.startActivity(ContactViewActivity.getIntent(context, contact, false));
+        context.startActivity(ViewContactNonEditableActivity.getIntent(context, contact));
     }
 
     /**
@@ -116,11 +116,11 @@ public class ContactsManager {
 
         VCard vCard = new VCard(VCardVersion.V4_0);
         StructuredName structuredName = new StructuredName();
-        structuredName.setFamily(contact.getLast_name());
-        structuredName.setGiven(contact.getFirst_name());
+        structuredName.setFamily(contact.getLastName());
+        structuredName.setGiven(contact.getFirstName());
         vCard.setStructuredName(structuredName);
-        vCard.setFormattedName(contact.getFirst_name() + " " + contact.getLast_name());
-        vCard.addTelephoneNumber(contact.getPhone_number(), TelephoneType.CELL);
+        vCard.setFormattedName(contact.getFirstName() + " " + contact.getLastName());
+        vCard.addTelephoneNumber(contact.getPhoneNumber(), TelephoneType.CELL);
         Ezvcard.write(vCard).go(contact.getContactPath());
     }
 
@@ -157,6 +157,10 @@ public class ContactsManager {
         Contact contact = contacts.get(position);
         return contact.getContactPath() != null && contact.getContactPath().delete();*/
         return false;
+    }
+
+    public boolean deleteContact(@NonNull Contact contact) {
+        return contact.getContactPath().delete();
     }
 
     public Contact getOwnContact(Context context) throws IOException {
