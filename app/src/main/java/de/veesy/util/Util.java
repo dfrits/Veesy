@@ -1,6 +1,8 @@
 package de.veesy.util;
 
 import android.app.Activity;
+import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 /**
@@ -37,6 +39,15 @@ public abstract class Util {
             @Override
             public void run() {
                 Toast.makeText(activity.getApplicationContext(), message, length).show();
+            }
+        });
+    }
+
+    public static void runOnUiAnimation(final Activity activity, final View view, final Animation animation){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.startAnimation(animation);
             }
         });
     }
