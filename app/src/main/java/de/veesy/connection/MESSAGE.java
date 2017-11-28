@@ -31,6 +31,8 @@ public final class MESSAGE {
     public static final int DISCONNECTING = 6002;
     public static final int DISCONNECTED = 6003;
     public static final int RESPOND_AS_CLIENT = 6004;
+    public static final int CONNECTION_ERROR = 6005;
+    //public static final int NOT_ABLE_TO_CONNECT = 6006;
 
     public static final int DATA_TRANSMISSION_SUCCESSFUL = 7000;
     public static final int DATA_TRANSMISSION_FAILED = 7001;

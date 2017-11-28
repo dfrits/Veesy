@@ -72,7 +72,6 @@ public class ShareActivity extends Activity implements Observer {
         initShareActivity_permission_denied();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
         // for testing on emulator
 //        initShareActivity_permission_granted();
     }
@@ -135,16 +134,9 @@ public class ShareActivity extends Activity implements Observer {
                 connectionManager.startBluetoothIntent(this, visibility_time);
                 break;
             case START_DISCOVERING:
-                if (animationView != null) {
-
+                if (animationView != null)
                     Util.runOnUiAnimation(this, animationView, radar_animation);
-                 /*   runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            animationView.startAnimation(radar_animation);
-                        }
-                    });*/
-                }
+
                 break;
             case STOP_DISCOVERING:
                 if (animationView != null) {
@@ -171,11 +163,10 @@ public class ShareActivity extends Activity implements Observer {
         }
     }
 
-
-    @Override
+/*    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+    }*/
 
     //endregion
 

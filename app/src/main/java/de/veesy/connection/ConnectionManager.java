@@ -63,6 +63,7 @@ public class ConnectionManager extends Observable {
     private BluetoothConnectedThread btConnectedThread;
 
     private CountDownTimer btDiscover_countDownTimer;
+    private CountDownTimer btConnection_timeOutHandler;
 
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> originallyBondedBTDevices;
@@ -73,12 +74,14 @@ public class ConnectionManager extends Observable {
 
     private boolean btConnectorThread_runningFlag = false;
 
+    private int connectionAttempts = 0;
 
-    private static String originalDeviceName = "Huawei Watch 2 1314";
+
+    private static String originalDeviceName = "Huawei Watch 2 1941";
 
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "hallo",
-            null, null, null, "1314", null, null,
+    private Contact sendContact = new Contact("sagt", "ssers",
+            null, null, null, "1941", null, null,
             null, null, null, null, null);
 
 
@@ -364,6 +367,17 @@ public class ConnectionManager extends Observable {
         btConnectToDevice(btConnectedDevice.getName());
     }
 
+    public void retryConnecting() {
+        if(connectionEstablished) return;
+        if (connectionAttempts++ < 3) {
+            Log.d(TAG, "Retrying to connect; Attempt: " + connectionAttempts);
+            btConnectToDevice(btConnectedDevice.getName());
+        } else {
+            setChanged();
+            notifyObservers(MESSAGE.DATA_TRANSMISSION_FAILED);
+        }
+    }
+
     //endregion
 
     //region Bluetooth - Connection
@@ -472,6 +486,8 @@ public class ConnectionManager extends Observable {
             if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
 
             try {
+                setChanged();
+                notifyObservers(MESSAGE.CONNECTING);
                 btSocket.connect();
                 Log.d(TAG, "BluetoothConnectorThread: Connection established !!!");
                 btClientMode_flag = false;
@@ -480,6 +496,8 @@ public class ConnectionManager extends Observable {
             } catch (IOException e) {
                 closeBluetoothSocket();
                 Log.d(TAG, "BluetoothConnectorThread: Could no connect to UUID: " + VEESY_UUID);
+                setChanged();
+                notifyObservers(MESSAGE.CONNECTION_ERROR);
             }
         }
 
@@ -514,10 +532,10 @@ public class ConnectionManager extends Observable {
 
 
     private void btManageConnection(BluetoothSocket btSocket, BluetoothDevice btDevice) {
+        connectionEstablished = true;
         Log.d(TAG, "Starting connection . . . ");
         btConnectedThread = new BluetoothConnectedThread(btSocket);
         btConnectedThread.start();
-        connectionEstablished = true;
     }
 
     //endregion
@@ -554,7 +572,6 @@ public class ConnectionManager extends Observable {
             while (true) {
                 try {
                     receivedContact = (Contact) btObjectStream_in.readObject();
-
                     if (btClientMode_flag) {
                         setChanged();
                         notifyObservers(MESSAGE.RESPOND_AS_CLIENT);
@@ -625,6 +642,30 @@ public class ConnectionManager extends Observable {
         // Perform the write unsynchronized
         r.write(contact);*//*
     }*/
+
+
+    public void startConnectionTimeOutHandler() {
+        btConnection_timeOutHandler = new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                setChanged();
+                notifyObservers(MESSAGE.DATA_TRANSMISSION_FAILED);
+            }
+        }.start();
+    }
+
+    public void stopConnectionTimeOutHandler() {
+        if (btConnection_timeOutHandler != null) {
+            Log.d(TAG, "Stopping Connection time out handler");
+            btConnection_timeOutHandler.cancel();
+        }
+        btConnection_timeOutHandler = null;
+    }
 
     //endregion
 

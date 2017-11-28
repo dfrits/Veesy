@@ -35,7 +35,7 @@ public class ExchangeActivity extends Activity implements Observer {
     private ConnectionManager connectionManager;
     private Animation exchange_animation;
     private Animation pairing_animation;
-    private ImageView exchangeAnimationView;
+    //private ImageView exchangeAnimationView;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     private void initExchangeAnimation() {
-        exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
+        final ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
         exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
         Util.runOnUiAnimation(this, exchangeAnimationView, exchange_animation);
     }
@@ -86,7 +86,8 @@ public class ExchangeActivity extends Activity implements Observer {
     private void initPairingAnimation() {
         final ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
         pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
-        Util.runOnUiAnimation(this, pairingAnimationView, pairing_animation);
+        pairingAnimationView.startAnimation(pairing_animation);
+        //Util.runOnUiAnimation(this, pairingAnimationView, pairing_animation);
     }
 
     public void update(Observable observable, Object o) {
@@ -96,6 +97,7 @@ public class ExchangeActivity extends Activity implements Observer {
                 break;
             case MESSAGE.PAIRED:
                 initExchangeActivity_paired();
+                connectionManager.startConnectionTimeOutHandler();
                 break;
             case MESSAGE.ALREADY_PAIRED:
                 initExchangeActivity_paired();
@@ -118,6 +120,14 @@ public class ExchangeActivity extends Activity implements Observer {
                 System.out.println("MESSAGE.DATA_SUCCESS in Exchange Act");
                 connectionManager.btCloseConnection();
                 startFeedbackActivity(true);
+                break;
+            case MESSAGE.DATA_TRANSMISSION_FAILED:
+                System.out.println("MESSAGE.DATA_FAILED in Exchange Act");
+                //connectionManager.btCloseConnection();
+                startFeedbackActivity(false);
+                break;
+            case MESSAGE.CONNECTION_ERROR:
+                connectionManager.retryConnecting();
                 break;
 
         }
@@ -144,7 +154,7 @@ public class ExchangeActivity extends Activity implements Observer {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
         feedback_intent.putExtra(SUCCESS_FLAG, success);
         startActivity(feedback_intent);
-        finish();
+        if(success) finish();
     }
 
     public void bPairClicked(View view) {

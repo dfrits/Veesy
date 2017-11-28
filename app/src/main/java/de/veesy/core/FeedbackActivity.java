@@ -27,6 +27,7 @@ import de.veesy.util.Util;
  */
 public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
+    ConnectionManager cm = ConnectionManager.instance();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,9 @@ public class FeedbackActivity extends Activity {
      * @param view .
      */
     public void bShareClicked(View view) {
-        startActivity(new Intent(this, ShareActivity.class));
+        //startActivity(new Intent(this, ShareActivity.class));
+        cm.btSendData();
+
         finish();
     }
 }
