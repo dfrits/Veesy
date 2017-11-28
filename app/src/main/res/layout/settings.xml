@@ -34,7 +34,6 @@
             android:onClick="bMyCardClicked"
             android:text="My Card"
             android:textSize="18dp"
-            android:background="@drawable/label_bg"
             />
 
         <View style="@style/Divider"/>
