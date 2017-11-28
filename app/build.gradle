@@ -29,5 +29,6 @@ dependencies {
     compile 'com.android.support:support-fragment:27.0.1'
     compile 'com.android.support:support-media-compat:27.0.1'
     compile 'com.android.support:support-v4:27.0.1'
+    compile 'com.github.nisrulz:sensey:1.6.0'
     provided 'com.google.android.wearable:wearable:2.1.0'
 }

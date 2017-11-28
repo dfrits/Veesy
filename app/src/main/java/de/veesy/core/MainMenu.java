@@ -1,15 +1,14 @@
 package de.veesy.core;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.github.nisrulz.sensey.Sensey;
+import com.github.nisrulz.sensey.ShakeDetector;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -34,6 +33,30 @@ public class MainMenu extends Activity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
+
+        /**
+         * This is an example on how to use Sensey
+         */
+        Sensey.getInstance().init(this);
+        ShakeDetector.ShakeListener shakeListener = new ShakeDetector.ShakeListener() {
+            @Override
+            public void onShakeDetected() {
+                // Shake detected, do something
+                //counter++;
+                //System.out.println("Counter: " + counter);
+                //System.out.println("Shake detected");
+            }
+
+            @Override
+            public void onShakeStopped() {
+                // Shake stopped, do something
+            }
+        };
+        Sensey.getInstance().startShakeDetection(shakeListener);
+
+
     }
 
     protected void onStart() {
