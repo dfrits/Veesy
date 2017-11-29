@@ -73,10 +73,12 @@ public class ShareActivity extends Activity implements Observer {
         initShareActivity_permission_denied();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        long[] vibrationPattern = {0, 500, 50, 300};
+        vibrator.vibrate(300);
+        // long[] vibrationPattern = {0, 100, 100, 0};
+
         //-1 - don't repeat
-        final int indexInPatternToRepeat = -1;
-        vibrator.vibrate(vibrationPattern, indexInPatternToRepeat);
+        //final int indexInPatternToRepeat = -1;
+        //vibrator.vibrate(vibrationPattern, indexInPatternToRepeat);
         // for testing on emulator
 //        initShareActivity_permission_granted();
     }
