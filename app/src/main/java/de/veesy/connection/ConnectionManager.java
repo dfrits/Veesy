@@ -77,11 +77,11 @@ public class ConnectionManager extends Observable {
     private int connectionAttempts = 0;
 
 
-    private static String originalDeviceName = "Huawei Watch 2 1413";
+    private static String originalDeviceName = "Huawei Watch 2 1941";
 
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "hallo1",
-            null, null, null, "1413", null, null,
+    private Contact sendContact = new Contact("sagt", "sers",
+            null, null, null, "1941", null, null,
             null, null, null, null, null);
 
 
@@ -213,6 +213,9 @@ public class ConnectionManager extends Observable {
      * is the first part btName_prefix?
      */
     private static boolean isVeesyDevice(String deviceName) {
+        if(deviceName == null){
+            Log.d(TAG, "isVeesyDevice, DeviceName is null: " + deviceName);
+        }
         boolean namedCorrectly = false;
         try {
             namedCorrectly = deviceName.split(btName_splitter)[0].equals(btName_prefix);
@@ -579,7 +582,6 @@ public class ConnectionManager extends Observable {
                         setChanged();
                         notifyObservers(MESSAGE.DATA_TRANSMISSION_SUCCESSFUL);
                     }
-
                     Log.d(TAG, "ConnectedThread: InputStream: " + receivedContact.toString());
                 } catch (IOException e) {
                     Log.e(TAG, "ConnectedThread: IO Error while reading InputStream", e);

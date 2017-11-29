@@ -1,9 +1,12 @@
 package de.veesy.core;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.KeyEvent;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,6 +33,10 @@ import de.veesy.util.Util;
  */
 public class MainMenu extends Activity implements Observer {
     private ConnectionManager cm = null;
+    private int counter = 0;
+    ShakeDetector.ShakeListener shakeListener;
+    CountDownTimer countDownTimer = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +58,36 @@ public class MainMenu extends Activity implements Observer {
          * This is an example on how to use Sensey
          */
         Sensey.getInstance().init(this);
-        ShakeDetector.ShakeListener shakeListener = new ShakeDetector.ShakeListener() {
+        shakeListener = new ShakeDetector.ShakeListener() {
             @Override
             public void onShakeDetected() {
                 // Shake detected, do something
-                //counter++;
-                //System.out.println("Counter: " + counter);
-                //System.out.println("Shake detected");
+                counter++;
+                System.out.println("Counter: " + counter);
+                System.out.println("Shake detected");
+
+                if(counter > 30){
+                    startShare();
+                }
             }
 
             @Override
             public void onShakeStopped() {
                 // Shake stopped, do something
+                System.out.println("Shake on Stop");
+                counter = 0;
             }
         };
-        Sensey.getInstance().startShakeDetection(shakeListener);
 
 
+    }
+
+
+    public void startShare(){
+        counter = 0;
+        Sensey.getInstance().stopShakeDetection(shakeListener);
+        onStop();
+        startActivity(new Intent(this, ShareActivity.class));
     }
 
     protected void onStart() {
@@ -79,6 +99,7 @@ public class MainMenu extends Activity implements Observer {
     // launching
     private void initConnectionManager() {
         cm = ConnectionManager.instance();
+        Sensey.getInstance().startShakeDetection(shakeListener);
         cm.addObserver(this);
         cm.btCheckPermissions(this);
     }
@@ -151,7 +172,7 @@ public class MainMenu extends Activity implements Observer {
         }
     }
 
-/*    @Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
             counter++;
@@ -167,8 +188,9 @@ public class MainMenu extends Activity implements Observer {
 
             if (counter == 2) {
                 if (countDownTimer != null) countDownTimer.cancel();
-                System.out.println("Shutting down....");
-                cm.setBackOriginalDeviceName();
+                System.out.println("Forcing Shutdown");
+                //cm.setBackOriginalDeviceName();
+                finish();
 
             } else {
                 countDownTimer = new CountDownTimer(2000, 1000) {
@@ -189,5 +211,5 @@ public class MainMenu extends Activity implements Observer {
 
         }
         return true;
-    }*/
+    }
 }
