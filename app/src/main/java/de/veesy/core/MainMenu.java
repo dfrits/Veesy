@@ -2,7 +2,9 @@ package de.veesy.core;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
 import de.veesy.contacts.ContactsActivity;
 import de.veesy.settings.SettingsActivity;
+import de.veesy.util.IntroductionActivity;
 import de.veesy.util.Util;
 
 /**
@@ -32,6 +35,14 @@ public class MainMenu extends Activity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+
+        //Introduction bei mersten Start der App
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (pref.getBoolean("FirstStart", true)) {
+            pref.edit().putBoolean("FirstStart", false).apply();
+            startActivity(new Intent(this, IntroductionActivity.class));
+        }
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
