@@ -33,27 +33,22 @@ import de.veesy.util.Util;
  */
 public class MainMenu extends WearableActivity implements Observer {
     private ConnectionManager connectionManager = null;
-    private int counter = 0;
-    ShakeDetector.ShakeListener shakeListener;
-    CountDownTimer countDownTimer = null;
+    private int shakesDetected = 0;
+    private ShakeDetector.ShakeListener shakeListener;
+    private CountDownTimer countDownTimer = null;
 
+    int debugCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_menu);
-
-        //Introduction bei mersten Start der App
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (pref.getBoolean("FirstStart", true)) {
-            pref.edit().putBoolean("FirstStart", false).apply();
-            startActivity(new Intent(this, IntroductionActivity.class));
-        }
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        isFirstUsed();
+        setContentView(R.layout.main_menu);
+        initSensey();
+    }
 
-
-
+    private void initSensey() {
         /**
          * This is an example on how to use Sensey
          */
@@ -62,9 +57,9 @@ public class MainMenu extends WearableActivity implements Observer {
             @Override
             public void onShakeDetected() {
                 // Shake detected, do something
-                counter++;
-                System.out.println("ShakeCounter: " + counter);
-                if(counter == 45){
+                shakesDetected++;
+                System.out.println("ShakeCounter: " + shakesDetected);
+                if (shakesDetected == 30) {
                     startShare();
                 }
             }
@@ -73,22 +68,18 @@ public class MainMenu extends WearableActivity implements Observer {
             public void onShakeStopped() {
                 // Shake stopped, do something
                 System.out.println("Shake on Stop");
-                counter = 0;
+                shakesDetected = 0;
             }
         };
-
-
-        Sensey.getInstance().startShakeDetection(shakeListener);
-
-
     }
 
-
-    public void startShare(){
-        System.out.println("StartShare called");
-        counter = 0;
-        onStop();
-        startActivity(new Intent(this, ShareActivity.class));
+    protected void isFirstUsed() {
+        //Introduction bei mersten Start der App
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (pref.getBoolean("FirstStart", true)) {
+            pref.edit().putBoolean("FirstStart", false).apply();
+            startActivity(new Intent(this, IntroductionActivity.class));
+        }
     }
 
     protected void onStart() {
@@ -97,8 +88,10 @@ public class MainMenu extends WearableActivity implements Observer {
         super.onStart();
     }
 
-    protected void onResume(){
-        Sensey.getInstance().startShakeDetection(shakeListener);
+    protected void onResume() {
+        //Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
+        // default: threshold: 3.0F, timeBeforeCeclaringShakeStopped: 1000L
+        Sensey.getInstance().startShakeDetection(5.0F, 650L, shakeListener);
         super.onResume();
     }
 
@@ -115,9 +108,19 @@ public class MainMenu extends WearableActivity implements Observer {
      * @param view .
      */
     public void bShareClicked(View view) {
+        startShare();
+    }
+
+
+    public void startShare() {
+        System.out.println("StartShare called");
+        shakesDetected = 0;
+        //TODO
+        // rework user flow / automatisch shareAct starten wenn der name korrekt ist
         if (connectionManager.checkName()) startActivity(new Intent(this, ShareActivity.class));
         else Util.showToast(this, "Renaming device... try again", Toast.LENGTH_SHORT);
     }
+
 
     /**
      * Aktion des Contacts-Buttons.
@@ -153,8 +156,10 @@ public class MainMenu extends WearableActivity implements Observer {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public void update(Observable observable, Object o) {
+        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
+            finish();
+        }
     }
 
     protected void onStop() {
@@ -172,19 +177,12 @@ public class MainMenu extends WearableActivity implements Observer {
         super.onDestroy();
     }
 
-
-    @Override
-    public void update(Observable observable, Object o) {
-        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
-            finish();
-        }
-    }
-
+    // Debug
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-            counter++;
-            if (counter == 1) {
+            debugCounter++;
+            if (debugCounter == 1) {
                 final Context context = this;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -194,7 +192,7 @@ public class MainMenu extends WearableActivity implements Observer {
                 });
             }
 
-            if (counter == 2) {
+            if (debugCounter == 2) {
                 if (countDownTimer != null) countDownTimer.cancel();
                 System.out.println("Forcing Shutdown");
                 //connectionManager.setBackOriginalDeviceName();
@@ -209,7 +207,7 @@ public class MainMenu extends WearableActivity implements Observer {
 
                     @Override
                     public void onFinish() {
-                        counter = 0;
+                        debugCounter = 0;
                     }
                 }.start();
 
