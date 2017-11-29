@@ -77,11 +77,11 @@ public class ConnectionManager extends Observable {
     private int connectionAttempts = 0;
 
 
-    private static String originalDeviceName = "Huawei Watch 2 1941";
+    private static String originalDeviceName = "Huawei Watch 2 1413";
 
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "ssers",
-            null, null, null, "1941", null, null,
+    private Contact sendContact = new Contact("sagt", "hallo1",
+            null, null, null, "1413", null, null,
             null, null, null, null, null);
 
 
@@ -645,7 +645,7 @@ public class ConnectionManager extends Observable {
 
 
     public void startConnectionTimeOutHandler() {
-        btConnection_timeOutHandler = new CountDownTimer(3000, 1000) {
+        btConnection_timeOutHandler = new CountDownTimer(8000, 1000) {
             @Override
             public void onTick(long l) {
 
@@ -653,6 +653,7 @@ public class ConnectionManager extends Observable {
 
             @Override
             public void onFinish() {
+                Log.d(TAG, "Connection Time Out");
                 setChanged();
                 notifyObservers(MESSAGE.DATA_TRANSMISSION_FAILED);
             }
