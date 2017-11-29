@@ -80,8 +80,8 @@ public class ConnectionManager extends Observable {
     private static String originalDeviceName = "Huawei Watch 2 1941";
 
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "sers",
-            null, null, null, "1941", null, null,
+    private Contact sendContact = new Contact("sagt", "hallo2",
+            null, null, null, "1413", null, null,
             null, null, null, null, null);
 
 
@@ -173,10 +173,14 @@ public class ConnectionManager extends Observable {
                             if (btAdapter.getName().equals(newName)) {
                                 Log.d(TAG, "Renaming bluetooth device . . . done: " + btAdapter.getName());
                                 btNameCorrect_flag = true;
-                                setChanged();
-                                if (!setBackNameAndShutdown)
+                                if (!setBackNameAndShutdown) {
+                                    setChanged();
                                     notifyObservers(MESSAGE.RENAMED_DEVICE);
-                                else notifyObservers(MESSAGE.READY_TO_SHUTDOWN);
+                                } else {
+                                    Log.d(TAG, "Renamed device and ready to shutdown");
+                                    setChanged();
+                                    notifyObservers(MESSAGE.READY_TO_SHUTDOWN);
+                                }
                             }
                             if (!(btAdapter.getName().equals(newName)) && System.currentTimeMillis() < timeOutMillis) {
                                 timeHandler.postDelayed(this, delayMillis);
@@ -213,7 +217,7 @@ public class ConnectionManager extends Observable {
      * is the first part btName_prefix?
      */
     private static boolean isVeesyDevice(String deviceName) {
-        if(deviceName == null){
+        if (deviceName == null) {
             Log.d(TAG, "isVeesyDevice, DeviceName is null: " + deviceName);
         }
         boolean namedCorrectly = false;
@@ -371,7 +375,7 @@ public class ConnectionManager extends Observable {
     }
 
     public void retryConnecting() {
-        if(connectionEstablished) return;
+        if (connectionEstablished) return;
         if (connectionAttempts++ < 3) {
             Log.d(TAG, "Retrying to connect; Attempt: " + connectionAttempts);
             btConnectToDevice(btConnectedDevice.getName());
