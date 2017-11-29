@@ -196,7 +196,7 @@ public class ContactsManager {
 
     /**
      * Löscht den Kontakt.
-     * @param position Position in der Liste
+     * @param contact Kontakt, der gelöscht werden soll
      */
     public boolean deleteContact(@NonNull Contact contact) {
         return contact.getContactPath().delete();

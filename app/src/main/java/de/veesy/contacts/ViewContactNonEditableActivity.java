@@ -113,6 +113,7 @@ public class ViewContactNonEditableActivity extends Activity {
      */
     private void setValues() {
         String s = contact.getFirstName();
+        LinearLayout parentlayout = findViewById(R.id.showContactBackground);
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
         } else {
@@ -130,6 +131,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.phone);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getOccupation();
         if (s != null && !s.isEmpty()) {
@@ -137,6 +139,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.occupation);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getCompany();
         if (s != null && !s.isEmpty()) {
@@ -144,6 +147,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.company);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getBusinessArea();
         if (s != null && !s.isEmpty()) {
@@ -151,6 +155,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.business_area);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getMail();
         if (s != null && !s.isEmpty()) {
@@ -158,6 +163,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.mail);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getAddress();
         if (s != null && !s.isEmpty()) {
@@ -165,6 +171,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.address);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getWebsite();
         if (s != null && !s.isEmpty()) {
@@ -172,6 +179,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.website);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getBirthday();
         if (s != null && !s.isEmpty()) {
@@ -179,6 +187,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.birthday);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
         s = contact.getHobbies();
         if (s != null && !s.isEmpty()) {
@@ -186,6 +195,7 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.hobbies);
             layout.setVisibility(View.INVISIBLE);
+            parentlayout.removeView(layout);
         }
     }
 
