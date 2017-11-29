@@ -1,9 +1,12 @@
 package de.veesy.core;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.wearable.activity.WearableActivity;
+import android.view.KeyEvent;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,8 +31,12 @@ import de.veesy.util.Util;
  * veesy.de
  * hs-augsburg
  */
-public class MainMenu extends Activity implements Observer {
-    private ConnectionManager cm = null;
+public class MainMenu extends WearableActivity implements Observer {
+    private ConnectionManager connectionManager = null;
+    private int counter = 0;
+    ShakeDetector.ShakeListener shakeListener;
+    CountDownTimer countDownTimer = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,36 +58,55 @@ public class MainMenu extends Activity implements Observer {
          * This is an example on how to use Sensey
          */
         Sensey.getInstance().init(this);
-        ShakeDetector.ShakeListener shakeListener = new ShakeDetector.ShakeListener() {
+        shakeListener = new ShakeDetector.ShakeListener() {
             @Override
             public void onShakeDetected() {
                 // Shake detected, do something
-                //counter++;
-                //System.out.println("Counter: " + counter);
-                //System.out.println("Shake detected");
+                counter++;
+                System.out.println("ShakeCounter: " + counter);
+                if(counter == 45){
+                    startShare();
+                }
             }
 
             @Override
             public void onShakeStopped() {
                 // Shake stopped, do something
+                System.out.println("Shake on Stop");
+                counter = 0;
             }
         };
+
+
         Sensey.getInstance().startShakeDetection(shakeListener);
 
 
     }
 
+
+    public void startShare(){
+        System.out.println("StartShare called");
+        counter = 0;
+        onStop();
+        startActivity(new Intent(this, ShareActivity.class));
+    }
+
     protected void onStart() {
-        System.out.println("onStart called");
+        System.out.println("Main onStart called");
         initConnectionManager();
         super.onStart();
     }
 
+    protected void onResume(){
+        Sensey.getInstance().startShakeDetection(shakeListener);
+        super.onResume();
+    }
+
     // launching
     private void initConnectionManager() {
-        cm = ConnectionManager.instance();
-        cm.addObserver(this);
-        cm.btCheckPermissions(this);
+        connectionManager = ConnectionManager.instance();
+        connectionManager.addObserver(this);
+        connectionManager.btCheckPermissions(this);
     }
 
     /**
@@ -89,7 +115,7 @@ public class MainMenu extends Activity implements Observer {
      * @param view .
      */
     public void bShareClicked(View view) {
-        if (cm.checkName()) startActivity(new Intent(this, ShareActivity.class));
+        if (connectionManager.checkName()) startActivity(new Intent(this, ShareActivity.class));
         else Util.showToast(this, "Renaming device... try again", Toast.LENGTH_SHORT);
     }
 
@@ -121,8 +147,9 @@ public class MainMenu extends Activity implements Observer {
      */
     public void bShutdownClicked(View view) {
         Util.showToast(this, "Shutdown", Toast.LENGTH_SHORT);
-        cm.unpairAllDevices();
-        cm.setBackOriginalDeviceName();
+        connectionManager.addObserver(this);
+        connectionManager.unpairAllDevices();
+        connectionManager.setBackOriginalDeviceName();
     }
 
     @Override
@@ -131,7 +158,9 @@ public class MainMenu extends Activity implements Observer {
     }
 
     protected void onStop() {
-        if (cm != null) cm.deleteObserver(this);
+        System.out.println("Main onStop called");
+        if (connectionManager != null) connectionManager.deleteObserver(this);
+        Sensey.getInstance().stopShakeDetection(shakeListener);
         super.onStop();
     }
 
@@ -139,7 +168,7 @@ public class MainMenu extends Activity implements Observer {
     @Override
     protected void onDestroy() {
         // We need to do this because somehow it happens that the connection manager is still alive
-        cm.finish();
+        connectionManager.finish();
         super.onDestroy();
     }
 
@@ -151,7 +180,7 @@ public class MainMenu extends Activity implements Observer {
         }
     }
 
-/*    @Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
             counter++;
@@ -167,8 +196,9 @@ public class MainMenu extends Activity implements Observer {
 
             if (counter == 2) {
                 if (countDownTimer != null) countDownTimer.cancel();
-                System.out.println("Shutting down....");
-                cm.setBackOriginalDeviceName();
+                System.out.println("Forcing Shutdown");
+                //connectionManager.setBackOriginalDeviceName();
+                finish();
 
             } else {
                 countDownTimer = new CountDownTimer(2000, 1000) {
@@ -189,5 +219,5 @@ public class MainMenu extends Activity implements Observer {
 
         }
         return true;
-    }*/
+    }
 }
