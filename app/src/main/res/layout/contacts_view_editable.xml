@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/showContactBackground"
@@ -9,12 +9,11 @@
     android:orientation="vertical"
     android:scrollbars="vertical">
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:fadingEdgeLength="80dp"
-        android:requiresFadingEdge="vertical">
+        android:requiresFadingEdge="vertical">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +32,7 @@
                 android:hint="@string/first_name"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/tNachname"
@@ -47,11 +46,11 @@
                 android:paddingBottom="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -66,12 +65,12 @@
                     android:hint="@string/occupation"
                     android:inputType="text"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -86,12 +85,12 @@
                     android:hint="@string/company"
                     android:inputType="text"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -106,12 +105,12 @@
                     android:hint="@string/business_area"
                     android:inputType="text"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -119,7 +118,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:src="@drawable/contacts_phone_img" />
+                    android:src="@drawable/contacts_phone_img"
+                    android:contentDescription="@string/phone" />
 
                 <EditText
                     android:id="@+id/tPhone"
@@ -132,12 +132,12 @@
                     android:hint="@string/phone"
                     android:inputType="phone"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -145,7 +145,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:src="@drawable/contacts_mail_img" />
+                    android:src="@drawable/contacts_mail_img"
+                    android:contentDescription="@string/mail" />
 
                 <EditText
                     android:id="@+id/tMail"
@@ -158,12 +159,12 @@
                     android:hint="@string/mail"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -171,7 +172,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:src="@drawable/contacts_address" />
+                    android:src="@drawable/contacts_address"
+                    android:contentDescription="@string/address" />
 
                 <EditText
                     android:id="@+id/tAddress"
@@ -184,12 +186,12 @@
                     android:hint="@string/address"
                     android:inputType="textMultiLine"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -197,7 +199,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:src="@drawable/contacts_website" />
+                    android:src="@drawable/contacts_website"
+                    android:contentDescription="@string/website" />
 
                 <EditText
                     android:id="@+id/tWebsite"
@@ -210,12 +213,12 @@
                     android:hint="@string/website"
                     android:inputType="textWebEditText"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -223,7 +226,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:src="@drawable/contacts_birthday" />
+                    android:src="@drawable/contacts_birthday"
+                    android:contentDescription="@string/birthday" />
 
                 <EditText
                     android:id="@+id/tBirthday"
@@ -236,12 +240,12 @@
                     android:hint="@string/birthday"
                     android:inputType="date"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -249,7 +253,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:src="@drawable/contacts_hobby" />
+                    android:src="@drawable/contacts_hobby"
+                    android:contentDescription="@string/hobbies" />
 
                 <EditText
                     android:id="@+id/tHobbies"
@@ -262,9 +267,14 @@
                     android:hint="@string/hobbies"
                     android:inputType="text"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+            </FrameLayout>
+
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    <!--</ScrollView>-->
+</ScrollView>
