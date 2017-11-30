@@ -19,9 +19,12 @@ import ezvcard.property.Address;
 import ezvcard.property.Birthday;
 import ezvcard.property.Email;
 import ezvcard.property.Geo;
+import ezvcard.property.Hobby;
 import ezvcard.property.Organization;
 import ezvcard.property.Photo;
 import ezvcard.property.StructuredName;
+import ezvcard.property.Telephone;
+import ezvcard.property.Url;
 import ezvcard.property.Xml;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -164,18 +167,57 @@ public class ContactsManager {
         }
 
         StructuredName structuredName = vCard.getStructuredName();
-        String firstName = structuredName.getGiven();
-        String lastName = structuredName.getFamily();
-        String phoneNumber = vCard.getTelephoneNumbers().get(0).getText();
-        String company=vCard.getOrganization().getValues().get(0);
-        String occupation=vCard.getOrganization().getValues().get(1);
-        String businessArea=vCard.getOrganization().getValues().get(2);
-        String birthday = vCard.getBirthday().getText();
-        String address = vCard.getAddresses().get(0).getStreetAddress();
-        String mail = vCard.getEmails().get(0).getValue();
-        String website = vCard.getUrls().get(0).getValue();
-        String hobbies = vCard.getHobbies().get(0).getValue();
-        Uri picture= Uri.parse(vCard.getPhotos().get(0).getUrl());
+        String firstName;
+        String lastName;
+        if (structuredName != null) {
+            firstName = structuredName.getGiven();
+            lastName = structuredName.getFamily();
+        } else {
+            firstName = "";
+            lastName = "";
+        }
+        List<Telephone> tel = vCard.getTelephoneNumbers();
+        String phoneNumber = tel == null ? "" : tel.get(0).getText();
+        Organization org = vCard.getOrganization();
+        String company = org == null ? "" : org.getValues().get(0);
+        String occupation = org == null ? "" : org.getValues().get(1);
+        String businessArea = org == null ? "" : org.getValues().get(2);
+        Birthday birth = vCard.getBirthday();
+        String birthday = birth == null ? "" : birth.getText();
+        List<Address> add = vCard.getAddresses();
+        String address = null;
+        try {
+            address = add == null ? "" : add.get(0).getStreetAddress();
+        } catch (Exception e) {
+            address = "";
+        }
+        List<Email> emails = vCard.getEmails();
+        String mail = null;
+        try {
+            mail = emails == null ? "" : emails.get(0).getValue();
+        } catch (Exception e) {
+            mail = "";
+        }
+        List<Url> urls = vCard.getUrls();
+        String website = null;
+        try {
+            website = urls == null ? "" : urls.get(0).getValue();
+        } catch (Exception e) {
+            website = "";
+        }
+        List<Hobby> hobb = vCard.getHobbies();
+        String hobbies = null;
+        try {
+            hobbies = hobb == null ? "" : hobb.get(0).getValue();
+        } catch (Exception e) {
+            hobbies = "";
+        }
+        List<Photo> photos = vCard.getPhotos();
+        Uri picture = null;
+        try {
+            picture = photos == null ? null : Uri.parse(photos.get(0).getUrl());
+        } catch (Exception ignored) {
+        }
 
         return new Contact(firstName, lastName, occupation, company, businessArea, phoneNumber,
                 mail, address, website, birthday, hobbies, picture, path);
