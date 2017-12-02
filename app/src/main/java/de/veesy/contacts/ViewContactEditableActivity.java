@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.wear.widget.drawer.WearableActionDrawerView;
+import android.support.wear.widget.drawer.WearableDrawerController;
+import android.support.wear.widget.drawer.WearableDrawerLayout;
+import android.support.wearable.activity.WearableActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -20,9 +26,11 @@ import de.veesy.util.Constants;
  * hs-augsburg
  */
 
-public class ViewContactEditableActivity extends Activity {
+public class ViewContactEditableActivity extends Activity implements
+        MenuItem.OnMenuItemClickListener {
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
 
+    // Felder für die Kontaktdetails
     private Contact contact;
     private EditText tFirstName;
     private EditText tLastName;
@@ -47,6 +55,12 @@ public class ViewContactEditableActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_view_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_editable);
+        // Peeks action drawer on the bottom.
+        WearableDrawerController controller = wearableActionDrawer.getController();
+        controller.peekDrawer();
+        wearableActionDrawer.setOnMenuItemClickListener(this);
 
         getContactExtra(getIntent());
 
@@ -153,7 +167,7 @@ public class ViewContactEditableActivity extends Activity {
         }
     }
 
-    public void bSaved(View view) {
+    public void mSaveClicked() {
         Intent intent = getIntent();
 
         getEditedContact();
@@ -175,5 +189,15 @@ public class ViewContactEditableActivity extends Activity {
         contact.setMail(tMail.getText().toString());
         contact.setWebsite(tWebsite.getText().toString());
         contact.setPhoneNumber(tPhone.getText().toString());
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.mSave:
+                mSaveClicked();
+                break;
+        }
+        return false;
     }
 }

@@ -22,5 +22,7 @@
     <string name="no_last_name">Kein Nachname</string>
     <string name="delete_contact_error">Kann Kontakt nicht löschen</string>
     <string name="error_safe_contact">Kann Kontakt nicht speichern</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="delete">Löschen</string>
 
 </resources>

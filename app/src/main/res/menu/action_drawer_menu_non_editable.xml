@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mEdit"
+        android:icon="@drawable/home_shutdown_button"
+        android:title="@string/edit" />
+    <item
+        android:id="@+id/mDelete"
+        android:icon="@drawable/home_shutdown_button"
+        android:title="@string/delete" />
+</menu>

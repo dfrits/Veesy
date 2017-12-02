@@ -1,12 +1,16 @@
 package de.veesy.contacts;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.wear.widget.drawer.WearableActionDrawerView;
+import android.support.wear.widget.drawer.WearableDrawerLayout;
+import android.support.wearable.activity.WearableActivity;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,11 +31,14 @@ import de.veesy.util.Util;
  * Zeigt den übergebenen Kontakt an. Die Felder sind nicht bearbeitbar.
  */
 
-public class ViewContactNonEditableActivity extends Activity {
+public class ViewContactNonEditableActivity extends WearableActivity implements
+        MenuItem.OnMenuItemClickListener {
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private static final ContactsManager cm = ContactsManager.instance();
 
     private Contact contact;
+
+    // Felder für die Kontaktinfos
     private TextView tFirstName;
     private TextView tLastName;
     private TextView tPhone;
@@ -60,6 +67,11 @@ public class ViewContactNonEditableActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        WearableActionDrawerView wearableActionDrawer = findViewById(R.id.drawer_layout_non_editable);
+        // Peeks action drawer on the bottom.
+        wearableActionDrawer.getController().peekDrawer();
+        wearableActionDrawer.setOnMenuItemClickListener(this);
 
         Intent intent = getIntent();
 
@@ -113,7 +125,6 @@ public class ViewContactNonEditableActivity extends Activity {
      */
     private void setValues() {
         String s = contact.getFirstName();
-        LinearLayout parentlayout = findViewById(R.id.showContactBackground);
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
         } else {
@@ -130,8 +141,8 @@ public class ViewContactNonEditableActivity extends Activity {
             tPhone.setText(s);
         } else {
             LinearLayout layout = findViewById(R.id.phone);
-            layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
+            ViewGroup parent = (ViewGroup) layout.getParent();
+            parent.removeView(layout);
         }
         s = contact.getOccupation();
         if (s != null && !s.isEmpty()) {
@@ -139,7 +150,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.occupation);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getCompany();
         if (s != null && !s.isEmpty()) {
@@ -147,7 +157,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.company);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getBusinessArea();
         if (s != null && !s.isEmpty()) {
@@ -155,7 +164,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.business_area);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getMail();
         if (s != null && !s.isEmpty()) {
@@ -163,7 +171,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.mail);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getAddress();
         if (s != null && !s.isEmpty()) {
@@ -171,7 +178,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.address);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getWebsite();
         if (s != null && !s.isEmpty()) {
@@ -179,7 +185,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.website);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getBirthday();
         if (s != null && !s.isEmpty()) {
@@ -187,7 +192,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.birthday);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
         s = contact.getHobbies();
         if (s != null && !s.isEmpty()) {
@@ -195,7 +199,6 @@ public class ViewContactNonEditableActivity extends Activity {
         } else {
             LinearLayout layout = findViewById(R.id.hobbies);
             layout.setVisibility(View.INVISIBLE);
-            parentlayout.removeView(layout);
         }
     }
 
@@ -209,16 +212,29 @@ public class ViewContactNonEditableActivity extends Activity {
         }
     }
 
-    public void bEditClicked(View view) {
+    public void mEditClicked() {
         Intent intent = ViewContactEditableActivity.getIntent(this, contact);
         startActivityForResult(intent, Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE);
     }
 
-    public void bDeleteClicked(View view) {
+    public void mDeleteClicked() {
         if (cm.deleteContact(contact)) {
             finish();
         } else {
             Util.showToast(this, R.string.delete_contact_error, Toast.LENGTH_SHORT);
         }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.mEdit:
+                mEditClicked();
+                break;
+            case R.id.mDelete:
+                mDeleteClicked();
+                break;
+        }
+        return false;
     }
 }
