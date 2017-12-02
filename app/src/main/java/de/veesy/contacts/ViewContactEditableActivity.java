@@ -7,11 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.wear.widget.drawer.WearableActionDrawerView;
 import android.support.wear.widget.drawer.WearableDrawerController;
-import android.support.wear.widget.drawer.WearableDrawerLayout;
-import android.support.wearable.activity.WearableActivity;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
