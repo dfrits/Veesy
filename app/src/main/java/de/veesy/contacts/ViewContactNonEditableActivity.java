@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,7 @@ public class ViewContactNonEditableActivity extends Activity {
         // Werte setzen
         setValues();
 
-        LinearLayout layout = findViewById(R.id.showContactBackground);
+        ScrollView layout = findViewById(R.id.showContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
@@ -113,7 +114,7 @@ public class ViewContactNonEditableActivity extends Activity {
      */
     private void setValues() {
         String s = contact.getFirstName();
-        LinearLayout parentlayout = findViewById(R.id.showContactBackground);
+        ScrollView parentlayout = findViewById(R.id.showContactBackground);
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
         } else {
