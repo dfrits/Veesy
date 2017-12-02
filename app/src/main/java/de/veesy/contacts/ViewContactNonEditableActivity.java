@@ -1,5 +1,6 @@
 package de.veesy.contacts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,7 @@ import de.veesy.util.Util;
  * Zeigt den übergebenen Kontakt an. Die Felder sind nicht bearbeitbar.
  */
 
-public class ViewContactNonEditableActivity extends WearableActivity implements
+public class ViewContactNonEditableActivity extends Activity implements
         MenuItem.OnMenuItemClickListener {
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private static final ContactsManager cm = ContactsManager.instance();
@@ -84,7 +86,7 @@ public class ViewContactNonEditableActivity extends WearableActivity implements
         // Werte setzen
         setValues();
 
-        LinearLayout layout = findViewById(R.id.showContactBackground);
+        ScrollView layout = findViewById(R.id.showContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
@@ -125,6 +127,7 @@ public class ViewContactNonEditableActivity extends WearableActivity implements
      */
     private void setValues() {
         String s = contact.getFirstName();
+        ScrollView parentlayout = findViewById(R.id.showContactBackground);
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
         } else {
