@@ -2,24 +2,24 @@
 <android.support.wear.widget.drawer.WearableDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_non_editable"
+    android:id="@+id/lContactBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/contacts_show_background">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fadingEdgeLength="10dp"
-        android:requiresFadingEdge="vertical">
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="vertical">
 
         <LinearLayout
-            android:id="@+id/showContactBackground"
+            android:id="@+id/lContactDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/contacts_show_background"
-            android:orientation="vertical"
-            android:scrollbars="vertical">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tVorname"

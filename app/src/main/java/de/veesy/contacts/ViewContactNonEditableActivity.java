@@ -9,13 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.wear.widget.drawer.WearableActionDrawerView;
 import android.support.wear.widget.drawer.WearableDrawerController;
 import android.support.wear.widget.drawer.WearableDrawerLayout;
-import android.support.wearable.activity.WearableActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +38,7 @@ public class ViewContactNonEditableActivity extends Activity implements
     private Contact contact;
 
     // Felder für die Kontaktinfos
+    private LinearLayout lDetailsView;
     private TextView tFirstName;
     private TextView tLastName;
     private TextView tPhone;
@@ -88,12 +85,12 @@ public class ViewContactNonEditableActivity extends Activity implements
         // Werte setzen
         setValues();
 
-        LinearLayout layout = findViewById(R.id.showContactBackground);
+        WearableDrawerLayout background = findViewById(R.id.lContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
         } else {
-            layout.setBackgroundResource(R.drawable.contacts_show_background);
+            background.setBackgroundResource(R.drawable.contacts_show_background);
         }
     }
 
@@ -110,6 +107,7 @@ public class ViewContactNonEditableActivity extends Activity implements
     }
 
     private void initFields() {
+        lDetailsView = findViewById(R.id.lContactDetails);
         tFirstName = findViewById(R.id.tVorname);
         tLastName = findViewById(R.id.tNachname);
         tOccupation = findViewById(R.id.tOccupation);
@@ -145,65 +143,64 @@ public class ViewContactNonEditableActivity extends Activity implements
         if (s != null && !s.isEmpty()) {
             tPhone.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.phone);
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            parent.removeView(layout);
+            LinearLayout lPhone = findViewById(R.id.phone);
+            lDetailsView.removeView(lPhone);
         }
         s = contact.getOccupation();
         if (s != null && !s.isEmpty()) {
             tOccupation.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.occupation);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lOccupation = findViewById(R.id.occupation);
+            lDetailsView.removeView(lOccupation);
         }
         s = contact.getCompany();
         if (s != null && !s.isEmpty()) {
             tCompany.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.company);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lCompany = findViewById(R.id.company);
+            lDetailsView.removeView(lCompany);
         }
         s = contact.getBusinessArea();
         if (s != null && !s.isEmpty()) {
             tBusiness_area.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.business_area);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lBusiness = findViewById(R.id.business_area);
+            lDetailsView.removeView(lBusiness);
         }
         s = contact.getMail();
         if (s != null && !s.isEmpty()) {
             tMail.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.mail);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lMail = findViewById(R.id.mail);
+            lDetailsView.removeView(lMail);
         }
         s = contact.getAddress();
         if (s != null && !s.isEmpty()) {
             tAddress.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.address);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lAddress = findViewById(R.id.address);
+            lDetailsView.removeView(lAddress);
         }
         s = contact.getWebsite();
         if (s != null && !s.isEmpty()) {
             tWebsite.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.website);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lWebsite = findViewById(R.id.website);
+            lDetailsView.removeView(lWebsite);
         }
         s = contact.getBirthday();
         if (s != null && !s.isEmpty()) {
             tBirthday.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.birthday);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lBirth = findViewById(R.id.birthday);
+            lDetailsView.removeView(lBirth);
         }
         s = contact.getHobbies();
         if (s != null && !s.isEmpty()) {
             tHobbies.setText(s);
         } else {
-            LinearLayout layout = findViewById(R.id.hobbies);
-            layout.setVisibility(View.INVISIBLE);
+            LinearLayout lHobb = findViewById(R.id.hobbies);
+            lDetailsView.removeView(lHobb);
         }
     }
 
@@ -217,10 +214,10 @@ public class ViewContactNonEditableActivity extends Activity implements
         }
     }
 
-    public void mEditClicked() {
+    /*public void mEditClicked() {
         Intent intent = ViewContactEditableActivity.getIntent(this, contact);
         startActivityForResult(intent, Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE);
-    }
+    }*/
 
     public void mDeleteClicked() {
         if (cm.deleteContact(contact)) {
