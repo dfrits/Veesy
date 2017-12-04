@@ -1,285 +1,296 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.wear.widget.drawer.WearableDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.wear.widget.drawer.WearableDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout_editable"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/contacts_show_background">
+    android:background="@drawable/contacts_show_background">-->
 
-    <ScrollView
-        android:id="@+id/showContactBackground"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/lContactDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:orientation="vertical"
         android:scrollbars="vertical">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/tVorname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center_vertical"
+            android:hint="@string/first_name"
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/tNachname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center_vertical"
+            android:hint="@string/last_name"
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords"
+            android:paddingBottom="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/tVorname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="15dp"
+                android:id="@+id/tOccupation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:gravity="center_vertical"
-                android:hint="@string/first_name"
+                android:hint="@string/occupation"
                 android:imeOptions="actionDone"
-                android:textAlignment="center"
+                android:inputType="textCapSentences"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/tNachname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_marginStart="40dp"
+                android:id="@+id/tCompany"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:gravity="center_vertical"
-                android:hint="@string/last_name"
-                android:paddingBottom="10dp"
-                android:textAlignment="center"
+                android:hint="@string/company"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/tOccupation"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/occupation"
-                    android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/tCompany"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/company"
-                    android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/tBusiness_area"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/business_area"
-                    android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/phone"
-                    android:src="@drawable/contacts_phone_img" />
-
-                <EditText
-                    android:id="@+id/tPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/phone"
-                    android:inputType="phone"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/mail"
-                    android:src="@drawable/contacts_mail_img" />
-
-                <EditText
-                    android:id="@+id/tMail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/mail"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/address"
-                    android:src="@drawable/contacts_address" />
-
-                <EditText
-                    android:id="@+id/tAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/address"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/website"
-                    android:src="@drawable/contacts_website" />
-
-                <EditText
-                    android:id="@+id/tWebsite"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/website"
-                    android:inputType="textWebEditText"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/birthday"
-                    android:src="@drawable/contacts_birthday" />
-
-                <EditText
-                    android:id="@+id/tBirthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/birthday"
-                    android:inputType="date"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/hobbies"
-                    android:src="@drawable/contacts_hobby" />
-
-                <EditText
-                    android:id="@+id/tHobbies"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:hint="@string/hobbies"
-                    android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp" />
-
+                android:textSize="18sp" />
         </LinearLayout>
-    </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/tBusiness_area"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/business_area"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/phone"
+                android:src="@drawable/contacts_phone_img" />
+
+            <EditText
+                android:id="@+id/tPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/phone"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/mail"
+                android:src="@drawable/contacts_mail_img" />
+
+            <EditText
+                android:id="@+id/tMail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/mail"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/address"
+                android:src="@drawable/contacts_address" />
+
+            <EditText
+                android:id="@+id/tAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/address"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/website"
+                android:src="@drawable/contacts_website" />
+
+            <EditText
+                android:id="@+id/tWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/website"
+                android:imeOptions="actionDone"
+                android:inputType="textWebEditText"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/birthday"
+                android:src="@drawable/contacts_birthday" />
+
+            <EditText
+                android:id="@+id/tBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/birthday"
+                android:imeOptions="actionDone"
+                android:inputType="date"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/hobbies"
+                android:src="@drawable/contacts_hobby" />
+
+            <EditText
+                android:id="@+id/tHobbies"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:hint="@string/hobbies"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+</ScrollView><!--
 
     <android.support.wear.widget.drawer.WearableActionDrawerView
         android:id="@+id/action_drawer_editable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:actionMenu="@menu/action_drawer_menu_editable" />
-</android.support.wear.widget.drawer.WearableDrawerLayout>
+</android.support.wear.widget.drawer.WearableDrawerLayout>-->

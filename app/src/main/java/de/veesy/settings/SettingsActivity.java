@@ -104,16 +104,9 @@ public class SettingsActivity extends Activity {
         try {
             Contact ownContact = contactsManager.getOwnContact(this);
             Intent intent = ViewContactEditableActivity.getIntent(this, ownContact);
-            startActivityForResult(intent, SHOW_CONTACT_EDITABLE_REQUEST_CODE);
+            startActivity(intent);
         } catch (IOException e) {
             Util.showToast(this, "Error reading your card", Toast.LENGTH_SHORT);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SHOW_CONTACT_EDITABLE_REQUEST_CODE && resultCode == RESULT_CANCELED) {
-            Util.showToast(this, R.string.error_reading_card, Toast.LENGTH_SHORT);
         }
     }
 

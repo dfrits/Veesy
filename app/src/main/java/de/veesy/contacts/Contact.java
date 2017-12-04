@@ -29,7 +29,7 @@ public class Contact implements Serializable {
     private File contactPath;
 
 
-    public Contact(String lastName, String firstName, String occupation, String company,
+    public Contact(String firstName, String lastName, String occupation, String company,
                    String businessArea, String phoneNumber, String mail, String address,
                    String website, String birthday, String hobbies, Uri picture, File contactPath) {
         this.lastName = lastName;
