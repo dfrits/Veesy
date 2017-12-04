@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout_editable"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/contacts_show_background">
 
     <ScrollView
         android:id="@+id/showContactBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/contacts_show_background"
         android:orientation="vertical"
         android:scrollbars="vertical">
 
