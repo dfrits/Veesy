@@ -233,9 +233,9 @@ public class ViewContactNonEditableActivity extends Activity implements
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.mEdit:
+            /*case R.id.mEdit:
                 mEditClicked();
-                break;
+                break;*/
             case R.id.mDelete:
                 mDeleteClicked();
                 break;
