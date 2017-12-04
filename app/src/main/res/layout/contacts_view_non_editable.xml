@@ -16,7 +16,7 @@
         <LinearLayout
             android:id="@+id/showContactBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/contacts_show_background"
             android:orientation="vertical"
             android:scrollbars="vertical">

@@ -52,11 +52,11 @@ public class ViewContactEditableActivity extends Activity implements
         setContentView(R.layout.contacts_view_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_editable);
+        /*WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_editable);
         // Peeks action drawer on the bottom.
         WearableDrawerController controller = wearableActionDrawer.getController();
         controller.peekDrawer();
-        wearableActionDrawer.setOnMenuItemClickListener(this);
+        wearableActionDrawer.setOnMenuItemClickListener(this);*/
 
         getContactExtra(getIntent());
 
