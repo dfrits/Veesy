@@ -5,7 +5,6 @@
     android:id="@+id/lContactBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/contacts_show_background"
     android:background="@drawable/contacts_show_background">
 
     <android.support.v4.widget.NestedScrollView
@@ -13,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:scrollbars="vertical"
         android:fadingEdgeLength="10dp"
         android:requiresFadingEdge="vertical"
         android:scrollbars="vertical">
