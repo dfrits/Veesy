@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:hint="@string/first_name"
             android:imeOptions="actionDone"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -43,7 +43,7 @@
             android:gravity="center_vertical"
             android:hint="@string/last_name"
             android:imeOptions="actionDone"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:paddingBottom="10dp"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -65,7 +65,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/occupation"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -86,7 +86,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/company"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -107,7 +107,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/business_area"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -191,7 +191,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/address"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName|textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -275,7 +275,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/hobbies"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>

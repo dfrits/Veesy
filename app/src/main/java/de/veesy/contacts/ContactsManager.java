@@ -185,28 +185,28 @@ public class ContactsManager {
         Birthday birth = vCard.getBirthday();
         String birthday = birth == null ? "" : birth.getText();
         List<Address> add = vCard.getAddresses();
-        String address = null;
+        String address;
         try {
             address = add == null ? "" : add.get(0).getStreetAddress();
         } catch (Exception e) {
             address = "";
         }
         List<Email> emails = vCard.getEmails();
-        String mail = null;
+        String mail;
         try {
             mail = emails == null ? "" : emails.get(0).getValue();
         } catch (Exception e) {
             mail = "";
         }
         List<Url> urls = vCard.getUrls();
-        String website = null;
+        String website;
         try {
             website = urls == null ? "" : urls.get(0).getValue();
         } catch (Exception e) {
             website = "";
         }
         List<Hobby> hobb = vCard.getHobbies();
-        String hobbies = null;
+        String hobbies;
         try {
             hobbies = hobb == null ? "" : hobb.get(0).getValue();
         } catch (Exception e) {
@@ -241,6 +241,10 @@ public class ContactsManager {
      * @param contact Kontakt, der gelöscht werden soll
      */
     public boolean deleteContact(@NonNull Contact contact) {
+        if (contacts == null || contacts.isEmpty()) {
+            dummylist.remove(contact);
+            return true;
+        }
         return contact.getContactPath().delete();
     }
 

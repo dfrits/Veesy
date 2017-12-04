@@ -5,12 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.wear.widget.drawer.WearableActionDrawerView;
-import android.support.wear.widget.drawer.WearableDrawerController;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import de.veesy.R;
@@ -23,7 +24,7 @@ import de.veesy.util.Constants;
  */
 
 public class ViewContactEditableActivity extends Activity implements
-        MenuItem.OnMenuItemClickListener {
+        /*MenuItem.OnMenuItemClickListener,*/ EditText.OnEditorActionListener {
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
 
     // Felder für die Kontaktdetails
@@ -68,16 +69,27 @@ public class ViewContactEditableActivity extends Activity implements
 
     private void initFields() {
         tFirstName = findViewById(R.id.tVorname);
+        tFirstName.setOnEditorActionListener(this);
         tLastName = findViewById(R.id.tNachname);
+        tLastName.setOnEditorActionListener(this);
         tOccupation = findViewById(R.id.tOccupation);
+        tOccupation.setOnEditorActionListener(this);
         tCompany = findViewById(R.id.tCompany);
+        tCompany.setOnEditorActionListener(this);
         tBusinessArea = findViewById(R.id.tBusiness_area);
+        tBusinessArea.setOnEditorActionListener(this);
         tPhone = findViewById(R.id.tPhone);
+        tPhone.setOnEditorActionListener(this);
         tMail = findViewById(R.id.tMail);
+        tMail.setOnEditorActionListener(this);
         tAddress = findViewById(R.id.tAddress);
+        tAddress.setOnEditorActionListener(this);
         tWebsite = findViewById(R.id.tWebsite);
+        tWebsite.setOnEditorActionListener(this);
         tBirthday = findViewById(R.id.tBirthday);
+        tBirthday.setOnEditorActionListener(this);
         tHobbies = findViewById(R.id.tHobbies);
+        tHobbies.setOnEditorActionListener(this);
     }
 
     /**
@@ -163,7 +175,7 @@ public class ViewContactEditableActivity extends Activity implements
         }
     }
 
-    public void mSaveClicked() {
+    /*public void mSaveClicked() {
         Intent intent = getIntent();
 
         getEditedContact();
@@ -171,7 +183,7 @@ public class ViewContactEditableActivity extends Activity implements
         intent.putExtra(Constants.INTENT_RESULT, contact);
         setResult(RESULT_OK, intent);
         finish();
-    }
+    }*/
 
     public void getEditedContact() {
         contact.setFirstName(tFirstName.getText().toString());
@@ -187,7 +199,7 @@ public class ViewContactEditableActivity extends Activity implements
         contact.setPhoneNumber(tPhone.getText().toString());
     }
 
-    @Override
+    /*@Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.mSave:
@@ -195,5 +207,58 @@ public class ViewContactEditableActivity extends Activity implements
                 break;
         }
         return false;
+    }*/
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        ContactsManager cm = ContactsManager.instance();
+
+        String s = textView.getText().toString();
+        switch (textView.getId()) {
+            case R.id.tVorname:
+                contact.setFirstName(s);
+                break;
+            case R.id.tNachname:
+                contact.setLastName(s);
+                break;
+            case R.id.tOccupation:
+                contact.setOccupation(s);
+                break;
+            case R.id.tCompany:
+                contact.setCompany(s);
+                break;
+            case R.id.tBusiness_area:
+                contact.setBusinessArea(s);
+                break;
+            case R.id.tPhone:
+                contact.setPhoneNumber(s);
+                break;
+            case R.id.tMail:
+                contact.setMail(s);
+                break;
+            case R.id.tWebsite:
+                contact.setWebsite(s);
+                break;
+            case R.id.tBirthday:
+                contact.setBirthday(s);
+                break;
+            case R.id.tHobbies:
+                contact.setHobbies(s);
+                break;
+            case R.id.tAddress:
+                contact.setHobbies(s);
+        }
+
+        InputMethodManager imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+        }
+
+        try {
+            cm.safeContact(contact);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
