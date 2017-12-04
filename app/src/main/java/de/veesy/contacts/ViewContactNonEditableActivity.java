@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.wear.widget.drawer.WearableActionDrawerView;
+import android.support.wear.widget.drawer.WearableDrawerController;
 import android.support.wear.widget.drawer.WearableDrawerLayout;
 import android.support.wearable.activity.WearableActivity;
 import android.view.MenuItem;
@@ -68,16 +69,17 @@ public class ViewContactNonEditableActivity extends Activity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.contacts_view_non_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        WearableActionDrawerView wearableActionDrawer = findViewById(R.id.drawer_layout_non_editable);
+        WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_non_editable);
         // Peeks action drawer on the bottom.
-        wearableActionDrawer.getController().peekDrawer();
+        WearableDrawerController controller = wearableActionDrawer.getController();
+        controller.peekDrawer();
         wearableActionDrawer.setOnMenuItemClickListener(this);
 
         Intent intent = getIntent();
 
-        setContentView(R.layout.contacts_view_non_editable);
 
         getContactExtra(intent);
 
@@ -86,7 +88,7 @@ public class ViewContactNonEditableActivity extends Activity implements
         // Werte setzen
         setValues();
 
-        ScrollView layout = findViewById(R.id.showContactBackground);
+        LinearLayout layout = findViewById(R.id.showContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
@@ -127,7 +129,7 @@ public class ViewContactNonEditableActivity extends Activity implements
      */
     private void setValues() {
         String s = contact.getFirstName();
-        ScrollView parentlayout = findViewById(R.id.showContactBackground);
+//        ScrollView parentlayout = findViewById(R.id.showContactBackground);
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
         } else {

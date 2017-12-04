@@ -274,12 +274,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
 
-            <android.support.wear.widget.drawer.WearableActionDrawerView
-                android:id="@+id/action_drawer_editable"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:actionMenu="@menu/action_drawer_menu_editable" />
-
         </LinearLayout>
     </ScrollView>
+
+    <android.support.wear.widget.drawer.WearableActionDrawerView
+        android:id="@+id/action_drawer_editable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:actionMenu="@menu/action_drawer_menu_editable" />
 </android.support.wear.widget.drawer.WearableDrawerLayout>
