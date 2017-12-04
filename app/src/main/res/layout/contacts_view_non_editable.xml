@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/contacts_show_background">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -380,7 +380,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.wear.widget.drawer.WearableActionDrawerView
         android:id="@+id/action_drawer_non_editable"

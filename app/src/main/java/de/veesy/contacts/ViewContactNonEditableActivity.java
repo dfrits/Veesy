@@ -10,6 +10,7 @@ import android.support.wear.widget.drawer.WearableActionDrawerView;
 import android.support.wear.widget.drawer.WearableDrawerController;
 import android.support.wear.widget.drawer.WearableDrawerLayout;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,8 +72,7 @@ public class ViewContactNonEditableActivity extends Activity implements
 
         WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_non_editable);
         // Peeks action drawer on the bottom.
-        WearableDrawerController controller = wearableActionDrawer.getController();
-        controller.peekDrawer();
+        wearableActionDrawer.setIsAutoPeekEnabled(true);
         wearableActionDrawer.setOnMenuItemClickListener(this);
 
         Intent intent = getIntent();
