@@ -64,7 +64,8 @@ public class ContactsActivity extends Activity {
         //TODO Bild vom Kontakt oder neutraleres DummyBild anzeigen
         Drawable drawable = getResources().getDrawable(R.drawable.dummypicture, null);
 
-        contacts = contacts.isEmpty() ? contactsManager.getdummydata() : contacts; //TODO einfach nichts anzeigen dann?
+        contacts = contacts.isEmpty() && ContactsManager.DEBUGGING ? contactsManager.getdummydata()
+                : contacts; //TODO einfach nichts anzeigen dann?
         for (Contact contact : contacts) {
             String name = contact.getFirstName() + " " + contact.getLastName();
             list.add(new AdapterObject(name, drawable));

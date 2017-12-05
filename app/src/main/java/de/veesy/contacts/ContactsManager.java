@@ -35,9 +35,6 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class ContactsManager {
-    private static ContactsManager unique = null;
-    private List<Contact> contacts;
-
     private static final String FOLDER_PATH_APP = "VCards";
     private static final String FOLDER_PATH_CARDS_OWN = "Own_Card";
     private static final String FOLDER_PATH_CARDS_OTHER = "Other_Cards";
@@ -45,23 +42,30 @@ public class ContactsManager {
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
 
+    static boolean DEBUGGING = true;
+
+    private static ContactsManager unique = null;
+
+    private List<Contact> contacts;
     private List<Contact> dummylist;
 
     //TODO dummydaten entfernen
     private ContactsManager() {
-        dummylist = new ArrayList<>();
-        dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
-                "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
-                "Markusfritz Weg 24, 81765 München", "www.markusfritz.de", "12.08.1967",
-                "Angeln", null, null));
-        dummylist.add(new Contact("Fritz", "Markus", null, null, null,
-                "015278492837", null, null, null, null, null, null, null));
-        dummylist.add(new Contact("Meier", "Voltin", "Student", "Hochschule Augsburg", "Interaktive Mediensysteme", "0158726308",
-                "voltin.meier@hs-augsburg.de", null, null, null, null, null, null));
-        dummylist.add(new Contact("Beutlin", "Angelika", null, null, null, null,
-                null, null, null, null, null, null, null));
-        dummylist.add(new Contact("Katole", "Johanna", null, null, null, null,
-                null, null, "www.johanna-katole.de", null, null, null, null));
+        if (DEBUGGING) {
+            dummylist = new ArrayList<>();
+            dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
+                    "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
+                    "Markusfritz Weg 24, 81765 München", "www.markusfritz.de", "12.08.1967",
+                    "Angeln", null, null));
+            dummylist.add(new Contact("Fritz", "Markus", null, null, null,
+                    "015278492837", null, null, null, null, null, null, null));
+            dummylist.add(new Contact("Meier", "Voltin", "Student", "Hochschule Augsburg", "Interaktive Mediensysteme", "0158726308",
+                    "voltin.meier@hs-augsburg.de", null, null, null, null, null, null));
+            dummylist.add(new Contact("Beutlin", "Angelika", null, null, null, null,
+                    null, null, null, null, null, null, null));
+            dummylist.add(new Contact("Katole", "Johanna", null, null, null, null,
+                    null, null, "www.johanna-katole.de", null, null, null, null));
+        }
     }
 
     public static ContactsManager instance() {
@@ -76,9 +80,9 @@ public class ContactsManager {
 
     /**
      * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
-     * @return Liste mit allen fremden Kontakten
      * @param context Kontext von der Aktivity
      * @param refresh Gibt an, ob die Liste aktualisiert werden soll
+     * @return Liste mit allen fremden Kontakten
      */
     public List<Contact> getContacts(Context context, boolean refresh) {
         if (refresh) {
@@ -120,7 +124,9 @@ public class ContactsManager {
         if (contacts != null && !contacts.isEmpty()) {
             showContact(context, contacts.get(position));
         } else {
-            showContact(context, getdummydata().get(position));
+            if (DEBUGGING) {
+                showContact(context, getdummydata().get(position));
+            }
         }
     }
 
@@ -266,7 +272,7 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     public boolean deleteContact(int position) {
-        if (contacts == null || contacts.isEmpty()) {
+        if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(position);
             return true;
         }
@@ -279,7 +285,7 @@ public class ContactsManager {
      * @param contact Kontakt, der gelöscht werden soll
      */
     public boolean deleteContact(@NonNull Contact contact) {
-        if (contacts == null || contacts.isEmpty()) {
+        if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(contact);
             return true;
         }
