@@ -7,10 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.wear.widget.drawer.WearableActionDrawerView;
-import android.support.wear.widget.drawer.WearableDrawerController;
 import android.support.wear.widget.drawer.WearableDrawerLayout;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +33,8 @@ public class ViewContactNonEditableActivity extends Activity implements
         MenuItem.OnMenuItemClickListener {
     private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private static final ContactsManager cm = ContactsManager.instance();
+
+    private final Context context = this;
 
     private Contact contact;
 
@@ -99,7 +99,7 @@ public class ViewContactNonEditableActivity extends Activity implements
         if (requestCode == Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE && resultCode == RESULT_OK) {
             setValues();
             try {
-                cm.safeContact(contact);
+                cm.safeContact(context, contact);
             } catch (IOException e) {
                 Util.showToast(this, R.string.error_safe_contact, Toast.LENGTH_SHORT);
             }

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +17,12 @@ import ezvcard.parameter.TelephoneType;
 import ezvcard.property.Address;
 import ezvcard.property.Birthday;
 import ezvcard.property.Email;
-import ezvcard.property.Geo;
 import ezvcard.property.Hobby;
 import ezvcard.property.Organization;
 import ezvcard.property.Photo;
 import ezvcard.property.StructuredName;
 import ezvcard.property.Telephone;
 import ezvcard.property.Url;
-import ezvcard.property.Xml;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -41,7 +38,6 @@ public class ContactsManager {
     private static ContactsManager unique = null;
     private List<Contact> contacts;
 
-    //TODO In eine Klasse für Konstanten auslagern
     private static final String FOLDER_PATH_APP = "VCards";
     private static final String FOLDER_PATH_CARDS_OWN = "Own_Card";
     private static final String FOLDER_PATH_CARDS_OTHER = "Other_Cards";
@@ -119,12 +115,12 @@ public class ContactsManager {
 
     /**
      * Speichert den Konakt als vcf-Datei.
+     * @param context Kontext der Activity
      * @param contact Kontakt, der gespeichert werden soll
      */
-    //TODO Bild irgendwie abspeichern
-    public void safeContact(Contact contact) throws IOException {
-        if (contact == null || contact.getContactPath() == null) {
-            return;
+    public void safeContact(Context context, @NonNull Contact contact) throws IOException {
+        if (contact.getContactPath() == null) {
+            contact.setContactPath(generatePath(context));
         }
 
         VCard vCard = new VCard(VCardVersion.V4_0);
@@ -152,6 +148,28 @@ public class ContactsManager {
         organization.getValues().add(contact.getBusinessArea());
         vCard.setOrganization(organization);
         Ezvcard.write(vCard).go(contact.getContactPath());
+    }
+
+    private File generatePath(Context context) throws IOException {
+        File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
+
+        File cardDir = new File(appDir, FOLDER_PATH_CARDS_OTHER);
+        if (!cardDir.exists()) {
+            if (!cardDir.mkdir()) throw new IOException("Can't create new folder");
+        }
+
+        int i = 0;
+        String filename = FILE_NAME_OTHER + i + FILE_ENDING;
+        File file = new File(cardDir, filename);
+        while (file.exists()) {
+            i++;
+            filename = FILE_NAME_OTHER + i + FILE_ENDING;
+            file = new File(cardDir, filename);
+        }
+
+        if (!file.createNewFile()) throw new IOException("Can't create new file");
+
+        return file;
     }
 
     /**
@@ -248,6 +266,12 @@ public class ContactsManager {
         return contact.getContactPath().delete();
     }
 
+    /**
+     * Liest die eigene VK aus. Gibt es noch keine, wird eine neue leere erstellt.
+     * @param context Kontext der Activity
+     * @return Eigene VK
+     * @throws IOException .
+     */
     public Contact getOwnContact(Context context) throws IOException {
         File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
 
