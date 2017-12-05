@@ -49,7 +49,6 @@ public class ContactsManager {
 
     //TODO dummydaten entfernen
     private ContactsManager() {
-        updateContactList();
         dummylist = new ArrayList<>();
         dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
                 "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
@@ -78,17 +77,35 @@ public class ContactsManager {
     /**
      * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
      * @return Liste mit allen fremden Kontakten
+     * @param context Kontext von der Aktivity
      */
-    public List<Contact> getContacts() {
+    public List<Contact> getContacts(Context context) {
+        updateContactList(context);
         return contacts;
     }
 
     /**
      * Liest die Kontakte neu ein und aktualisiert die Liste der Kontakte.
+     * @param context Kontext von der Aktivity
      */
     //TODO Kontakte aus dem OtherFolder neu einlesen usw...
-    public void updateContactList() {
+    private void updateContactList(Context context) {
         contacts = new ArrayList<>();
+
+        File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
+
+        File cardDir = new File(appDir, FOLDER_PATH_CARDS_OTHER);
+        if (!cardDir.exists()) {
+            if (!cardDir.mkdir()) return;
+        }
+
+        File[] cards = cardDir.listFiles();
+        for (File path : cards) {
+            try {
+                contacts.add(readContact(path));
+            } catch (IOException ignored) {
+            }
+        }
     }
 
     /**
