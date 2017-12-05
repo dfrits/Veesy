@@ -78,9 +78,12 @@ public class ContactsManager {
      * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
      * @return Liste mit allen fremden Kontakten
      * @param context Kontext von der Aktivity
+     * @param refresh Gibt an, ob die Liste aktualisiert werden soll
      */
-    public List<Contact> getContacts(Context context) {
-        updateContactList(context);
+    public List<Contact> getContacts(Context context, boolean refresh) {
+        if (refresh) {
+            updateContactList(context);
+        }
         return contacts;
     }
 

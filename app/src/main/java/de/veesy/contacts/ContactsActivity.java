@@ -59,7 +59,7 @@ public class ContactsActivity extends Activity {
      * Holt die aktuellen Kontakte vom Manager und zeigt diese an.
      */
     private void setData() {
-        List<Contact> contacts = contactsManager.getContacts(this);
+        List<Contact> contacts = contactsManager.getContacts(this, true);
         List<AdapterObject> list = new ArrayList<>();
         //TODO Bild vom Kontakt oder neutraleres DummyBild anzeigen
         Drawable drawable = getResources().getDrawable(R.drawable.dummypicture, null);
