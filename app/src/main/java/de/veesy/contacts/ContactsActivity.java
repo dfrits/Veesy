@@ -3,10 +3,14 @@ package de.veesy.contacts;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.SnapHelper;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +54,8 @@ public class ContactsActivity extends Activity {
             public void onItemLongClicked(final int position, String value) {
             }
         });
+        SnapHelper snapHelper = new GravitySnapHelper(Gravity.TOP);
+        snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(
                 new WearableLinearLayoutManager(this, scrollingLayoutCallback));
         recyclerView.setAdapter(adapter);
