@@ -28,5 +28,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="delete_question">wirklich löschen?</string>
+    <string name="image">Bild</string>
 
 </resources>

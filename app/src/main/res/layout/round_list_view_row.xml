@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lVDevices_row"
-    android:layout_width="match_parent"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:background="@android:color/transparent"
-    android:drawableStart="@drawable/share_list_point_img"
+    android:layout_width="match_parent"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="13dp"
-    android:drawablePadding="10dp"
-    android:textColor="@color/white"
-    android:textSize="20sp">
+    android:layout_marginBottom="13dp">
 
-</TextView>
+    <ImageView
+        android:id="@+id/iV_FK_Image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:src="@drawable/share_list_point_img"
+        android:contentDescription="@string/image"/>
+
+    <TextView
+        android:id="@+id/lVDevices_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/white"
+        android:textSize="20sp">
+    </TextView>
+</LinearLayout>

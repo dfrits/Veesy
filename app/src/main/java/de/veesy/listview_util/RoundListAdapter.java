@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -61,12 +62,14 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
     public class MetaDataViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
         private final TextView textView;
+        private final ImageView imageView;
         private String item;
         private int position;
 
         MetaDataViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.lVDevices_row);
+            imageView = itemView.findViewById(R.id.iV_FK_Image);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -87,7 +90,7 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
             this.position = position;
             textView.setText(item);
             if (image != null) {
-                textView.setCompoundDrawablesWithIntrinsicBounds(image, null, null, null);
+                imageView.setImageDrawable(image);
             }
         }
     }

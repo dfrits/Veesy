@@ -1,7 +1,7 @@
 package de.veesy.contacts;
 
 import android.app.Activity;
-import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.SnapHelper;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 
 import java.io.FileNotFoundException;
@@ -117,11 +118,13 @@ public class ContactsActivity extends Activity {
             }
         }
         String firstname = contact.getFirstName();
-        firstname = firstname != null ? firstname.substring(0, 0) : "";
+        firstname = firstname != null ? firstname.substring(0, 1) : "";
         String lastname = contact.getLastName();
-        lastname = lastname != null ? lastname.substring(0, 0) : "";
+        lastname = lastname != null ? lastname.substring(0, 1) : "";
         String text = firstname + lastname;
-        return new TextDrawable(text);
+
+        return TextDrawable.builder()
+                .buildRound(text, Color.BLACK);
     }
 
     /**
