@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +17,12 @@ import ezvcard.parameter.TelephoneType;
 import ezvcard.property.Address;
 import ezvcard.property.Birthday;
 import ezvcard.property.Email;
-import ezvcard.property.Geo;
 import ezvcard.property.Hobby;
 import ezvcard.property.Organization;
 import ezvcard.property.Photo;
 import ezvcard.property.StructuredName;
 import ezvcard.property.Telephone;
 import ezvcard.property.Url;
-import ezvcard.property.Xml;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -38,10 +35,6 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class ContactsManager {
-    private static ContactsManager unique = null;
-    private List<Contact> contacts;
-
-    //TODO In eine Klasse für Konstanten auslagern
     private static final String FOLDER_PATH_APP = "VCards";
     private static final String FOLDER_PATH_CARDS_OWN = "Own_Card";
     private static final String FOLDER_PATH_CARDS_OTHER = "Other_Cards";
@@ -49,24 +42,29 @@ public class ContactsManager {
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
 
+    static boolean DEBUGGING = true;
+
+    private static ContactsManager unique = null;
+
+    private List<Contact> contacts;
     private List<Contact> dummylist;
 
-    //TODO dummydaten entfernen
     private ContactsManager() {
-        updateContactList();
-        dummylist = new ArrayList<>();
-        dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
-                "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
-                "Markusfritz Weg 24, 81765 München", "www.markusfritz.de", "12.08.1967",
-                "Angeln", null, null));
-        dummylist.add(new Contact("Fritz", "Markus", null, null, null,
-                "015278492837", null, null, null, null, null, null, null));
-        dummylist.add(new Contact("Meier", "Voltin", "Student", "Hochschule Augsburg", "Interaktive Mediensysteme", "0158726308",
-                "voltin.meier@hs-augsburg.de", null, null, null, null, null, null));
-        dummylist.add(new Contact("Beutlin", "Angelika", null, null, null, null,
-                null, null, null, null, null, null, null));
-        dummylist.add(new Contact("Katole", "Johanna", null, null, null, null,
-                null, null, "www.johanna-katole.de", null, null, null, null));
+        if (DEBUGGING) {
+            dummylist = new ArrayList<>();
+            dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
+                    "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
+                    "Markusfritz Weg 24, 81765 München", "www.markusfritz.de", "12.08.1967",
+                    "Angeln", null, null));
+            dummylist.add(new Contact("Fritz", "Markus", null, null, null,
+                    "015278492837", null, null, null, null, null, null, null));
+            dummylist.add(new Contact("Meier", "Voltin", "Student", "Hochschule Augsburg", "Interaktive Mediensysteme", "0158726308",
+                    "voltin.meier@hs-augsburg.de", null, null, null, null, null, null));
+            dummylist.add(new Contact("Beutlin", "Angelika", null, null, null, null,
+                    null, null, null, null, null, null, null));
+            dummylist.add(new Contact("Katole", "Johanna", null, null, null, null,
+                    null, null, "www.johanna-katole.de", null, null, null, null));
+        }
     }
 
     public static ContactsManager instance() {
@@ -81,18 +79,39 @@ public class ContactsManager {
 
     /**
      * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
+     * @param context Kontext von der Aktivity
+     * @param refresh Gibt an, ob die Liste aktualisiert werden soll
      * @return Liste mit allen fremden Kontakten
      */
-    public List<Contact> getContacts() {
+    public List<Contact> getContacts(Context context, boolean refresh) {
+        if (refresh) {
+            updateContactList(context);
+        }
         return contacts;
     }
 
     /**
      * Liest die Kontakte neu ein und aktualisiert die Liste der Kontakte.
+     * @param context Kontext von der Aktivity
      */
     //TODO Kontakte aus dem OtherFolder neu einlesen usw...
-    public void updateContactList() {
+    private void updateContactList(Context context) {
         contacts = new ArrayList<>();
+
+        File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
+
+        File cardDir = new File(appDir, FOLDER_PATH_CARDS_OTHER);
+        if (!cardDir.exists()) {
+            if (!cardDir.mkdir()) return;
+        }
+
+        File[] cards = cardDir.listFiles();
+        for (File path : cards) {
+            try {
+                contacts.add(readContact(path));
+            } catch (IOException ignored) {
+            }
+        }
     }
 
     /**
@@ -104,7 +123,9 @@ public class ContactsManager {
         if (contacts != null && !contacts.isEmpty()) {
             showContact(context, contacts.get(position));
         } else {
-            showContact(context, getdummydata().get(position));
+            if (DEBUGGING) {
+                showContact(context, getdummydata().get(position));
+            }
         }
     }
 
@@ -119,12 +140,12 @@ public class ContactsManager {
 
     /**
      * Speichert den Konakt als vcf-Datei.
+     * @param context Kontext der Activity
      * @param contact Kontakt, der gespeichert werden soll
      */
-    //TODO Bild irgendwie abspeichern
-    public void safeContact(Contact contact) throws IOException {
-        if (contact == null || contact.getContactPath() == null) {
-            return;
+    public void safeContact(Context context, @NonNull Contact contact) throws IOException {
+        if (contact.getContactPath() == null) {
+            contact.setContactPath(generatePath(context));
         }
 
         VCard vCard = new VCard(VCardVersion.V4_0);
@@ -152,6 +173,28 @@ public class ContactsManager {
         organization.getValues().add(contact.getBusinessArea());
         vCard.setOrganization(organization);
         Ezvcard.write(vCard).go(contact.getContactPath());
+    }
+
+    private File generatePath(Context context) throws IOException {
+        File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
+
+        File cardDir = new File(appDir, FOLDER_PATH_CARDS_OTHER);
+        if (!cardDir.exists()) {
+            if (!cardDir.mkdir()) throw new IOException("Can't create new folder");
+        }
+
+        int i = 0;
+        String filename = FILE_NAME_OTHER + i + FILE_ENDING;
+        File file = new File(cardDir, filename);
+        while (file.exists()) {
+            i++;
+            filename = FILE_NAME_OTHER + i + FILE_ENDING;
+            file = new File(cardDir, filename);
+        }
+
+        if (!file.createNewFile()) throw new IOException("Can't create new file");
+
+        return file;
     }
 
     /**
@@ -228,7 +271,7 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     public boolean deleteContact(int position) {
-        if (contacts == null || contacts.isEmpty()) {
+        if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(position);
             return true;
         }
@@ -241,13 +284,19 @@ public class ContactsManager {
      * @param contact Kontakt, der gelöscht werden soll
      */
     public boolean deleteContact(@NonNull Contact contact) {
-        if (contacts == null || contacts.isEmpty()) {
+        if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(contact);
             return true;
         }
         return contact.getContactPath().delete();
     }
 
+    /**
+     * Liest die eigene VK aus. Gibt es noch keine, wird eine neue leere erstellt.
+     * @param context Kontext der Activity
+     * @return Eigene VK
+     * @throws IOException .
+     */
     public Contact getOwnContact(Context context) throws IOException {
         File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
 

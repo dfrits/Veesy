@@ -35,4 +35,8 @@
     <string name="error_safe_contact">Can\'t save contact</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="no_question_message">Yes or No?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_question">Really delete</string>
 </resources>

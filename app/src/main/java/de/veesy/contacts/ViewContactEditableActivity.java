@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import de.veesy.R;
-import de.veesy.util.Constants;
 
 /**
  * Created by Daniel on 28.11.2017.
@@ -255,7 +254,7 @@ public class ViewContactEditableActivity extends Activity implements
         }
 
         try {
-            cm.safeContact(contact);
+            cm.safeContact(this, contact);
             return true;
         } catch (IOException e) {
             return false;

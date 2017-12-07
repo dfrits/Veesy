@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.wear.widget.drawer.WearableActionDrawerView;
-import android.support.wear.widget.drawer.WearableDrawerController;
 import android.support.wear.widget.drawer.WearableDrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Locale;
 
 import de.veesy.R;
 import de.veesy.util.Constants;
@@ -33,10 +33,12 @@ import de.veesy.util.Util;
 
 public class ViewContactNonEditableActivity extends Activity implements
         MenuItem.OnMenuItemClickListener {
-    private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     private static final ContactsManager cm = ContactsManager.instance();
 
+    private final Context context = this;
+
     private Contact contact;
+    private WearableActionDrawerView wearableActionDrawer;
 
     // Felder für die Kontaktinfos
     private LinearLayout lDetailsView;
@@ -60,7 +62,7 @@ public class ViewContactNonEditableActivity extends Activity implements
      */
     public static Intent getIntent(Context context, Contact contact) {
         Intent showContactIntent = new Intent(context, ViewContactNonEditableActivity.class);
-        showContactIntent.putExtra(CONTACT_EXTRA, contact);
+        showContactIntent.putExtra(Constants.CONTACT_EXTRA, contact);
         return showContactIntent;
     }
 
@@ -70,9 +72,8 @@ public class ViewContactNonEditableActivity extends Activity implements
         setContentView(R.layout.contacts_view_non_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_non_editable);
-        // Peeks action drawer on the bottom.
-        wearableActionDrawer.setIsAutoPeekEnabled(true);
+        wearableActionDrawer = findViewById(R.id.action_drawer_non_editable);
+        wearableActionDrawer.setIsAutoPeekEnabled(false);
         wearableActionDrawer.setOnMenuItemClickListener(this);
 
         Intent intent = getIntent();
@@ -99,7 +100,7 @@ public class ViewContactNonEditableActivity extends Activity implements
         if (requestCode == Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE && resultCode == RESULT_OK) {
             setValues();
             try {
-                cm.safeContact(contact);
+                cm.safeContact(context, contact);
             } catch (IOException e) {
                 Util.showToast(this, R.string.error_safe_contact, Toast.LENGTH_SHORT);
             }
@@ -127,7 +128,6 @@ public class ViewContactNonEditableActivity extends Activity implements
      */
     private void setValues() {
         String s = contact.getFirstName();
-//        ScrollView parentlayout = findViewById(R.id.showContactBackground);
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
         } else {
@@ -205,7 +205,7 @@ public class ViewContactNonEditableActivity extends Activity implements
     }
 
     private void getContactExtra(Intent intent) {
-        Serializable extra = intent.getSerializableExtra(CONTACT_EXTRA);
+        Serializable extra = intent.getSerializableExtra(Constants.CONTACT_EXTRA);
         if (extra != null && extra instanceof Contact) {
             contact = (Contact) extra;
         } else {
@@ -214,29 +214,30 @@ public class ViewContactNonEditableActivity extends Activity implements
         }
     }
 
-    /*public void mEditClicked() {
-        Intent intent = ViewContactEditableActivity.getIntent(this, contact);
-        startActivityForResult(intent, Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE);
-    }*/
-
-    public void mDeleteClicked() {
-        if (cm.deleteContact(contact)) {
-            finish();
-        } else {
-            Util.showToast(this, R.string.delete_contact_error, Toast.LENGTH_SHORT);
-        }
-    }
-
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            /*case R.id.mEdit:
-                mEditClicked();
-                break;*/
-            case R.id.mDelete:
-                mDeleteClicked();
+            case R.id.mDeleteYes:
+                if (ContactsManager.instance().deleteContact(contact)) {
+                    finish();
+                } else {
+                    Util.showToast(this, R.string.delete_contact_error, Toast.LENGTH_LONG);
+                }
                 break;
         }
-        return false;
+        wearableActionDrawer.getController().closeDrawer();
+        return true;
+    }
+
+    public void bDeleteClicked(View view) {
+        String language = Locale.getDefault().getLanguage();
+        String title;
+        if (Locale.GERMAN.toString().equals(language)) {
+            title = contact.getFullyName() + " " + getString(R.string.delete_question);
+        } else {
+            title = getString(R.string.delete_question) + " " + contact.getFullyName() + "?";
+        }
+        wearableActionDrawer.setTitle(title);
+        wearableActionDrawer.getController().openDrawer();
     }
 }
