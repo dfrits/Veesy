@@ -10,9 +10,8 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:fadingEdgeLength="10dp"
+        android:fadingEdgeLength="30dp"
         android:requiresFadingEdge="vertical"
         android:scrollbars="vertical">
 
@@ -349,31 +348,19 @@
 
             </LinearLayout>
 
-            <LinearLayout
+
+
+            <ImageButton
+                android:id="@+id/imageButton2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:background="@color/action_button_background"
+                android:onClick="bDeleteClicked"
+                android:scaleType="fitCenter"
+                android:src="@drawable/contacts_delete" />
 
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/screen_background_dark_transparent" />
-                </FrameLayout>
-
-            </LinearLayout>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/delete"
-                android:onClick="bDeleteClicked"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

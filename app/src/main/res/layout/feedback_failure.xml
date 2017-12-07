@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/img_feedback"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:contentDescription="@string/data_transmission_failure"
