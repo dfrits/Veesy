@@ -101,6 +101,10 @@ public class Contact implements Serializable {
         return contactPath;
     }
 
+    public String getFullyName() {
+        return firstName + " " + lastName;
+    }
+
     public String toString() {
         return firstName + " " + lastName + ": " + phoneNumber;
     }

@@ -24,5 +24,9 @@
     <string name="error_safe_contact">Kann Kontakt nicht speichern</string>
     <string name="edit">Bearbeiten</string>
     <string name="delete">Löschen</string>
+    <string name="no_question_message">Ja oder Nein?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="delete_question">wirklich löschen?</string>
 
 </resources>

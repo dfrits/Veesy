@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/contacts_background"
-                android:orientation="vertical">
+<android.support.wear.widget.drawer.WearableDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lContactBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/contacts_background">
 
-    <ImageButton
-        android:id="@+id/bShare"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/settings"
-        android:onClick="bSettingsClicked"
-        android:scaleType="fitCenter"
-        android:src="@drawable/share_button_mini"/>
-
-    <android.support.wear.widget.WearableRecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/lVContacts"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toStartOf="@+id/bShare"
-        android:background="@android:color/transparent"
-        android:layout_marginEnd="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp"/>
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/bShare"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/settings"
+            android:onClick="bSettingsClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/share_button_mini" />
+
+        <android.support.wear.widget.WearableRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/lVContacts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/bShare"
+            android:background="@android:color/transparent"
+            android:paddingEnd="0dp"
+            android:paddingStart="20dp" />
+
+    </RelativeLayout>
+
+    <android.support.wear.widget.drawer.WearableActionDrawerView
+        android:id="@+id/action_drawer_non_editable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:actionMenu="@menu/action_drawer_menu_non_editable" />
+</android.support.wear.widget.drawer.WearableDrawerLayout>

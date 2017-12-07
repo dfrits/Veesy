@@ -49,7 +49,6 @@ public class ContactsManager {
     private List<Contact> contacts;
     private List<Contact> dummylist;
 
-    //TODO dummydaten entfernen
     private ContactsManager() {
         if (DEBUGGING) {
             dummylist = new ArrayList<>();
