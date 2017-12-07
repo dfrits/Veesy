@@ -17,6 +17,7 @@ import de.veesy.connection.ConnectionManager;
 import de.veesy.contacts.Contact;
 import de.veesy.contacts.ViewContactEditableActivity;
 import de.veesy.contacts.ContactsManager;
+import de.veesy.util.IntroductionActivity;
 import de.veesy.util.Util;
 
 import static de.veesy.settings.ESettingItems.MY_CARD;
@@ -69,6 +70,7 @@ public class SettingsActivity extends Activity {
 
     public void bAboutClicked(View view){
         //TODO about us info
+        startActivity(new Intent(this, IntroductionActivity.class));
     }
 
 /*    private void initListView() {

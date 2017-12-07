@@ -3,6 +3,11 @@ package de.veesy.core;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.wearable.activity.WearableActivity;
@@ -10,6 +15,7 @@ import android.view.KeyEvent;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.nisrulz.sensey.Sensey;
@@ -74,7 +80,7 @@ public class MainMenu extends WearableActivity implements Observer {
     }
 
     protected void isFirstUsed() {
-        //Introduction bei mersten Start der App
+        //Introduction beim ersten Start der App
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (pref.getBoolean("FirstStart", true)) {
             pref.edit().putBoolean("FirstStart", false).apply();
