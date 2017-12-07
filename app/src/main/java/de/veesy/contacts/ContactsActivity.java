@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +50,15 @@ public class ContactsActivity extends Activity {
         wearableActionDrawer.setIsAutoPeekEnabled(false);
 
         initListView();
-        setData();
+        //setData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            setData();
+        }
     }
 
     private void initListView() {
@@ -80,17 +90,38 @@ public class ContactsActivity extends Activity {
     private void setData() {
         List<Contact> contacts = contactsManager.getContacts(this, true);
         List<AdapterObject> list = new ArrayList<>();
-        //TODO Bild vom Kontakt oder neutraleres DummyBild anzeigen
-        Drawable drawable = getResources().getDrawable(R.drawable.dummypicture, null);
 
         contacts = contacts.isEmpty() && ContactsManager.DEBUGGING ? contactsManager.getdummydata()
                 : contacts;
         for (Contact contact : contacts) {
             String name = contact.getFirstName() + " " + contact.getLastName();
-            list.add(new AdapterObject(name, drawable));
+            list.add(new AdapterObject(name, getDrawable(contact)));
         }
 
         adapter.setData(list);
+    }
+
+    /**
+     * Transferiert die Uri vom Kontakt zu einem Drawable. Ist die Uri null wird jeweils der erste
+     * Buchstabe vom Vor- und Nachname zurückgegeben als Drawable. Ist eines dieser Werte null, wird
+     * dieser einfach leergelassen.
+     * @param contact Kontakt
+     * @return Drawable mit Bild vom Kontakt oder Initialen
+     */
+    private Drawable getDrawable(Contact contact) {
+        if (contact.getPicture() != null) {
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(contact.getPicture());
+                return Drawable.createFromStream(inputStream, contact.getPicture().toString());
+            } catch (FileNotFoundException ignored) {
+            }
+        }
+        String firstname = contact.getFirstName();
+        firstname = firstname != null ? firstname.substring(0, 0) : "";
+        String lastname = contact.getLastName();
+        lastname = lastname != null ? lastname.substring(0, 0) : "";
+        String text = firstname + lastname;
+        return new TextDrawable(text);
     }
 
     /**
@@ -103,7 +134,7 @@ public class ContactsActivity extends Activity {
 
     /**
      * Öffnet der ActionDrawer und fragt den Nutzer, bevor der Kontakt gelöscht wird.
-     * @param position Position in der Liste
+     * @param position    Position in der Liste
      * @param contactName Name des Kontakts
      */
     private void onListItemLongClicked(final int position, String contactName) {

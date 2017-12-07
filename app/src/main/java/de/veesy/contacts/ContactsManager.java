@@ -56,7 +56,7 @@ public class ContactsManager {
                     "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
                     "Markusfritz Weg 24, 81765 München", "www.markusfritz.de", "12.08.1967",
                     "Angeln", null, null));
-            dummylist.add(new Contact("Fritz", "Markus", null, null, null,
+            dummylist.add(new Contact("Fritz", "Martin", null, null, null,
                     "015278492837", null, null, null, null, null, null, null));
             dummylist.add(new Contact("Meier", "Voltin", "Student", "Hochschule Augsburg", "Interaktive Mediensysteme", "0158726308",
                     "voltin.meier@hs-augsburg.de", null, null, null, null, null, null));
@@ -286,6 +286,10 @@ public class ContactsManager {
     public boolean deleteContact(@NonNull Contact contact) {
         if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(contact);
+            for (int i = 0; i < dummylist.size(); i++) {
+                if(dummylist.get(i).getFullyName().equals(contact.getFullyName()))
+                    dummylist.remove(i);
+            }
             return true;
         }
         return contact.getContactPath().delete();
