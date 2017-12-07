@@ -141,9 +141,9 @@ public class ContactsActivity extends Activity {
         String language = Locale.getDefault().getLanguage();
         String title;
         if (Locale.GERMAN.toString().equals(language)) {
-            title = contactName + " " + getString(R.string.delete_question);
+            title = contactName + "\n" + getString(R.string.delete_question);
         } else {
-            title = getString(R.string.delete_question) + " " + contactName + "?";
+            title = getString(R.string.delete_question) + "\n" + contactName + "?";
         }
         wearableActionDrawer.setTitle(title);
         wearableActionDrawer.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
