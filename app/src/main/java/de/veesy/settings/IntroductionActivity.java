@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import de.veesy.R;
 import de.veesy.core.MainMenu;
+import de.veesy.util.Constants;
 
 /**
  * Created by dfritsch on 18.11.2017.
@@ -31,6 +32,9 @@ public class IntroductionActivity extends Activity {
     }
 
     public void onIntroAnimationClick(View view) {
-        startActivity(new Intent(this, MainMenu.class));
+//        startActivity(new Intent(this, MainMenu.class));
+        Intent intent = new Intent(this, SettingsActivity.class);
+        intent.putExtra(Constants.FIRST_START_EXTRA, true);
+        startActivity(intent);
     }
 }

@@ -14,6 +14,7 @@ import de.veesy.connection.ConnectionManager;
 import de.veesy.contacts.Contact;
 import de.veesy.contacts.ContactsManager;
 import de.veesy.contacts.ViewContactEditableActivity;
+import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
 /**
@@ -33,6 +34,10 @@ public class SettingsActivity extends Activity {
         connectionManager = ConnectionManager.instance();
         contactsManager = ContactsManager.instance();
 
+        if (getIntent().getBooleanExtra(Constants.FIRST_START_EXTRA, false)) {
+            Util.showToast(this, R.string.fill_out_your_card_please, Toast.LENGTH_LONG);
+            showOwnContact();
+        }
     }
 
     public void bMyCardClicked(View view) {

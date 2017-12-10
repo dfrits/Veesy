@@ -23,5 +23,6 @@
     <string name="no">Nein</string>
     <string name="delete_question">wirklich löschen?</string>
     <string name="image">Bild</string>
+    <string name="fill_out_your_card_please">Bitte fülle zuerst deine Visitenkarte aus. Es speichert automatisch.</string>
 
 </resources>

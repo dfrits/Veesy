@@ -33,4 +33,5 @@
     <string name="no">No</string>
     <string name="delete_question">Really delete</string>
     <string name="image">Image</string>
+    <string name="fill_out_your_card_please">Please fill your card first. It saves automatically.</string>
 </resources>
