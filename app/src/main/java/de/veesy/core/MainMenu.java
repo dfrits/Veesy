@@ -32,7 +32,7 @@ import de.veesy.util.Util;
  * hs-augsburg
  */
 public class MainMenu extends WearableActivity implements Observer {
-    int debugCounter = 0;
+    private int debugCounter = 0;
     private ConnectionManager connectionManager = null;
     private int shakesDetected = 0;
     private ShakeDetector.ShakeListener shakeListener;
