@@ -20,7 +20,7 @@
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/settings"
-            android:onClick="bSettingsClicked"
+            android:onClick="bShareClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/share_button_mini" />
 

@@ -24,7 +24,6 @@
             android:src="@drawable/feedback_failed_img" />
 
         <TextView
-            android:id="@+id/t_feedback"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:layout_below="@+id/img_feedback"
@@ -50,7 +49,6 @@
         android:src="@drawable/share_button_mini" />
 
     <ImageButton
-        android:id="@+id/bHome"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"

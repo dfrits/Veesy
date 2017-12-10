@@ -3,19 +3,13 @@ package de.veesy.core;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.view.KeyEvent;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.nisrulz.sensey.Sensey;
@@ -28,8 +22,8 @@ import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
 import de.veesy.contacts.ContactsActivity;
+import de.veesy.settings.IntroductionActivity;
 import de.veesy.settings.SettingsActivity;
-import de.veesy.util.IntroductionActivity;
 import de.veesy.util.Util;
 
 /**
@@ -38,12 +32,11 @@ import de.veesy.util.Util;
  * hs-augsburg
  */
 public class MainMenu extends WearableActivity implements Observer {
+    int debugCounter = 0;
     private ConnectionManager connectionManager = null;
     private int shakesDetected = 0;
     private ShakeDetector.ShakeListener shakeListener;
     private CountDownTimer countDownTimer = null;
-
-    int debugCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +48,7 @@ public class MainMenu extends WearableActivity implements Observer {
     }
 
     private void initSensey() {
-        /**
+        /*
          * This is an example on how to use Sensey
          */
         Sensey.getInstance().init(this);
@@ -79,7 +72,7 @@ public class MainMenu extends WearableActivity implements Observer {
         };
     }
 
-    protected void isFirstUsed() {
+    private void isFirstUsed() {
         //Introduction beim ersten Start der App
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (pref.getBoolean("FirstStart", true)) {
@@ -110,7 +103,6 @@ public class MainMenu extends WearableActivity implements Observer {
 
     /**
      * Aktion des Share-Buttons.
-     *
      * @param view .
      */
     public void bShareClicked(View view) {
@@ -130,7 +122,6 @@ public class MainMenu extends WearableActivity implements Observer {
 
     /**
      * Aktion des Contacts-Buttons.
-     *
      * @param view .
      */
     public void bContactsClicked(View view) {
@@ -139,7 +130,6 @@ public class MainMenu extends WearableActivity implements Observer {
 
     /**
      * Aktion des Settings-Buttons.
-     *
      * @param view .
      */
     public void bSettingsClicked(View view) {
@@ -151,8 +141,7 @@ public class MainMenu extends WearableActivity implements Observer {
      * Therefore, setBackOriginalName() is called which
      * will notify this observer with MESSAGE.READY_TO_SHUTDOWN
      * in update() the app calls finish()
-     *
-     * @param view
+     * @param view .
      */
     public void bShutdownClicked(View view) {
         Util.showToast(this, "Shutdown", Toast.LENGTH_SHORT);

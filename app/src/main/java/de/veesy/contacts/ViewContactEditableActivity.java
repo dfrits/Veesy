@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import de.veesy.R;
+import de.veesy.util.Constants;
 
 /**
  * Created by Daniel on 28.11.2017.
@@ -22,10 +23,7 @@ import de.veesy.R;
  * hs-augsburg
  */
 
-public class ViewContactEditableActivity extends Activity implements
-        /*MenuItem.OnMenuItemClickListener,*/ EditText.OnEditorActionListener {
-    private static final String CONTACT_EXTRA = "CONTACT_EXTRA";
-
+public class ViewContactEditableActivity extends Activity implements EditText.OnEditorActionListener {
     // Felder für die Kontaktdetails
     private Contact contact;
     private EditText tFirstName;
@@ -42,7 +40,7 @@ public class ViewContactEditableActivity extends Activity implements
 
     public static Intent getIntent(Context context, Contact contact) {
         Intent intent = new Intent(context, ViewContactEditableActivity.class);
-        intent.putExtra(CONTACT_EXTRA, contact);
+        intent.putExtra(Constants.CONTACT_EXTRA, contact);
         return intent;
     }
 
@@ -51,12 +49,6 @@ public class ViewContactEditableActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_view_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        /*WearableActionDrawerView wearableActionDrawer = findViewById(R.id.action_drawer_editable);
-        // Peeks action drawer on the bottom.
-        WearableDrawerController controller = wearableActionDrawer.getController();
-        controller.peekDrawer();
-        wearableActionDrawer.setOnMenuItemClickListener(this);*/
 
         getContactExtra(getIntent());
 
@@ -165,7 +157,7 @@ public class ViewContactEditableActivity extends Activity implements
     }
 
     private void getContactExtra(Intent intent) {
-        Serializable extra = intent.getSerializableExtra(CONTACT_EXTRA);
+        Serializable extra = intent.getSerializableExtra(Constants.CONTACT_EXTRA);
         if (extra != null && extra instanceof Contact) {
             contact = (Contact) extra;
         } else {
@@ -173,40 +165,6 @@ public class ViewContactEditableActivity extends Activity implements
             finish();
         }
     }
-
-    /*public void mSaveClicked() {
-        Intent intent = getIntent();
-
-        getEditedContact();
-
-        intent.putExtra(Constants.INTENT_RESULT, contact);
-        setResult(RESULT_OK, intent);
-        finish();
-    }*/
-
-    public void getEditedContact() {
-        contact.setFirstName(tFirstName.getText().toString());
-        contact.setLastName(tLastName.getText().toString());
-        contact.setOccupation(tOccupation.getText().toString());
-        contact.setCompany(tCompany.getText().toString());
-        contact.setAddress(tAddress.getText().toString());
-        contact.setBirthday(tBirthday.getText().toString());
-        contact.setBusinessArea(tBusinessArea.getText().toString());
-        contact.setHobbies(tHobbies.getText().toString());
-        contact.setMail(tMail.getText().toString());
-        contact.setWebsite(tWebsite.getText().toString());
-        contact.setPhoneNumber(tPhone.getText().toString());
-    }
-
-    /*@Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.mSave:
-                mSaveClicked();
-                break;
-        }
-        return false;
-    }*/
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {

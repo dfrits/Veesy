@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
@@ -26,15 +25,14 @@ import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
 import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
-import de.veesy.listview_util.ScrollingLayoutCallback;
 import de.veesy.listview_util.RoundListAdapter;
+import de.veesy.listview_util.ScrollingLayoutCallback;
 import de.veesy.util.Util;
 
 import static android.view.View.INVISIBLE;
 import static de.veesy.connection.MESSAGE.DEVICE_FOUND;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
-import static de.veesy.connection.MESSAGE.ALREADY_DISCOVERABLE;
 import static de.veesy.connection.MESSAGE.START_DISCOVERING;
 import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
 
@@ -104,7 +102,8 @@ public class ShareActivity extends Activity implements Observer {
         initAnimation();
         startConnectionManager();
         setRefreshListener();
-        //still good for testing
+
+        /* still good for testing */
         //setList();
     }
 
@@ -169,11 +168,6 @@ public class ShareActivity extends Activity implements Observer {
             startExchangeActivity();
         }
     }
-
-/*    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }*/
 
     //endregion
 
@@ -257,10 +251,9 @@ public class ShareActivity extends Activity implements Observer {
         }
 
         //if (!deviceName.equals("Vivien Bardosi")) alreadyPaired = false;
-
-
         //intent.putExtra("ALREADY_PAIRED", alreadyPaired);*/
-//endregion
+
+        //endregion
     }
 
     private void startExchangeActivity() {

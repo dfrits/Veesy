@@ -5,7 +5,6 @@
         android:icon="@drawable/feedback_checkmark_img"
         android:title="@string/yes" />
     <item
-        android:id="@+id/mDeleteNo"
         android:icon="@drawable/feedback_failed_img"
         android:title="@string/no" />
 </menu>

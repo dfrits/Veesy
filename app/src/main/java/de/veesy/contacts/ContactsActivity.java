@@ -168,7 +168,7 @@ public class ContactsActivity extends Activity {
         wearableActionDrawer.getController().openDrawer();
     }
 
-    public void bSettingsClicked(View view) {
+    public void bShareClicked(View view) {
         finish();
     }
 }

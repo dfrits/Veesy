@@ -83,7 +83,7 @@ public class ContactsManager {
      * @param refresh Gibt an, ob die Liste aktualisiert werden soll
      * @return Liste mit allen fremden Kontakten
      */
-    public List<Contact> getContacts(Context context, boolean refresh) {
+    List<Contact> getContacts(Context context, boolean refresh) {
         if (refresh) {
             updateContactList(context);
         }
@@ -119,7 +119,7 @@ public class ContactsManager {
      * @param context  Context der ContactsActivity
      * @param position Position in der Liste
      */
-    public void showContact(Context context, int position) {
+    void showContact(Context context, int position) {
         if (contacts != null && !contacts.isEmpty()) {
             showContact(context, contacts.get(position));
         } else {
@@ -143,7 +143,7 @@ public class ContactsManager {
      * @param context Kontext der Activity
      * @param contact Kontakt, der gespeichert werden soll
      */
-    public void safeContact(Context context, @NonNull Contact contact) throws IOException {
+    void safeContact(Context context, @NonNull Contact contact) throws IOException {
         if (contact.getContactPath() == null) {
             contact.setContactPath(generatePath(context));
         }
@@ -203,7 +203,7 @@ public class ContactsManager {
      * @return Kontakobjekt mit hinterlegten Daten
      * @throws IOException .
      */
-    public Contact readContact(@NonNull File path) throws IOException {
+    private Contact readContact(@NonNull File path) throws IOException {
         VCard vCard = Ezvcard.parse(path).first();
         if (vCard == null) {
             throw new IOException("No such Card");
@@ -270,7 +270,7 @@ public class ContactsManager {
      * Löscht den Kontakt.
      * @param position Position in der Liste
      */
-    public boolean deleteContact(int position) {
+    boolean deleteContact(int position) {
         if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(position);
             return true;
@@ -283,7 +283,7 @@ public class ContactsManager {
      * Löscht den Kontakt.
      * @param contact Kontakt, der gelöscht werden soll
      */
-    public boolean deleteContact(@NonNull Contact contact) {
+    boolean deleteContact(@NonNull Contact contact) {
         if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(contact);
             for (int i = 0; i < dummylist.size(); i++) {

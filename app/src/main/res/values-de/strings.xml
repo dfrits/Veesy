@@ -2,15 +2,12 @@
 <resources>
     <string name="contacts">Kontakte</string>
     <string name="settings">Einstellungen</string>
-    <string name="backpress_hint">Nochmal drücken zum Beenden!</string>
     <string name="not_paired">Pairinganfrage bitte bestätigen und erneut versuchen</string>
     <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
     <string name="first_name">Vorname</string>
     <string name="last_name">Nachname</string>
-    <string name="save">Speichern</string>
     <string name="phone">Telefonnummer</string>
     <string name="shut_down">Beenden</string>
-    <string name="error_reading_card">veesy-Kontakt ist nicht lesbar</string>
     <string name="mail">Email-Adresse</string>
     <string name="occupation">Tätigkeit</string>
     <string name="company">Firma</string>
@@ -22,9 +19,6 @@
     <string name="no_last_name">Kein Nachname</string>
     <string name="delete_contact_error">Kann Kontakt nicht löschen</string>
     <string name="error_safe_contact">Kann Kontakt nicht speichern</string>
-    <string name="edit">Bearbeiten</string>
-    <string name="delete">Löschen</string>
-    <string name="no_question_message">Ja oder Nein?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="delete_question">wirklich löschen?</string>

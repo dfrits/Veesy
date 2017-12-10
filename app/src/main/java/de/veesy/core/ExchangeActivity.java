@@ -31,12 +31,7 @@ public class ExchangeActivity extends Activity implements Observer {
 
     public static final String ALREADY_PAIRED = "ALREADY_PAIRED";
 
-    private boolean already_paired_flag = true;
     private ConnectionManager connectionManager;
-    private Animation exchange_animation;
-    private Animation pairing_animation;
-    //private ImageView exchangeAnimationView;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +41,7 @@ public class ExchangeActivity extends Activity implements Observer {
         initConnectionManager();
 
 
-        already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
+        boolean already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
         if (already_paired_flag) initExchangeActivity_paired();
         else initExchangeActivity_pairing();
 
@@ -79,13 +74,13 @@ public class ExchangeActivity extends Activity implements Observer {
 
     private void initExchangeAnimation() {
         final ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
-        exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
+        Animation exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
         Util.runOnUiAnimation(this, exchangeAnimationView, exchange_animation);
     }
 
     private void initPairingAnimation() {
         final ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
-        pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
+        Animation pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
         pairingAnimationView.startAnimation(pairing_animation);
         //Util.runOnUiAnimation(this, pairingAnimationView, pairing_animation);
     }
@@ -154,7 +149,7 @@ public class ExchangeActivity extends Activity implements Observer {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
         feedback_intent.putExtra(SUCCESS_FLAG, success);
         startActivity(feedback_intent);
-        if(success) finish();
+        if (success) finish();
     }
 
     public void bPairClicked(View view) {

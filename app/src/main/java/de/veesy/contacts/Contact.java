@@ -1,10 +1,9 @@
 package de.veesy.contacts;
 
-import java.io.Serializable;
-
 import android.net.Uri;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Created by dfritsch on 24.10.2017.

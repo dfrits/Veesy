@@ -1,4 +1,4 @@
-package de.veesy.util;
+package de.veesy.settings;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import de.veesy.R;
-import de.veesy.contacts.ContactsActivity;
 import de.veesy.core.MainMenu;
 
 /**

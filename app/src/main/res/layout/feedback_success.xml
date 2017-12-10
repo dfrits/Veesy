@@ -23,7 +23,6 @@
             android:src="@drawable/feedback_checkmark_img" />
 
         <TextView
-            android:id="@+id/t_feedback"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:background="@android:color/transparent"
@@ -35,7 +34,6 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/bDetails"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
@@ -47,7 +45,6 @@
         android:src="@drawable/feedback_businesscard_button" />
 
     <ImageButton
-        android:id="@+id/bHome"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"

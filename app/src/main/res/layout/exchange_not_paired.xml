@@ -17,7 +17,6 @@
         android:src="@drawable/share_button_mini"/>
 
     <ImageButton
-        android:id="@+id/bPair"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -31,7 +30,6 @@
 
 
     <TextView
-        android:id="@+id/t_exchange"
         android:layout_width="110dp"
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"

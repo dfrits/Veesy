@@ -26,7 +26,6 @@
         android:layout_marginBottom="20dp">
 
         <TextView
-            android:id="@+id/bMyCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -39,7 +38,6 @@
         <View style="@style/Divider"/>
 
         <TextView
-            android:id="@+id/bBluetoothSettings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -51,7 +49,6 @@
         <View style="@style/Divider"/>
 
         <TextView
-            android:id="@+id/bRemoveDevices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -63,7 +60,6 @@
         <View style="@style/Divider"/>
 
         <TextView
-            android:id="@+id/bAbout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
