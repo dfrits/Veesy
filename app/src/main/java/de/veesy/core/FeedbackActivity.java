@@ -24,7 +24,7 @@ import de.veesy.util.Util;
  * Key ist {@link FeedbackActivity#SUCCESS_FLAG}<p>
  * Wert ist: {@link true} für <b>Erfolg</b> und {@link false} für <b>Misserfolg</b>.
  * <p>
- * Wird <b>kein</b> Wert mitgegeben, wird standartmäßig der FailureScreen angezeigt.
+ * Wird <b>kein</b> Wert mitgegeben, wird standardmäßig der FailureScreen angezeigt.
  */
 public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
@@ -49,19 +49,19 @@ public class FeedbackActivity extends Activity {
 
     /**
      * Schickt den Nutzer zurück zum HomeScreen.
+     *
      * @param view .
      */
-    public void bHomeClicked(View view){
+    public void bHomeClicked(View view) {
         startActivity(new Intent(this, MainMenu.class));
     }
 
     /**
      * Zeigt die empfangenen Daten an.
+     *
      * @param view .
      */
-    public void bDetailsClicked(View view){
-        //TODO Daniel, Details der empfangenen visitenkarte anzeigen
-        //ConnectionManager connM = ConnectionManager.instance();
+    public void bDetailsClicked(View view) {
         contactsManager = ContactsManager.instance();
         if (connectionManager.getReceivedContact() != null) {
             contactsManager.showContact(this, connectionManager.getReceivedContact());
@@ -72,13 +72,16 @@ public class FeedbackActivity extends Activity {
     }
 
     /**
-     * Schickt den Nutzer zurück zur ShareActivity.
+     * TODO
+     * Schickt den Nutzer zurück zur ExchangeActivity.
+     * Diese wird im Falle von nicht erfolgter datenübertragung nicht gefinished
+     * d.h. die verbindung sollte noch da sein und der Datenaustausch müsste noch erfolgen
+     *
      * @param view .
      */
     public void bShareClicked(View view) {
-        //startActivity(new Intent(this, ShareActivity.class));
+        startActivity(new Intent(this, ExchangeActivity.class));
         connectionManager.btSendData();
-
         finish();
     }
 }

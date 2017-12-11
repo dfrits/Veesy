@@ -65,6 +65,7 @@ public class ConnectionManager extends Observable {
 
     private CountDownTimer btDiscover_countDownTimer;
     private CountDownTimer btConnection_timeOutHandler;
+    private CountDownTimer btDataTransmission_errorHandler;
 
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> originallyBondedBTDevices;
@@ -470,9 +471,8 @@ public class ConnectionManager extends Observable {
 
         public BluetoothConnectorThread(BluetoothDevice device, UUID uuid) {
             Log.d(TAG, "BluetoothConnectorThread started");
-            //TODO quatsch??
             btConnectedDevice = device;
-            btConnectedDeviceUUID = uuid;
+            //btConnectedDeviceUUID = uuid;
             btConnectorThread_runningFlag = true;
         }
 
@@ -480,7 +480,7 @@ public class ConnectionManager extends Observable {
             BluetoothSocket tmp = null;
             Log.i(TAG, " BluetoothConnectorThread running......");
             try {
-                Log.d(TAG, "BluetoothConnectorThread: Trying to create RfcommSocket using: " + btConnectedDeviceUUID);
+                Log.d(TAG, "BluetoothConnectorThread: Trying to create RfcommSocket using: " + VEESY_UUID);
                 tmp = btConnectedDevice.createRfcommSocketToServiceRecord(VEESY_UUID);
             } catch (IOException e) {
                 Log.e(TAG, "BluetoothConnectorThread: Could not create RfcommSocket", e);
@@ -581,6 +581,7 @@ public class ConnectionManager extends Observable {
                         setChanged();
                         notifyObservers(MESSAGE.RESPOND_AS_CLIENT);
                     } else {
+                        stopDataTransmissionHandler();
                         setChanged();
                         notifyObservers(MESSAGE.DATA_TRANSMISSION_SUCCESSFUL);
                     }
@@ -620,16 +621,11 @@ public class ConnectionManager extends Observable {
         if (btConnectedThread != null) btConnectedThread.closeConnection();
     }
 
-    public void btSendData(Contact contact) {
+    /*  public void btSendData(Contact contact) {
         btConnectedThread.write(contact);
     }
 
-    public void btSendData() {
-        Log.d(TAG, "Trying to send own VK");
-        btConnectedThread.write(sendContact);
-    }
-
-    /*    private static Object obj = new Object();
+    private static Object obj = new Object();
 
     private void btSendData(Contact contact) {
 
@@ -645,7 +641,39 @@ public class ConnectionManager extends Observable {
         }
         // Perform the write unsynchronized
         r.write(contact);*//*
-    }*/
+    }
+ */
+
+    public void btSendData() {
+        Log.d(TAG, "Trying to send own VK");
+        startDataTransmissionHandler();
+        btConnectedThread.write(sendContact);
+    }
+
+
+
+    public void startDataTransmissionHandler(){
+        if(btClientMode_flag) return;
+        btDataTransmission_errorHandler = new CountDownTimer(7000, 3000) {
+            @Override
+            public void onTick(long l) {
+                 btSendData();
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+
+    }
+
+    public void stopDataTransmissionHandler(){
+        if (btDataTransmission_errorHandler != null) {
+            btDataTransmission_errorHandler.cancel();
+        }
+        btDataTransmission_errorHandler = null;
+    }
 
 
     public void startConnectionTimeOutHandler() {
@@ -660,6 +688,7 @@ public class ConnectionManager extends Observable {
                 Log.d(TAG, "Connection Time Out");
                 setChanged();
                 notifyObservers(MESSAGE.DATA_TRANSMISSION_FAILED);
+                stopDataTransmissionHandler();
             }
         }.start();
     }
