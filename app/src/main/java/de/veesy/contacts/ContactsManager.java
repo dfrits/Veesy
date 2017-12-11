@@ -143,7 +143,7 @@ public class ContactsManager {
      * @param context Kontext der Activity
      * @param contact Kontakt, der gespeichert werden soll
      */
-    void safeContact(Context context, @NonNull Contact contact) throws IOException {
+    public void safeContact(Context context, @NonNull Contact contact) throws IOException {
         if (contact.getContactPath() == null) {
             contact.setContactPath(generatePath(context));
         }
@@ -287,7 +287,7 @@ public class ContactsManager {
         if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
             dummylist.remove(contact);
             for (int i = 0; i < dummylist.size(); i++) {
-                if(dummylist.get(i).getFullyName().equals(contact.getFullyName()))
+                if(dummylist.get(i).getFullName().equals(contact.getFullName()))
                     dummylist.remove(i);
             }
             return true;

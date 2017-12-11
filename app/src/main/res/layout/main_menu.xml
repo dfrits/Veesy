@@ -53,7 +53,7 @@
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/settings"
-        android:onClick="bShareClicked"
+        android:onClick="bSettingsClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/main_settings_button" />
 

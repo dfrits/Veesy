@@ -3,6 +3,7 @@ package de.veesy.core;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -15,13 +16,16 @@ import android.widget.Toast;
 import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.ShakeDetector;
 
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
 import de.veesy.connection.MESSAGE;
+import de.veesy.contacts.Contact;
 import de.veesy.contacts.ContactsActivity;
+import de.veesy.contacts.ContactsManager;
 import de.veesy.settings.IntroductionActivity;
 import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Util;
@@ -34,6 +38,10 @@ import de.veesy.util.Util;
 public class MainMenu extends WearableActivity implements Observer {
     private int debugCounter = 0;
     private ConnectionManager connectionManager = null;
+    private ContactsManager contactsManager = null;
+
+    private Contact my_contact = null;
+
     private int shakesDetected = 0;
     private ShakeDetector.ShakeListener shakeListener;
     private CountDownTimer countDownTimer = null;
@@ -43,33 +51,10 @@ public class MainMenu extends WearableActivity implements Observer {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         isFirstUsed();
+        initContactsManager();
+        initConnectionManager();
         setContentView(R.layout.main_menu);
         initSensey();
-    }
-
-    private void initSensey() {
-        /*
-         * This is an example on how to use Sensey
-         */
-        Sensey.getInstance().init(this);
-        shakeListener = new ShakeDetector.ShakeListener() {
-            @Override
-            public void onShakeDetected() {
-                // Shake detected, do something
-                shakesDetected++;
-                System.out.println("ShakeCounter: " + shakesDetected);
-                if (shakesDetected == 30) {
-                    startShare();
-                }
-            }
-
-            @Override
-            public void onShakeStopped() {
-                // Shake stopped, do something
-                System.out.println("Shake on Stop");
-                shakesDetected = 0;
-            }
-        };
     }
 
     private void isFirstUsed() {
@@ -81,34 +66,25 @@ public class MainMenu extends WearableActivity implements Observer {
         }
     }
 
-    protected void onStart() {
-        System.out.println("Main onStart called");
-        initConnectionManager();
-        super.onStart();
+    private void initContactsManager(){
+        contactsManager = ContactsManager.instance();
+        try{
+            my_contact = contactsManager.getOwnContact(this);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
-    protected void onResume() {
-        //Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
-        // default: threshold: 3.0F, timeBeforeCeclaringShakeStopped: 1000L
-        Sensey.getInstance().startShakeDetection(5.0F, 650L, shakeListener);
-        super.onResume();
-    }
-
-    // launching
-    private void initConnectionManager() {
+    private void initConnectionManager(){
         connectionManager = ConnectionManager.instance();
+        connectionManager.setSendContact(my_contact);
+        connectionManager.device_setVeesyName();
+    }
+
+    private void startConnectionManager() {
         connectionManager.addObserver(this);
         connectionManager.btCheckPermissions(this);
     }
-
-    /**
-     * Aktion des Share-Buttons.
-     * @param view .
-     */
-    public void bShareClicked(View view) {
-        startShare();
-    }
-
 
     public void startShare() {
         System.out.println("StartShare called");
@@ -119,6 +95,13 @@ public class MainMenu extends WearableActivity implements Observer {
         else Util.showToast(this, "Renaming device... try again", Toast.LENGTH_SHORT);
     }
 
+    /**
+     * Aktion des Share-Buttons.
+     * @param view .
+     */
+    public void bShareClicked(View view) {
+        startShare();
+    }
 
     /**
      * Aktion des Contacts-Buttons.
@@ -151,12 +134,20 @@ public class MainMenu extends WearableActivity implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
-            finish();
-        }
+    protected void onStart() {
+        startConnectionManager();
+        super.onStart();
     }
 
+    @Override
+    protected void onResume() {
+        //Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
+        // default: threshold: 3.0F, timeBeforeCeclaringShakeStopped: 1000L
+        Sensey.getInstance().startShakeDetection(5.0F, 650L, shakeListener);
+        super.onResume();
+    }
+
+    @Override
     protected void onStop() {
         System.out.println("Main onStop called");
         if (connectionManager != null) connectionManager.deleteObserver(this);
@@ -164,12 +155,43 @@ public class MainMenu extends WearableActivity implements Observer {
         super.onStop();
     }
 
-
     @Override
     protected void onDestroy() {
         // We need to do this because somehow it happens that the connection manager is still alive
         connectionManager.finish();
         super.onDestroy();
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
+            finish();
+        }
+    }
+
+    private void initSensey() {
+        /*
+         * This is an example on how to use Sensey
+         */
+        Sensey.getInstance().init(this);
+        shakeListener = new ShakeDetector.ShakeListener() {
+            @Override
+            public void onShakeDetected() {
+                // Shake detected, do something
+                shakesDetected++;
+                System.out.println("ShakeCounter: " + shakesDetected);
+                if (shakesDetected == 30) {
+                    startShare();
+                }
+            }
+
+            @Override
+            public void onShakeStopped() {
+                // Shake stopped, do something
+                System.out.println("Shake on Stop");
+                shakesDetected = 0;
+            }
+        };
     }
 
     // Debug

@@ -100,7 +100,7 @@ public class Contact implements Serializable {
         return contactPath;
     }
 
-    public String getFullyName() {
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 

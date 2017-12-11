@@ -233,9 +233,9 @@ public class ViewContactNonEditableActivity extends Activity implements
         String language = Locale.getDefault().getLanguage();
         String title;
         if (Locale.GERMAN.toString().equals(language)) {
-            title = contact.getFullyName() + "\n" + getString(R.string.delete_question);
+            title = contact.getFullName() + "\n" + getString(R.string.delete_question);
         } else {
-            title = getString(R.string.delete_question) + "\n" + contact.getFullyName() + "?";
+            title = getString(R.string.delete_question) + "\n" + contact.getFullName() + "?";
         }
         wearableActionDrawer.setPaddingRelative(0,20,0,0);
         wearableActionDrawer.setTitle(title);
