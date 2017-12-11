@@ -34,4 +34,9 @@
     <string name="delete_question">Really delete</string>
     <string name="image">Image</string>
     <string name="fill_out_your_card_please">Please fill your card first. It saves automatically.</string>
+    <string name="introduction">Introduction</string>
+    <string name="my_card">My Card</string>
+    <string name="remove_devices">Remove Devices</string>
+    <string name="about_us">About Us</string>
+    <string name="no_device_found">No device found. Please search again!</string>
 </resources>

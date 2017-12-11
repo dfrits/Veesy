@@ -94,7 +94,6 @@ public class ContactsManager {
      * Liest die Kontakte neu ein und aktualisiert die Liste der Kontakte.
      * @param context Kontext von der Aktivity
      */
-    //TODO Kontakte aus dem OtherFolder neu einlesen usw...
     private void updateContactList(Context context) {
         contacts = new ArrayList<>();
 

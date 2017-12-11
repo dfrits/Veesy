@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,8 +151,7 @@ public class ShareActivity extends Activity implements Observer {
                     animationView.setVisibility(INVISIBLE);
                 }
 
-                //TODO
-                /* hier bräuchten wir vllt eine meldung an den User dass keine geräte gefunden wurden*/
+                Util.showToast(this, getString(R.string.no_device_found), Toast.LENGTH_LONG);
 
                 break;
             case MESSAGE.PAIRING:

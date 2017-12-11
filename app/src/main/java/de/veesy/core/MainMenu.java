@@ -89,8 +89,6 @@ public class MainMenu extends WearableActivity implements Observer {
     public void startShare() {
         System.out.println("StartShare called");
         shakesDetected = 0;
-        //TODO
-        // rework user flow / automatisch shareAct starten wenn der name korrekt ist
         if (connectionManager.checkName()) startActivity(new Intent(this, ShareActivity.class));
         else Util.showToast(this, "Renaming device... try again", Toast.LENGTH_SHORT);
     }
