@@ -28,6 +28,7 @@ import de.veesy.contacts.ContactsActivity;
 import de.veesy.contacts.ContactsManager;
 import de.veesy.settings.IntroductionActivity;
 import de.veesy.settings.SettingsActivity;
+import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
 /**
@@ -61,7 +62,6 @@ public class MainMenu extends WearableActivity implements Observer {
         //Introduction beim ersten Start der App
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (pref.getBoolean("FirstStart", true)) {
-            pref.edit().putBoolean("FirstStart", false).apply();
             startActivity(new Intent(this, IntroductionActivity.class));
         }
     }
