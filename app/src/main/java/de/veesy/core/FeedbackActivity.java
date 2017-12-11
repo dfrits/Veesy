@@ -28,7 +28,8 @@ import de.veesy.util.Util;
  */
 public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
-    ConnectionManager cm = ConnectionManager.instance();
+    ConnectionManager connectionManager = ConnectionManager.instance();
+    ContactsManager contactsManager = ContactsManager.instance();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +61,10 @@ public class FeedbackActivity extends Activity {
      */
     public void bDetailsClicked(View view){
         //TODO Daniel, Details der empfangenen visitenkarte anzeigen
-        ConnectionManager connM = ConnectionManager.instance();
-        ContactsManager contM = ContactsManager.instance();
-        if (connM.getReceivedContact() != null) {
-            contM.showContact(this, connM.getReceivedContact());
+        //ConnectionManager connM = ConnectionManager.instance();
+        contactsManager = ContactsManager.instance();
+        if (connectionManager.getReceivedContact() != null) {
+            contactsManager.showContact(this, connectionManager.getReceivedContact());
             finish();
         } else {
             Util.showToast(this, "No Contact received", Toast.LENGTH_SHORT);
@@ -76,7 +77,7 @@ public class FeedbackActivity extends Activity {
      */
     public void bShareClicked(View view) {
         //startActivity(new Intent(this, ShareActivity.class));
-        cm.btSendData();
+        connectionManager.btSendData();
 
         finish();
     }
