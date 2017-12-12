@@ -3,7 +3,6 @@ package de.veesy.core;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -31,6 +30,8 @@ import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
+import static de.veesy.contacts.ContactsManager.DEBUGGING;
+
 /**
  * Created by dfritsch on 24.10.2017.
  * veesy.de
@@ -51,31 +52,31 @@ public class MainMenu extends WearableActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        isFirstUsed();
+
+        //Introduction beim ersten Start der App
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!DEBUGGING && pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
+            Intent intent = new Intent(this, IntroductionActivity.class);
+            intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
+            startActivity(intent);
+        }
+
         initContactsManager();
         initConnectionManager();
         setContentView(R.layout.main_menu);
         initSensey();
     }
 
-    private void isFirstUsed() {
-        //Introduction beim ersten Start der App
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (pref.getBoolean("FirstStart", true)) {
-            startActivity(new Intent(this, IntroductionActivity.class));
-        }
-    }
-
-    private void initContactsManager(){
+    private void initContactsManager() {
         contactsManager = ContactsManager.instance();
-        try{
+        try {
             my_contact = contactsManager.getOwnContact(this, true);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void initConnectionManager(){
+    private void initConnectionManager() {
         connectionManager = ConnectionManager.instance();
         connectionManager.setSendContact(my_contact);
         connectionManager.device_setVeesyName();

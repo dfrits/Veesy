@@ -42,7 +42,7 @@ public class ContactsManager {
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
 
-    static boolean DEBUGGING = true;
+    public static boolean DEBUGGING = true;
 
     private static ContactsManager unique = null;
 

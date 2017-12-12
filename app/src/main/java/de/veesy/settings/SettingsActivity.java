@@ -34,7 +34,7 @@ public class SettingsActivity extends Activity {
         connectionManager = ConnectionManager.instance();
         contactsManager = ContactsManager.instance();
 
-        if (getIntent().getBooleanExtra(Constants.FIRST_START_EXTRA, false)) {
+        if (getIntent().getBooleanExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, false)) {
             Util.showToast(this, R.string.fill_out_your_card_please, Toast.LENGTH_LONG);
             showOwnContact();
         }
@@ -45,7 +45,9 @@ public class SettingsActivity extends Activity {
     }
 
     public void bIntroductionClicked(View view) {
-        startActivity(new Intent(this, IntroductionActivity.class));
+        Intent intent = new Intent(this, IntroductionActivity.class);
+        intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, false);
+        startActivity(intent);
     }
 
     public void bRemoveDevicesClicked(View view) {

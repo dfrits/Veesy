@@ -27,11 +27,10 @@ public class IntroductionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introduction);
 
-
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        firstStart = pref.getBoolean(Constants.FIRST_START_EXTRA, false);
+        firstStart = pref.getBoolean(Constants.INTRODUCTION_FIRST_START_EXTRA, false);
         if (firstStart) {
-            pref.edit().putBoolean("FirstStart", false).apply();
+            pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
         }
 
         ImageView introImage = findViewById(R.id.introAnimation);
@@ -43,7 +42,7 @@ public class IntroductionActivity extends Activity {
     public void onIntroAnimationClick(View view) {
         if (firstStart) {
             Intent intent = new Intent(this, SettingsActivity.class);
-            intent.putExtra(Constants.FIRST_START_EXTRA, true);
+            intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
             startActivity(intent);
         }
         finish();
