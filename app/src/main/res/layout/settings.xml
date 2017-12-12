@@ -103,7 +103,7 @@
             android:gravity="center_vertical"
             android:imeOptions="actionDone"
             android:inputType="number"
-            android:text="timebeforestopped"
+            android:hint="timebeforestopped"
             android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

@@ -44,9 +44,9 @@ public class IntroductionActivity extends Activity {
 
     public void onIntroAnimationClick(View view) {
         //if (firstStart) {
-            Intent intent = new Intent(this, MainMenu.class);
-            intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainMenu.class);
+        intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
+        startActivity(intent);
         //}
     }
 }

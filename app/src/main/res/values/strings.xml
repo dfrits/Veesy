@@ -40,4 +40,5 @@
     <string name="about_us">About Us</string>
     <string name="no_device_found">No device found. Please search again!</string>
     <string name="devies_removed">Devices removed</string>
+    <string name="animation">Animation</string>
 </resources>
