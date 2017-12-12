@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.veesy.util.Constants;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 import ezvcard.VCardVersion;
@@ -42,15 +43,13 @@ public class ContactsManager {
     private static final String FILE_NAME_OWN = "Own_Card";
     private static final String FILE_NAME_OTHER = "Other_Card";
 
-    public static boolean DEBUGGING = true;
-
     private static ContactsManager unique = null;
 
     private List<Contact> contacts;
     private List<Contact> dummylist;
 
     private ContactsManager() {
-        if (DEBUGGING) {
+        if (Constants.DEBUGGING) {
             dummylist = new ArrayList<>();
             dummylist.add(new Contact("Fritz", "Markus", "Sales Manager", "orderbird AG München",
                     "Softwareentwickler", "015118293740", "markus.fritz@gmail.com",
@@ -122,7 +121,7 @@ public class ContactsManager {
         if (contacts != null && !contacts.isEmpty()) {
             showContact(context, contacts.get(position));
         } else {
-            if (DEBUGGING) {
+            if (Constants.DEBUGGING) {
                 showContact(context, getdummydata().get(position));
             }
         }
@@ -270,7 +269,7 @@ public class ContactsManager {
      * @param position Position in der Liste
      */
     boolean deleteContact(int position) {
-        if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
+        if ((contacts == null || contacts.isEmpty()) && Constants.DEBUGGING) {
             dummylist.remove(position);
             return true;
         }
@@ -283,7 +282,7 @@ public class ContactsManager {
      * @param contact Kontakt, der gelöscht werden soll
      */
     boolean deleteContact(@NonNull Contact contact) {
-        if ((contacts == null || contacts.isEmpty()) && DEBUGGING) {
+        if ((contacts == null || contacts.isEmpty()) && Constants.DEBUGGING) {
             dummylist.remove(contact);
             for (int i = 0; i < dummylist.size(); i++) {
                 if(dummylist.get(i).getFullName().equals(contact.getFullName()))

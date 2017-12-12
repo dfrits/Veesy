@@ -18,12 +18,14 @@
 
 
     <LinearLayout
+        android:id="@+id/settings_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:scrollbars="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -31,7 +33,7 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="bMyCardClicked"
+            android:onClick="tMyCardClicked"
             android:text="@string/my_card"
             android:textSize="18sp" />
 
@@ -43,7 +45,7 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="bIntroductionClicked"
+            android:onClick="tIntroductionClicked"
             android:text="@string/introduction"
             android:textSize="18sp" />
 
@@ -55,7 +57,7 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="bRemoveDevicesClicked"
+            android:onClick="tRemoveDevicesClicked"
             android:text="@string/remove_devices"
             android:textSize="18sp" />
 
@@ -67,8 +69,41 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="bAboutClicked"
+            android:onClick="tAboutClicked"
             android:text="@string/about_us"
+            android:textSize="18sp" />
+
+        <View style="@style/Divider" />
+
+        <TextView
+            android:id="@+id/tSoft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="tSoftClicked"
+            android:text="Soft"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="tMiddleClicked"
+            android:text="Middle"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tHard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="tHardClicked"
+            android:text="Hard"
             android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

@@ -30,7 +30,7 @@ import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
-import static de.veesy.contacts.ContactsManager.DEBUGGING;
+import static de.veesy.util.Constants.DEBUGGING;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -142,6 +142,8 @@ public class MainMenu extends WearableActivity implements Observer {
     protected void onResume() {
         //Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
         // default: threshold: 3.0F, timeBeforeCeclaringShakeStopped: 1000L
+        final int shake_mode = PreferenceManager.getDefaultSharedPreferences(this)
+                .getInt(Constants.SHAKE_DETECTION_MODE, 1);
         Sensey.getInstance().startShakeDetection(5.0F, 650L, shakeListener);
         super.onResume();
     }

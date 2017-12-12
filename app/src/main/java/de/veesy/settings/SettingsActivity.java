@@ -3,8 +3,10 @@ package de.veesy.settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -16,6 +18,8 @@ import de.veesy.contacts.ContactsManager;
 import de.veesy.contacts.ViewContactEditableActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
+
+import static de.veesy.util.Constants.DEBUGGING;
 
 /**
  * Created by dfritsch on 17.11.2017.
@@ -38,27 +42,55 @@ public class SettingsActivity extends Activity {
             Util.showToast(this, R.string.fill_out_your_card_please, Toast.LENGTH_LONG);
             showOwnContact();
         }
+
+        if (!DEBUGGING) {
+            LinearLayout settingsLayout = findViewById(R.id.settings_view);
+            settingsLayout.removeView(findViewById(R.id.tSoft));
+            settingsLayout.removeView(findViewById(R.id.tMiddle));
+            settingsLayout.removeView(findViewById(R.id.tHard));
+        }
     }
 
-    public void bMyCardClicked(View view) {
+    public void tMyCardClicked(View view) {
         showOwnContact();
     }
 
-    public void bIntroductionClicked(View view) {
+    public void tIntroductionClicked(View view) {
         Intent intent = new Intent(this, IntroductionActivity.class);
         intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, false);
         startActivity(intent);
     }
 
-    public void bRemoveDevicesClicked(View view) {
+    public void tRemoveDevicesClicked(View view) {
         if (connectionManager != null) {
             connectionManager.unpairAllDevices();
             Util.showToast(this, getString(R.string.devies_removed), Toast.LENGTH_SHORT);
         }
     }
 
-    public void bAboutClicked(View view) {
+    public void tAboutClicked(View view) {
         //TODO about us info --> Webview mit unserer Website oder so......
+    }
+
+    public void tSoftClicked(View view) {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putInt(Constants.SHAKE_DETECTION_MODE, 0)
+                .apply();
+    }
+
+    public void tMiddleClicked(View view) {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putInt(Constants.SHAKE_DETECTION_MODE, 1)
+                .apply();
+    }
+
+    public void tHardClicked(View view) {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putInt(Constants.SHAKE_DETECTION_MODE, 2)
+                .apply();
     }
 
     private void showOwnContact() {

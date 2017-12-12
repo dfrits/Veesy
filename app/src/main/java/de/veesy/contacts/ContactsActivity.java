@@ -28,6 +28,7 @@ import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.RoundListAdapter;
 import de.veesy.listview_util.ScrollingLayoutCallback;
+import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
 /**
@@ -92,7 +93,7 @@ public class ContactsActivity extends Activity {
         List<Contact> contacts = contactsManager.getContacts(this, true);
         List<AdapterObject> list = new ArrayList<>();
 
-        contacts = contacts.isEmpty() && ContactsManager.DEBUGGING ? contactsManager.getdummydata()
+        contacts = contacts.isEmpty() && Constants.DEBUGGING ? contactsManager.getdummydata()
                 : contacts;
         for (Contact contact : contacts) {
             String name = contact.getFirstName() + " " + contact.getLastName();
