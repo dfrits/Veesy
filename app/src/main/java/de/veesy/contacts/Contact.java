@@ -161,4 +161,8 @@ public class Contact implements Serializable {
     public void setContactPath(File contactPath) {
         this.contactPath = contactPath;
     }
+
+    public boolean isEmpty(){
+        return (lastName != null && firstName!=null && lastName.isEmpty() && firstName.isEmpty());
+    }
 }

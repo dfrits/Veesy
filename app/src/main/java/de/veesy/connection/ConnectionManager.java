@@ -97,6 +97,7 @@ public class ConnectionManager extends Observable {
             return;
         }
         originalDeviceName = device_getOriginalDeviceName();
+
         availableVeesyBTDevices = new ArrayList<>();
         originallyBondedBTDevices = new ArrayList<>();
         originallyBondedBTDevices.addAll(btAdapter.getBondedDevices());
@@ -728,7 +729,7 @@ public class ConnectionManager extends Observable {
 
     public void device_setVeesyName() {
         String name = originalDeviceName;
-        if (sendContact != null) name = sendContact.getFullName();
+        if (sendContact != null && !sendContact.isEmpty()) name = sendContact.getFullName();
         device_renameTo(btName_prefix + btName_splitter + name, false);
     }
 

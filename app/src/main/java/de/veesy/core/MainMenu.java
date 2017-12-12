@@ -3,6 +3,7 @@ package de.veesy.core;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -48,13 +49,15 @@ public class MainMenu extends WearableActivity implements Observer {
     private ShakeDetector.ShakeListener shakeListener;
     private CountDownTimer countDownTimer = null;
 
+    private SharedPreferences pref = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //Introduction beim ersten Start der App
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (!DEBUGGING && pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
             Intent intent = new Intent(this, IntroductionActivity.class);
             intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
@@ -67,16 +70,16 @@ public class MainMenu extends WearableActivity implements Observer {
         initSensey();
     }
 
-    private void initContactsManager() {
+    private void initContactsManager(){
         contactsManager = ContactsManager.instance();
-        try {
+        try{
             my_contact = contactsManager.getOwnContact(this, true);
-        } catch (IOException e) {
+        }catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    private void initConnectionManager() {
+    private void initConnectionManager(){
         connectionManager = ConnectionManager.instance();
         connectionManager.setSendContact(my_contact);
         connectionManager.device_setVeesyName();
@@ -142,7 +145,11 @@ public class MainMenu extends WearableActivity implements Observer {
     protected void onResume() {
         //Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
         // default: threshold: 3.0F, timeBeforeCeclaringShakeStopped: 1000L
-        Sensey.getInstance().startShakeDetection(5.0F, 650L, shakeListener);
+
+        long timeBeforeDeclaringShakeStopped = pref.getLong(Constants.SHAKE_TIME, 650L);
+        float threshold = pref.getFloat(Constants.SHAKE_TIME, 5.0F);
+
+        if (shakeListener != null) Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
         super.onResume();
     }
 
@@ -172,14 +179,23 @@ public class MainMenu extends WearableActivity implements Observer {
         /*
          * This is an example on how to use Sensey
          */
+
         Sensey.getInstance().init(this);
+
+        if(shakeListener != null){
+            Sensey.getInstance().stopShakeDetection(shakeListener);
+            shakeListener = null;
+        }
+
         shakeListener = new ShakeDetector.ShakeListener() {
             @Override
             public void onShakeDetected() {
                 // Shake detected, do something
                 shakesDetected++;
-                System.out.println("ShakeCounter: " + shakesDetected);
-                if (shakesDetected == 30) {
+                //System.out.println("ShakeCounter: " + shakesDetected);
+                int count = pref.getInt(Constants.SHAKE_COUNTER, 30);
+                System.out.println("Shake count: " + count);
+                if (shakesDetected == count) {
                     startShare();
                 }
             }
@@ -197,7 +213,10 @@ public class MainMenu extends WearableActivity implements Observer {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-            debugCounter++;
+
+            initSensey();
+            onResume();
+            /*debugCounter++;
             if (debugCounter == 1) {
                 final Context context = this;
                 runOnUiThread(new Runnable() {
@@ -229,7 +248,7 @@ public class MainMenu extends WearableActivity implements Observer {
 
             }
             if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_UP) {
-            }
+            }*/
 
         }
         return true;
