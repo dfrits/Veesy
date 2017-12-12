@@ -52,7 +52,8 @@ public class AnimationView extends SurfaceView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
         sprite.onDraw(canvas);
     }
 }
