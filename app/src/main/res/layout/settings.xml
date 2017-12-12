@@ -75,35 +75,35 @@
 
         <View style="@style/Divider" />
 
-        <TextView
-            android:id="@+id/tSoft"
+        <EditText
+            android:id="@+id/tCounter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="tSoftClicked"
-            android:text="Soft"
+            android:hint="counter"
+            android:inputType="number"
+            android:imeOptions="actionDone"
             android:textSize="18sp" />
-        <TextView
-            android:id="@+id/tMiddle"
+        <EditText
+            android:id="@+id/tThreshold"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
+            android:inputType="number"
             android:gravity="center_vertical"
-            android:onClick="tMiddleClicked"
-            android:text="Middle"
+            android:hint="threshold"
+            android:imeOptions="actionDone"
             android:textSize="18sp" />
-        <TextView
-            android:id="@+id/tHard"
+        <EditText
+            android:id="@+id/tTime"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="tHardClicked"
-            android:text="Hard"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:text="timebeforestopped"
             android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

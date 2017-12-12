@@ -2,11 +2,15 @@ package de.veesy.settings;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -27,9 +31,13 @@ import static de.veesy.util.Constants.DEBUGGING;
  * hs-augsburg
  */
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends Activity implements EditText.OnEditorActionListener {
     private ConnectionManager connectionManager;
     private ContactsManager contactsManager;
+
+    private EditText tCounter;
+    private EditText tThreshold;
+    private EditText tTime;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +53,13 @@ public class SettingsActivity extends Activity {
 
         if (!DEBUGGING) {
             LinearLayout settingsLayout = findViewById(R.id.settings_view);
-            settingsLayout.removeView(findViewById(R.id.tSoft));
-            settingsLayout.removeView(findViewById(R.id.tMiddle));
-            settingsLayout.removeView(findViewById(R.id.tHard));
+            settingsLayout.removeView(findViewById(R.id.tCounter));
+            settingsLayout.removeView(findViewById(R.id.tThreshold));
+            settingsLayout.removeView(findViewById(R.id.tTime));
+        } else {
+            tCounter = findViewById(R.id.tCounter);
+            tThreshold = findViewById(R.id.tThreshold);
+            tTime = findViewById(R.id.tTime);
         }
     }
 
@@ -72,27 +84,6 @@ public class SettingsActivity extends Activity {
         //TODO about us info --> Webview mit unserer Website oder so......
     }
 
-    public void tSoftClicked(View view) {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(Constants.SHAKE_DETECTION_MODE, 0)
-                .apply();
-    }
-
-    public void tMiddleClicked(View view) {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(Constants.SHAKE_DETECTION_MODE, 1)
-                .apply();
-    }
-
-    public void tHardClicked(View view) {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(Constants.SHAKE_DETECTION_MODE, 2)
-                .apply();
-    }
-
     private void showOwnContact() {
         try {
             Contact ownContact = contactsManager.getOwnContact(this, false);
@@ -105,5 +96,15 @@ public class SettingsActivity extends Activity {
 
     public void bShareClicked(View view) {
         finish();
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        edit.putInt(Constants.SHAKE_COUNTER, Integer.parseInt(tCounter.getText().toString()));
+        edit.putFloat(Constants.SHAKE_THRESHOLD, Float.parseFloat(tCounter.getText().toString()));
+        edit.putLong(Constants.SHAKE_TIME, Long.parseLong(tCounter.getText().toString()));
+        edit.apply();
+        return true;
     }
 }

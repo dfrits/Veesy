@@ -33,10 +33,7 @@ public class IntroductionActivity extends Activity {
             pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
         }
 
-        ImageView introImage = findViewById(R.id.introAnimation);
-        introImage.setBackgroundResource(R.drawable.intro);
-        AnimationDrawable introAnimation = (AnimationDrawable) introImage.getBackground();
-        introAnimation.start();
+
     }
 
     public void onIntroAnimationClick(View view) {
