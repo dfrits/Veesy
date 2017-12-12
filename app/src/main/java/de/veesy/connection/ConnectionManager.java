@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
@@ -49,7 +50,7 @@ public class ConnectionManager extends Observable {
 
     private static boolean btClientMode_flag = false;
 
-    private static String btName_device = "no name";
+    //private static String btName_device = "no name";
     private static String btName_prefix = "[veesy]";
     private static String btName_splitter = "-";
     private static boolean btNameCorrect_flag = false;
@@ -64,6 +65,7 @@ public class ConnectionManager extends Observable {
 
     private CountDownTimer btDiscover_countDownTimer;
     private CountDownTimer btConnection_timeOutHandler;
+    private CountDownTimer btDataTransmission_errorHandler;
 
     private static ArrayList<BluetoothDevice> availableVeesyBTDevices;
     private static ArrayList<BluetoothDevice> originallyBondedBTDevices;
@@ -77,12 +79,10 @@ public class ConnectionManager extends Observable {
     private int connectionAttempts = 0;
 
 
-    private static String originalDeviceName = "Huawei Watch 2 1941";
+    private static String originalDeviceName = "Huawei Watch 2";
 
     private Contact receivedContact;
-    private Contact sendContact = new Contact("sagt", "hallo2",
-            null, null, null, "1413", null, null,
-            null, null, null, null, null);
+    private Contact sendContact;
 
 
     //endregion
@@ -96,7 +96,7 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "bluetooth not supported");
             return;
         }
-        renameDevice(btName_prefix + btName_splitter + btName_device, false);
+        originalDeviceName = device_getOriginalDeviceName();
         availableVeesyBTDevices = new ArrayList<>();
         originallyBondedBTDevices = new ArrayList<>();
         originallyBondedBTDevices.addAll(btAdapter.getBondedDevices());
@@ -116,7 +116,6 @@ public class ConnectionManager extends Observable {
         Log.d(TAG, "Destroying ConnectionManager and executing shutdown");
     }
 
-
     //endregion
 
     //region Bluetooth - Initializing
@@ -131,7 +130,7 @@ public class ConnectionManager extends Observable {
         }
         //originalDeviceName = btAdapter.getName();
         //btName_device = originalDeviceName;
-        btName_device = btAdapter.getName();
+        //btName_device = btAdapter.getName();
         Log.d(TAG, "Bluetooth initialized");
         return true;
     }
@@ -152,7 +151,7 @@ public class ConnectionManager extends Observable {
      * <p>
      * if something goes wrong, this method determines after 10s
      */
-    private void renameDevice(String name, boolean setBackOriginalName) {
+    private void device_renameTo(String name, boolean setBackOriginalName) {
         Log.d(TAG, "Current device name is:      " + btAdapter.getName());
         Log.d(TAG, "Setting back orignal name:   " + setBackOriginalName);
         Log.d(TAG, "Trying to rename device to:  " + name);
@@ -204,7 +203,7 @@ public class ConnectionManager extends Observable {
     public boolean checkName() {
         String name = btAdapter.getName();
         if (isVeesyDevice(name)) return true;
-        else renameDevice(btName_prefix + btName_splitter + name, false);
+        else device_renameTo(btName_prefix + btName_splitter + name, false);
         return false;
     }
 
@@ -472,9 +471,8 @@ public class ConnectionManager extends Observable {
 
         public BluetoothConnectorThread(BluetoothDevice device, UUID uuid) {
             Log.d(TAG, "BluetoothConnectorThread started");
-            //TODO quatsch??
             btConnectedDevice = device;
-            btConnectedDeviceUUID = uuid;
+            //btConnectedDeviceUUID = uuid;
             btConnectorThread_runningFlag = true;
         }
 
@@ -482,7 +480,7 @@ public class ConnectionManager extends Observable {
             BluetoothSocket tmp = null;
             Log.i(TAG, " BluetoothConnectorThread running......");
             try {
-                Log.d(TAG, "BluetoothConnectorThread: Trying to create RfcommSocket using: " + btConnectedDeviceUUID);
+                Log.d(TAG, "BluetoothConnectorThread: Trying to create RfcommSocket using: " + VEESY_UUID);
                 tmp = btConnectedDevice.createRfcommSocketToServiceRecord(VEESY_UUID);
             } catch (IOException e) {
                 Log.e(TAG, "BluetoothConnectorThread: Could not create RfcommSocket", e);
@@ -583,6 +581,7 @@ public class ConnectionManager extends Observable {
                         setChanged();
                         notifyObservers(MESSAGE.RESPOND_AS_CLIENT);
                     } else {
+                        stopDataTransmissionHandler();
                         setChanged();
                         notifyObservers(MESSAGE.DATA_TRANSMISSION_SUCCESSFUL);
                     }
@@ -622,16 +621,11 @@ public class ConnectionManager extends Observable {
         if (btConnectedThread != null) btConnectedThread.closeConnection();
     }
 
-    public void btSendData(Contact contact) {
+    /*  public void btSendData(Contact contact) {
         btConnectedThread.write(contact);
     }
 
-    public void btSendData() {
-        Log.d(TAG, "Trying to send own VK");
-        btConnectedThread.write(sendContact);
-    }
-
-    /*    private static Object obj = new Object();
+    private static Object obj = new Object();
 
     private void btSendData(Contact contact) {
 
@@ -647,7 +641,39 @@ public class ConnectionManager extends Observable {
         }
         // Perform the write unsynchronized
         r.write(contact);*//*
-    }*/
+    }
+ */
+
+    public void btSendData() {
+        Log.d(TAG, "Trying to send own VK");
+        startDataTransmissionHandler();
+        btConnectedThread.write(sendContact);
+    }
+
+
+
+    public void startDataTransmissionHandler(){
+        if(btClientMode_flag) return;
+        btDataTransmission_errorHandler = new CountDownTimer(7000, 3000) {
+            @Override
+            public void onTick(long l) {
+                 btSendData();
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+
+    }
+
+    public void stopDataTransmissionHandler(){
+        if (btDataTransmission_errorHandler != null) {
+            btDataTransmission_errorHandler.cancel();
+        }
+        btDataTransmission_errorHandler = null;
+    }
 
 
     public void startConnectionTimeOutHandler() {
@@ -662,6 +688,7 @@ public class ConnectionManager extends Observable {
                 Log.d(TAG, "Connection Time Out");
                 setChanged();
                 notifyObservers(MESSAGE.DATA_TRANSMISSION_FAILED);
+                stopDataTransmissionHandler();
             }
         }.start();
     }
@@ -682,7 +709,7 @@ public class ConnectionManager extends Observable {
     public List<String> btGetAvailableDeviceNames() {
         List<String> list = new ArrayList<>();
         for (BluetoothDevice d : availableVeesyBTDevices) {
-            list.add(getRealDeviceName(d.getName()));
+            list.add(getVeesyDeviceName(d.getName()));
         }
         return list;
     }
@@ -697,6 +724,34 @@ public class ConnectionManager extends Observable {
 
     public void setSendContact(Contact contact) {
         this.sendContact = contact;
+    }
+
+    public void device_setVeesyName(){
+        String name = originalDeviceName;
+        if(sendContact != null) name = sendContact.getFullName();
+        device_renameTo(btName_prefix + btName_splitter + name, false);
+    }
+
+    private String device_getOriginalDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
     }
 
     /**
@@ -719,12 +774,20 @@ public class ConnectionManager extends Observable {
      * "[veesy]- ..", he has the ability to set back the name     *
      */
     public void setBackOriginalDeviceName() {
-        renameDevice(originalDeviceName, true);
+        device_renameTo(originalDeviceName, true);
     }
 
-    public String getOriginalDeviceName() {
+
+
+
+
+
+ /*   public String getOriginalDeviceName() {
         return originalDeviceName;
-    }
+    }*/
+
+
+
 
     /**
      * This method tries to return the "real" device name
@@ -732,12 +795,12 @@ public class ConnectionManager extends Observable {
      * <p>
      * if something goes wrong, it will return parameter originalDeviceName
      */
-    public String getRealDeviceName(String deviceName) {
+    public String getVeesyDeviceName(String deviceName) {
         try {
             String s[] = deviceName.split(btName_splitter);
             deviceName = s[1];
         } catch (Exception e) {
-            Log.d(TAG, "getRealDeviceName failed");
+            Log.d(TAG, "getVeesyDeviceName failed");
         }
         return deviceName;
     }

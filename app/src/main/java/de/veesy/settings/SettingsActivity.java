@@ -44,8 +44,8 @@ public class SettingsActivity extends Activity {
         showOwnContact();
     }
 
-    public void bBluetoothSettingsClicked(View view) {
-        //TODO bluetooth einstellungen
+    public void bIntroductionClicked(View view) {
+        startActivity(new Intent(this, IntroductionActivity.class));
     }
 
     public void bRemoveDevicesClicked(View view) {
@@ -55,8 +55,7 @@ public class SettingsActivity extends Activity {
     }
 
     public void bAboutClicked(View view) {
-        //TODO about us info
-        startActivity(new Intent(this, IntroductionActivity.class));
+        //TODO about us info --> Webview mit unserer Website oder so......
     }
 
     private void showOwnContact() {

@@ -24,5 +24,10 @@
     <string name="delete_question">wirklich löschen?</string>
     <string name="image">Bild</string>
     <string name="fill_out_your_card_please">Bitte fülle zuerst deine Visitenkarte aus. Es speichert automatisch.</string>
+    <string name="introduction">Einführung</string>
+    <string name="my_card">Meine Karte</string>
+    <string name="remove_devices">Geräte entfernen</string>
+    <string name="about_us">Über uns</string>
+    <string name="no_device_found">Keine Geräte gefunden. Bitte noch einmal suchen.!</string>
 
 </resources>

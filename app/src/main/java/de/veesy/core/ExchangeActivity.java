@@ -40,11 +40,9 @@ public class ExchangeActivity extends Activity implements Observer {
 
         initConnectionManager();
 
-
         boolean already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
         if (already_paired_flag) initExchangeActivity_paired();
         else initExchangeActivity_pairing();
-
 
         //TODO fehler handling
         // was passiert wenn pairing kaputt geht?
@@ -83,6 +81,37 @@ public class ExchangeActivity extends Activity implements Observer {
         Animation pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
         pairingAnimationView.startAnimation(pairing_animation);
         //Util.runOnUiAnimation(this, pairingAnimationView, pairing_animation);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (connectionManager != null) {
+            connectionManager.unregisterReceiver(this);
+            connectionManager.deleteObserver(this);
+            connectionManager.btCloseConnection();
+        }
+        super.onDestroy();
+    }
+
+    private void startFeedbackActivity(boolean success) {
+        Intent feedback_intent = new Intent(this, FeedbackActivity.class);
+        feedback_intent.putExtra(SUCCESS_FLAG, success);
+        startActivity(feedback_intent);
+        if (success) finish();
+    }
+
+    public void bPairClicked(View view) {
+        connectionManager.retryPairing();
+    }
+
+    public void bShareClicked(View view) {
+        startActivity(new Intent(this, ShareActivity.class));
+        finish();
+    }
+
+    public void bCancelClicked(View view) {
+        startActivity(new Intent(this, ShareActivity.class));
+        finish();
     }
 
     public void update(Observable observable, Object o) {
@@ -134,35 +163,5 @@ public class ExchangeActivity extends Activity implements Observer {
             startFeedbackActivity(true);
         }
         return true;
-    }
-
-    protected void onDestroy() {
-        if (connectionManager != null) {
-            connectionManager.unregisterReceiver(this);
-            connectionManager.deleteObserver(this);
-            connectionManager.btCloseConnection();
-        }
-        super.onDestroy();
-    }
-
-    private void startFeedbackActivity(boolean success) {
-        Intent feedback_intent = new Intent(this, FeedbackActivity.class);
-        feedback_intent.putExtra(SUCCESS_FLAG, success);
-        startActivity(feedback_intent);
-        if (success) finish();
-    }
-
-    public void bPairClicked(View view) {
-        connectionManager.retryPairing();
-    }
-
-    public void bShareClicked(View view) {
-        startActivity(new Intent(this, ShareActivity.class));
-        finish();
-    }
-
-    public void bCancelClicked(View view) {
-        startActivity(new Intent(this, ShareActivity.class));
-        finish();
     }
 }

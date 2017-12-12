@@ -31,8 +31,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:onClick="bMyCardClicked"
-            android:text="My Card"
-            android:textSize="18dp"
+            android:text="@string/my_card"
+            android:textSize="18sp"
             />
 
         <View style="@style/Divider"/>
@@ -42,9 +42,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:onClick="bBluetoothSettingsClicked"
-            android:text="Bluetooth Settings"
-            android:textSize="18dp" />
+            android:onClick="bIntroductionClicked"
+            android:text="@string/introduction"
+            android:textSize="18sp" />
 
         <View style="@style/Divider"/>
 
@@ -54,8 +54,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:onClick="bRemoveDevicesClicked"
-            android:text="Remove Devices"
-            android:textSize="18dp" />
+            android:text="@string/remove_devices"
+            android:textSize="18sp" />
 
         <View style="@style/Divider"/>
 
@@ -65,7 +65,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:onClick="bAboutClicked"
-            android:text="About Us"
-            android:textSize="18dp" />
+            android:text="@string/about_us"
+            android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>
