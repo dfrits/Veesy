@@ -300,7 +300,7 @@ public class ContactsManager {
      * @return Eigene VK
      * @throws IOException .
      */
-    public Contact getOwnContact(Context context) throws IOException {
+    public Contact getOwnContact(Context context, boolean isForSending) throws IOException {
         File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
 
         File cardDir = new File(appDir, FOLDER_PATH_CARDS_OWN);
@@ -312,7 +312,7 @@ public class ContactsManager {
         File file = new File(cardDir, filename);
 
         Contact contact = new Contact("", "", "", "", "", "",
-                "", "", "", "", "", null, file);
+                "", "", "", "", "", null, isForSending ? null : file);
         if (!file.exists()) {
             if (!file.createNewFile()) throw new IOException("Can't create new file");
             return contact;

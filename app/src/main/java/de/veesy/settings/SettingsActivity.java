@@ -60,7 +60,7 @@ public class SettingsActivity extends Activity {
 
     private void showOwnContact() {
         try {
-            Contact ownContact = contactsManager.getOwnContact(this);
+            Contact ownContact = contactsManager.getOwnContact(this, false);
             Intent intent = ViewContactEditableActivity.getIntent(this, ownContact);
             startActivity(intent);
         } catch (IOException e) {

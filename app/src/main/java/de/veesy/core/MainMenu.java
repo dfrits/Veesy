@@ -69,7 +69,7 @@ public class MainMenu extends WearableActivity implements Observer {
     private void initContactsManager(){
         contactsManager = ContactsManager.instance();
         try{
-            my_contact = contactsManager.getOwnContact(this);
+            my_contact = contactsManager.getOwnContact(this, true);
         }catch(IOException e){
             e.printStackTrace();
         }
