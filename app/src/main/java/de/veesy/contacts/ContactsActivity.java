@@ -1,9 +1,13 @@
 package de.veesy.contacts;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
@@ -79,7 +83,7 @@ public class ContactsActivity extends Activity {
                 onListItemLongClicked(position, value);
             }
         });
-        SnapHelper snapHelper = new GravitySnapHelper(Gravity.TOP);
+        SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(
                 new WearableLinearLayoutManager(this, scrollingLayoutCallback));
