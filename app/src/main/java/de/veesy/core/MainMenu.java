@@ -1,5 +1,6 @@
 package de.veesy.core;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
