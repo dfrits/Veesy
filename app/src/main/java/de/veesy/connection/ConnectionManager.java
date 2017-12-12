@@ -152,11 +152,12 @@ public class ConnectionManager extends Observable {
      * if something goes wrong, this method determines after 10s
      */
     private void device_renameTo(String name, boolean setBackOriginalName) {
-        Log.d(TAG, "Current device name is:      " + btAdapter.getName());
-        Log.d(TAG, "Setting back orignal name:   " + setBackOriginalName);
-        Log.d(TAG, "Trying to rename device to:  " + name);
-        if (!isVeesyDevice(btAdapter.getName()) || setBackOriginalName) {
-            if (btAdapter != null) {
+        if (btAdapter != null) {
+            if (!isVeesyDevice(btAdapter.getName()) || setBackOriginalName) {
+
+                Log.d(TAG, "Current device name is:      " + btAdapter.getName());
+                Log.d(TAG, "Setting back orignal name:   " + setBackOriginalName);
+                Log.d(TAG, "Trying to rename device to:  " + name);
                 enableBluetooth();
                 final long timeOutMillis = System.currentTimeMillis() + 10000;
                 final Handler timeHandler = new Handler();
@@ -651,13 +652,12 @@ public class ConnectionManager extends Observable {
     }
 
 
-
-    public void startDataTransmissionHandler(){
-        if(btClientMode_flag) return;
+    public void startDataTransmissionHandler() {
+        if (btClientMode_flag) return;
         btDataTransmission_errorHandler = new CountDownTimer(7000, 3000) {
             @Override
             public void onTick(long l) {
-                 btSendData();
+                btSendData();
             }
 
             @Override
@@ -668,7 +668,7 @@ public class ConnectionManager extends Observable {
 
     }
 
-    public void stopDataTransmissionHandler(){
+    public void stopDataTransmissionHandler() {
         if (btDataTransmission_errorHandler != null) {
             btDataTransmission_errorHandler.cancel();
         }
@@ -726,9 +726,9 @@ public class ConnectionManager extends Observable {
         this.sendContact = contact;
     }
 
-    public void device_setVeesyName(){
+    public void device_setVeesyName() {
         String name = originalDeviceName;
-        if(sendContact != null) name = sendContact.getFullName();
+        if (sendContact != null) name = sendContact.getFullName();
         device_renameTo(btName_prefix + btName_splitter + name, false);
     }
 
@@ -785,8 +785,6 @@ public class ConnectionManager extends Observable {
  /*   public String getOriginalDeviceName() {
         return originalDeviceName;
     }*/
-
-
 
 
     /**
