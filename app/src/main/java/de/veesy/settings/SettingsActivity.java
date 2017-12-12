@@ -51,6 +51,7 @@ public class SettingsActivity extends Activity {
     public void bRemoveDevicesClicked(View view) {
         if (connectionManager != null) {
             connectionManager.unpairAllDevices();
+            Util.showToast(this, getString(R.string.devies_removed), Toast.LENGTH_SHORT);
         }
     }
 
