@@ -45,7 +45,9 @@ public class AnimationView extends SurfaceView {
                 }
             }
         });
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.intro_spritesheet_1);
+        /*BitmapFactory.Options op = new BitmapFactory.Options();
+        op.inDensity = 360;*/
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.intro_spritesheet_small);
         sprite = new AnimationSprite(this, bmp);
     }
 
