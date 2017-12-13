@@ -41,4 +41,6 @@
     <string name="no_device_found">No device found. Please search again!</string>
     <string name="devies_removed">Devices removed</string>
     <string name="animation">Animation</string>
+    <string name="delete">Delete</string>
+    <string name="safe">Safe</string>
 </resources>

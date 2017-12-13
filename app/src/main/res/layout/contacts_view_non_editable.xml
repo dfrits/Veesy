@@ -358,7 +358,8 @@
                 android:background="@color/action_button_background"
                 android:onClick="bDeleteClicked"
                 android:scaleType="fitCenter"
-                android:src="@drawable/contacts_delete" />
+                android:src="@drawable/contacts_delete"
+                android:contentDescription="@string/delete" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -281,16 +281,16 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <FrameLayout
+        <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:background="@color/action_button_background"
+            android:onClick="bSafeClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/home_button"
+            android:contentDescription="@string/safe" />
 
     </LinearLayout>
-</ScrollView><!--
-
-    <android.support.wear.widget.drawer.WearableActionDrawerView
-        android:id="@+id/action_drawer_editable"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:actionMenu="@menu/action_drawer_menu_editable" />
-</android.support.wear.widget.drawer.WearableDrawerLayout>-->
+</ScrollView>
