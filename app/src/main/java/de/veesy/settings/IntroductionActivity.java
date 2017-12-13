@@ -47,11 +47,11 @@ public class IntroductionActivity extends Activity {
     }
 
     public void onIntroAnimationClick(View view) {
+        finish();
         if (firstStart) {
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
         startActivity(intent);
         }
-        finish();
     }
 }
