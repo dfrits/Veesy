@@ -212,7 +212,7 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
         }
 
         try {
-            cm.safeContact(this, contact);
+            cm.safeOwnContact(this, contact);
             return true;
         } catch (IOException e) {
             return false;

@@ -1,10 +1,7 @@
 package de.veesy.core;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -31,8 +28,6 @@ import de.veesy.settings.IntroductionActivity;
 import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
-
-import static de.veesy.util.Constants.DEBUGGING;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -75,7 +70,7 @@ public class MainMenu extends WearableActivity implements Observer {
     private void initContactsManager(){
         contactsManager = ContactsManager.instance();
         try{
-            my_contact = contactsManager.getOwnContact(this, true);
+            my_contact = contactsManager.getOwnContact(this);
         }catch(IOException e){
             e.printStackTrace();
         }

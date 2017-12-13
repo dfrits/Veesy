@@ -95,18 +95,6 @@ public class ViewContactNonEditableActivity extends Activity implements
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.SHOW_CONTACT_EDITABLE_REQUEST_CODE && resultCode == RESULT_OK) {
-            setValues();
-            try {
-                cm.safeContact(context, contact);
-            } catch (IOException e) {
-                Util.showToast(this, R.string.error_safe_contact, Toast.LENGTH_SHORT);
-            }
-        }
-    }
-
     private void initFields() {
         lDetailsView = findViewById(R.id.lContactDetails);
         tFirstName = findViewById(R.id.tVorname);

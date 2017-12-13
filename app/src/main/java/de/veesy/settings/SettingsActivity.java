@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +21,6 @@ import de.veesy.contacts.ContactsManager;
 import de.veesy.contacts.ViewContactEditableActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
-
-import static de.veesy.util.Constants.DEBUGGING;
 
 /**
  * Created by dfritsch on 17.11.2017.
@@ -86,7 +83,7 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
 
     private void showOwnContact() {
         try {
-            Contact ownContact = contactsManager.getOwnContact(this, false);
+            Contact ownContact = contactsManager.getOwnContact(this);
             Intent intent = ViewContactEditableActivity.getIntent(this, ownContact);
             startActivity(intent);
         } catch (IOException e) {

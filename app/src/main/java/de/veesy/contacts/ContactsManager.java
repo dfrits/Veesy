@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.veesy.util.Constants;
+import de.veesy.util.Util;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 import ezvcard.VCardVersion;
@@ -137,15 +138,39 @@ public class ContactsManager {
     }
 
     /**
-     * Speichert den Konakt als vcf-Datei.
+     * Speichert den empfangenen Kontakt als vcf-Datei.
      * @param context Kontext der Activity
      * @param contact Kontakt, der gespeichert werden soll
      */
-    public void safeContact(Context context, @NonNull Contact contact) throws IOException {
-        if (contact.getContactPath() == null) {
+    public void safeReceivedContact(Context context, @NonNull Contact contact) throws IOException {
+        if (contact.getContactPath() == null
+                || contact.getContactPath().getAbsolutePath().contains(FILE_NAME_OWN)) {
             contact.setContactPath(generatePath(context));
         }
 
+        safeContact(contact);
+    }
+
+    /**
+     * Speichert <b>NUR</b> die <b>EIGENE</b> Karte ab. Ist es nicht die eigene, dann
+     * @param contact Der eigene Kontakt
+     * @throws IOException .
+     */
+    void safeOwnContact(@NonNull Contact contact) throws IOException {
+        if (contact.getContactPath() == null
+                || contact.getContactPath().getAbsolutePath().contains(FILE_NAME_OTHER)) {
+            return;
+        }
+
+        safeContact(contact);
+    }
+
+    /**
+     * Speichert dann endgültig den Kontakt, wenn die Bedingungen stimmen.
+     * @param contact Kontakt, der gepeichert werden soll
+     * @throws IOException .
+     */
+    private void safeContact(@NonNull Contact contact) throws IOException {
         VCard vCard = new VCard(VCardVersion.V4_0);
         StructuredName structuredName = new StructuredName();
         structuredName.setFamily(contact.getLastName());
@@ -299,7 +324,7 @@ public class ContactsManager {
      * @return Eigene VK
      * @throws IOException .
      */
-    public Contact getOwnContact(Context context, boolean isForSending) throws IOException {
+    public Contact getOwnContact(Context context) throws IOException {
         File appDir = context.getDir(FOLDER_PATH_APP, MODE_PRIVATE);
 
         File cardDir = new File(appDir, FOLDER_PATH_CARDS_OWN);
@@ -311,7 +336,7 @@ public class ContactsManager {
         File file = new File(cardDir, filename);
 
         Contact contact = new Contact("", "", "", "", "", "",
-                "", "", "", "", "", null, isForSending ? null : file);
+                "", "", "", "", "", null, file);
         if (!file.exists()) {
             if (!file.createNewFile()) throw new IOException("Can't create new file");
             return contact;
