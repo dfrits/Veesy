@@ -71,7 +71,7 @@ public class FeedbackActivity extends Activity {
             Contact contact = connectionManager.getReceivedContact();
             contactsManager.showContact(this, contact);
             try {
-                contactsManager.safeContact(this, contact);
+                contactsManager.safeReceivedContact(this, contact);
                 System.out.println("Contact path: " + contact.getContactPath().getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
