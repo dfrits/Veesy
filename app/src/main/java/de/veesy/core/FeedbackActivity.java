@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import de.veesy.R;
 import de.veesy.connection.ConnectionManager;
+import de.veesy.contacts.Contact;
 import de.veesy.contacts.ContactsManager;
 import de.veesy.util.Util;
 
@@ -49,20 +52,30 @@ public class FeedbackActivity extends Activity {
 
     /**
      * Schickt den Nutzer zurück zum HomeScreen.
+     *
      * @param view .
      */
     public void bHomeClicked(View view) {
+        finish();
         startActivity(new Intent(this, MainMenu.class));
     }
 
     /**
      * Zeigt die empfangenen Daten an.
+     *
      * @param view .
      */
     public void bDetailsClicked(View view) {
         contactsManager = ContactsManager.instance();
         if (connectionManager.getReceivedContact() != null) {
-            contactsManager.showContact(this, connectionManager.getReceivedContact());
+            Contact contact = connectionManager.getReceivedContact();
+            contactsManager.showContact(this, contact);
+            try {
+                contactsManager.safeContact(this, contact);
+                System.out.println("Contact path: " + contact.getContactPath().getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             finish();
         } else {
             Util.showToast(this, "No Contact received", Toast.LENGTH_SHORT);
@@ -73,6 +86,7 @@ public class FeedbackActivity extends Activity {
      * Schickt den Nutzer zurück zur ExchangeActivity.
      * Diese wird im Falle von nicht erfolgter datenübertragung nicht gefinished,
      * d.h. die verbindung sollte noch da sein und der Datenaustausch müsste noch erfolgen.
+     *
      * @param view .
      */
     public void bShareClicked(View view) {
