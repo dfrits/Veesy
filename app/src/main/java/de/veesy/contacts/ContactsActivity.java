@@ -159,9 +159,7 @@ public class ContactsActivity extends Activity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.mDeleteYes:
-                        if (ContactsManager.instance().deleteContact(position)) {
-                            finish();
-                        } else {
+                        if (!ContactsManager.instance().deleteContact(position)) {
                             Util.showToast(context, R.string.delete_contact_error, Toast.LENGTH_LONG);
                         }
                         break;
