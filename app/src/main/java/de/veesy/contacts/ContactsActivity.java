@@ -1,31 +1,23 @@
 package de.veesy.contacts;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wear.widget.drawer.WearableActionDrawerView;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.veesy.R;
 import de.veesy.listview_util.AdapterObject;
@@ -33,7 +25,6 @@ import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.RoundListAdapter;
 import de.veesy.listview_util.ScrollingLayoutCallback;
 import de.veesy.util.Constants;
-import de.veesy.util.Util;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -80,7 +71,7 @@ public class ContactsActivity extends Activity {
 
             @Override
             public void onItemLongClicked(final int position, String value) {
-                onListItemLongClicked(position, value);
+                onListItemLongClicked(position);
             }
         });
         SnapHelper snapHelper = new LinearSnapHelper();
@@ -142,11 +133,11 @@ public class ContactsActivity extends Activity {
 
     /**
      * Öffnet der ActionDrawer und fragt den Nutzer, bevor der Kontakt gelöscht wird.
-     * @param position    Position in der Liste
-     * @param contactName Name des Kontakts
+     * @param position Position in der Liste
      */
-    private void onListItemLongClicked(final int position, String contactName) {
-        String language = Locale.getDefault().getLanguage();
+    private void onListItemLongClicked(final int position) {
+        contactsManager.showContact(this, position);
+        /*String language = Locale.getDefault().getLanguage();
         String title;
         if (Locale.GERMAN.toString().equals(language)) {
             title = contactName + "\n" + getString(R.string.delete_question);
@@ -168,7 +159,7 @@ public class ContactsActivity extends Activity {
                 return true;
             }
         });
-        wearableActionDrawer.getController().openDrawer();
+        wearableActionDrawer.getController().openDrawer();*/
     }
 
     public void bShareClicked(View view) {
