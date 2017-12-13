@@ -151,7 +151,7 @@ public class ShareActivity extends Activity implements Observer {
                     animationView.setVisibility(INVISIBLE);
                 }
 
-                Util.showToast(this, getString(R.string.no_device_found), Toast.LENGTH_LONG);
+                //Util.showToast(this, getString(R.string.no_device_found), Toast.LENGTH_LONG);
 
                 break;
             case MESSAGE.PAIRING:

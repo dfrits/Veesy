@@ -648,7 +648,7 @@ public class ConnectionManager extends Observable {
 
     public void btSendData() {
         Log.d(TAG, "Trying to send own VK");
-        startDataTransmissionHandler();
+        //startDataTransmissionHandler();
         btConnectedThread.write(sendContact);
     }
 
