@@ -53,7 +53,7 @@ public class AnimationView extends SurfaceView {
 
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
         sprite.onDraw(canvas);
+        super.draw(canvas);
     }
 }

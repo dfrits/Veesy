@@ -41,8 +41,8 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.settings);
         connectionManager = ConnectionManager.instance();
         contactsManager = ContactsManager.instance();
 
@@ -51,16 +51,16 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
             showOwnContact();
         }
 
-        if (!DEBUGGING) {
-            LinearLayout settingsLayout = findViewById(R.id.settings_view);
-            settingsLayout.removeView(findViewById(R.id.tCounter));
-            settingsLayout.removeView(findViewById(R.id.tThreshold));
-            settingsLayout.removeView(findViewById(R.id.tTime));
-        } else {
-            tCounter = findViewById(R.id.tCounter);
-            tThreshold = findViewById(R.id.tThreshold);
-            tTime = findViewById(R.id.tTime);
-        }
+//        if (!DEBUGGING) {
+//            LinearLayout settingsLayout = findViewById(R.id.settings_view);
+//            settingsLayout.removeView(findViewById(R.id.tCounter));
+//            settingsLayout.removeView(findViewById(R.id.tThreshold));
+//            settingsLayout.removeView(findViewById(R.id.tTime));
+//        } else {
+//            tCounter = findViewById(R.id.tCounter);
+//            tThreshold = findViewById(R.id.tThreshold);
+//            tTime = findViewById(R.id.tTime);
+//        }
     }
 
     public void tMyCardClicked(View view) {

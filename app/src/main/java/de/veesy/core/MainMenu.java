@@ -59,7 +59,8 @@ public class MainMenu extends WearableActivity implements Observer {
 
         //Introduction beim ersten Start der App
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!DEBUGGING && pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
+//        if (!DEBUGGING && pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
+        if (true) {
             Intent intent = new Intent(this, IntroductionActivity.class);
             intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
             startActivity(intent);
