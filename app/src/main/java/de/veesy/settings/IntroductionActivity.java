@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.Set;
+
 import de.veesy.R;
 import de.veesy.core.MainMenu;
 import de.veesy.util.Constants;
@@ -31,10 +33,10 @@ public class IntroductionActivity extends Activity {
         setContentView(R.layout.introduction);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        //firstStart = pref.getBoolean(Constants.INTRODUCTION_FIRST_START_EXTRA, false);
-        //if (firstStart) {
-        //    pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
-        //}
+        firstStart = pref.getBoolean(Constants.INTRODUCTION_FIRST_START_EXTRA, false);
+        if (firstStart) {
+            pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
+        }
 
         ImageView introImage = findViewById(R.id.introAnimation);
         introImage.setBackgroundResource(R.drawable.intro);
@@ -43,10 +45,11 @@ public class IntroductionActivity extends Activity {
     }
 
     public void onIntroAnimationClick(View view) {
-        //if (firstStart) {
-        Intent intent = new Intent(this, MainMenu.class);
+        if (firstStart) {
+        Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
         startActivity(intent);
-        //}
+        }
+        finish();
     }
 }

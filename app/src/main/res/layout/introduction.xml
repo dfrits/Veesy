@@ -10,11 +10,11 @@
 
 
 
-    <!--<ImageView
+    <ImageView
         android:id="@+id/introAnimation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:onClick="onIntroAnimationClick"
-        android:contentDescription="@string/animation" />-->
+        android:contentDescription="@string/animation" />
 
 </RelativeLayout>
