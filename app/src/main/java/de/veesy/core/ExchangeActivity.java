@@ -60,7 +60,12 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     private void initExchangeActivity_paired() {
-        setContentView(R.layout.exchange_paired);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setContentView(R.layout.exchange_paired);
+            }
+        });
         initExchangeAnimation();
     }
 
@@ -73,6 +78,7 @@ public class ExchangeActivity extends Activity implements Observer {
     private void initExchangeAnimation() {
         final ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
         Animation exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
+        //exchangeAnimationView.startAnimation(exchange_animation);
         Util.runOnUiAnimation(this, exchangeAnimationView, exchange_animation);
     }
 

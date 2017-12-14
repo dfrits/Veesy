@@ -11,10 +11,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.github.nisrulz.sensey.Sensey;
+import com.github.nisrulz.sensey.ShakeDetector;
+
 import java.util.Set;
 
 import de.veesy.R;
 import de.veesy.core.MainMenu;
+import de.veesy.core.ShareActivity;
 import de.veesy.util.Constants;
 
 
@@ -24,8 +28,11 @@ import de.veesy.util.Constants;
  * hs-augsburg
  */
 
+//TODO kann VERMUTLICH komplett gelöscht werden
+
+
 public class IntroductionActivity extends Activity {
-    private boolean firstStart;
+/*    private boolean firstStart;
 
 
     @Override
@@ -53,5 +60,5 @@ public class IntroductionActivity extends Activity {
         intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
         startActivity(intent);
         }
-    }
+    }*/
 }

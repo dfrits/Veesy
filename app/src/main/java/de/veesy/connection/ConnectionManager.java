@@ -41,16 +41,12 @@ public class ConnectionManager extends Observable {
     private static final String TAG = "ConnectionManager";
     private static final UUID VEESY_UUID = UUID.fromString("54630abc-3b78-4cf2-9f0d-0b844924cf36");
 
-
-    //den Namen vllt tatsächlich i-wo speichern, nicht nur im Programm
-    // soll dann über die Einstellungen wieder umbenannt werden können
-
     private static ConnectionManager unique = null;
     private static BluetoothAdapter btAdapter = null;
 
     private static boolean btClientMode_flag = false;
 
-    //private static String btName_device = "no name";
+    private static String btName_device;
     private static String btName_prefix = "[veesy]";
     private static String btName_splitter = "-";
     private static boolean btNameCorrect_flag = false;
@@ -97,7 +93,7 @@ public class ConnectionManager extends Observable {
             return;
         }
         originalDeviceName = device_getOriginalDeviceName();
-
+        btName_device = originalDeviceName;
         availableVeesyBTDevices = new ArrayList<>();
         originallyBondedBTDevices = new ArrayList<>();
         originallyBondedBTDevices.addAll(btAdapter.getBondedDevices());
@@ -129,9 +125,6 @@ public class ConnectionManager extends Observable {
             Log.e(TAG, "Bluetooth is not supported on this device");
             return false;
         }
-        //originalDeviceName = btAdapter.getName();
-        //btName_device = originalDeviceName;
-        //btName_device = btAdapter.getName();
         Log.d(TAG, "Bluetooth initialized");
         return true;
     }
@@ -205,7 +198,7 @@ public class ConnectionManager extends Observable {
     public boolean checkName() {
         String name = btAdapter.getName();
         if (isVeesyDevice(name)) return true;
-        else device_renameTo(btName_prefix + btName_splitter + name, false);
+        else device_renameTo(btName_prefix + btName_splitter + btName_device, false);
         return false;
     }
 
@@ -218,12 +211,9 @@ public class ConnectionManager extends Observable {
      * is the first part btName_prefix?
      */
     private static boolean isVeesyDevice(String deviceName) {
-        if (deviceName == null) {
-            Log.d(TAG, "isVeesyDevice, DeviceName is null: " + deviceName);
-        }
         boolean namedCorrectly = false;
         try {
-            namedCorrectly = deviceName.split(btName_splitter)[0].equals(btName_prefix);
+            return deviceName.split(btName_splitter)[0].equals(btName_prefix);
         } catch (Exception e) {
             Log.d(TAG, "Trying to split name failed: " + deviceName);
             e.printStackTrace();
@@ -653,12 +643,13 @@ public class ConnectionManager extends Observable {
     }
 
 
-    public void startDataTransmissionHandler() {
-        if (btClientMode_flag) return;
+
+    public void startDataTransmissionHandler(){
+        if(btClientMode_flag) return;
         btDataTransmission_errorHandler = new CountDownTimer(7000, 3000) {
             @Override
             public void onTick(long l) {
-                btSendData();
+                 btSendData();
             }
 
             @Override
@@ -669,7 +660,7 @@ public class ConnectionManager extends Observable {
 
     }
 
-    public void stopDataTransmissionHandler() {
+    public void stopDataTransmissionHandler(){
         if (btDataTransmission_errorHandler != null) {
             btDataTransmission_errorHandler.cancel();
         }
@@ -788,6 +779,8 @@ public class ConnectionManager extends Observable {
     }*/
 
 
+
+
     /**
      * This method tries to return the "real" device name
      * [veesy]-NAME --> NAME
@@ -835,7 +828,6 @@ public class ConnectionManager extends Observable {
         actionDiscoveryFinishedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         actionDiscoveryStartedFilter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         actionPairingRequestFilter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
-        //actionConnectionStateFilter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
     }
 
 
@@ -846,8 +838,6 @@ public class ConnectionManager extends Observable {
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_FINISHED, actionDiscoveryFinishedFilter);
         activity.registerReceiver(btReceiver_ACTION_DISCOVERY_STARTED, actionDiscoveryStartedFilter);
         activity.registerReceiver(btReceiver_ACTION_PAIRING_REQUEST, actionPairingRequestFilter);
-        //activity.registerReceiver(btReceiver_ACTION_CONNECTION_STATE, actionConnectionStateFilter);
-
     }
 
     public void unregisterReceiver(Activity activity) {
@@ -861,7 +851,6 @@ public class ConnectionManager extends Observable {
         activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_FINISHED);
         activity.unregisterReceiver(btReceiver_ACTION_DISCOVERY_STARTED);
         activity.unregisterReceiver(btReceiver_ACTION_PAIRING_REQUEST);
-        //activity.unregisterReceiver(btReceiver_ACTION_CONNECTION_STATE);
     }
 
     private final BroadcastReceiver btReceiver_ACTION_PAIRING_REQUEST = new BroadcastReceiver() {
@@ -1002,44 +991,5 @@ public class ConnectionManager extends Observable {
             }
         }
     };
-
-    // funktioniert aus irgendwelchen gründen nicht
-    /*private final BroadcastReceiver btReceiver_ACTION_CONNECTION_STATE = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            Log.d(TAG, "BroadcastReceiver Connection-STATE: " + action);
-
-            if (action != null && action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_STATE, BluetoothAdapter.ERROR);
-                int msg = -1;
-                switch (mode) {
-                    case BluetoothAdapter.STATE_CONNECTING:
-                        Log.d(TAG, "BroadcastReceiver STATE: Connecting....");
-                        msg = MESSAGE.CONNECTING;
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTED:
-                        Log.d(TAG, "BroadcastReceiver STATE: Connected.");
-                        connectionEstablished = true;
-                        msg = MESSAGE.CONNECTED;
-                        break;
-                    case BluetoothAdapter.STATE_DISCONNECTING:
-                        Log.d(TAG, "BroadcastReceiver STATE: Disconnecting....");
-                        msg = MESSAGE.DISCONNECTING;
-                        connectionEstablished = false;
-                        break;
-                    case BluetoothAdapter.STATE_DISCONNECTED:
-                        Log.d(TAG, "BroadcastReceiver STATE: Disconnected.");
-                        msg = MESSAGE.DISCONNECTED;
-                        connectionEstablished = false;
-                        break;
-                }
-                setChanged();
-                notifyObservers(msg);
-
-            }
-        }
-    };*/
-
     // endregion
 }
