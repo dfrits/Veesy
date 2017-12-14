@@ -81,8 +81,8 @@ public class ConnectionManager extends Observable {
 
     private static String originalDeviceName = "Huawei Watch 2";
 
-    private Contact receivedContact;
-    private Contact sendContact;
+    private Contact receivedContact = null;
+    private Contact sendContact = null;
 
 
     //endregion

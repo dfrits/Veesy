@@ -33,6 +33,7 @@ public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
     ConnectionManager connectionManager = ConnectionManager.instance();
     ContactsManager contactsManager = ContactsManager.instance();
+    private boolean success = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,8 @@ public class FeedbackActivity extends Activity {
         View feedback_failure = LayoutInflater.from(this).inflate(
                 R.layout.feedback_failure, null);
 
-        if (getIntent().getBooleanExtra(SUCCESS_FLAG, false)) {
+        success = getIntent().getBooleanExtra(SUCCESS_FLAG, false);
+        if (success) {
             setContentView(R.layout.feedback_success);
         } else {
             setContentView(feedback_failure);
@@ -67,8 +69,9 @@ public class FeedbackActivity extends Activity {
      */
     public void bDetailsClicked(View view) {
         contactsManager = ContactsManager.instance();
-        if (connectionManager.getReceivedContact() != null) {
+        if (success && connectionManager.getReceivedContact() != null) {
             Contact contact = connectionManager.getReceivedContact();
+            finish();
             contactsManager.showContact(this, contact);
             try {
                 contactsManager.safeReceivedContact(this, contact);
@@ -76,10 +79,11 @@ public class FeedbackActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            finish();
+
         } else {
             Util.showToast(this, "No Contact received", Toast.LENGTH_SHORT);
         }
+        //finish();
     }
 
     /**

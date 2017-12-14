@@ -94,6 +94,17 @@ public class MainMenu extends WearableActivity implements Observer {
 
     public void startShare() {
         System.out.println("StartShare called");
+
+        //Debug
+        try{
+            my_contact = contactsManager.getOwnContact(this);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        connectionManager.setSendContact(my_contact);
+
+
         shakesDetected = 0;
         if (connectionManager.checkName()) startActivity(new Intent(this, ShareActivity.class));
         else Util.showToast(this, "Renaming device... try again", Toast.LENGTH_SHORT);
