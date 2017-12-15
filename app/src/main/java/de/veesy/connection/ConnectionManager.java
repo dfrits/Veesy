@@ -639,13 +639,13 @@ public class ConnectionManager extends Observable {
     public void btSendData() {
         Log.d(TAG, "Trying to send own VK");
         //startDataTransmissionHandler();
-        btConnectedThread.write(sendContact);
+        if(btConnectedThread!= null) btConnectedThread.write(sendContact);
     }
 
 
 
     public void startDataTransmissionHandler(){
-        if(btClientMode_flag) return;
+/*        if(btClientMode_flag) return;
         btDataTransmission_errorHandler = new CountDownTimer(7000, 3000) {
             @Override
             public void onTick(long l) {
@@ -656,7 +656,7 @@ public class ConnectionManager extends Observable {
             public void onFinish() {
 
             }
-        }.start();
+        }.start();*/
 
     }
 
@@ -669,7 +669,7 @@ public class ConnectionManager extends Observable {
 
 
     public void startConnectionTimeOutHandler() {
-        btConnection_timeOutHandler = new CountDownTimer(8000, 1000) {
+        btConnection_timeOutHandler = new CountDownTimer(16000, 1000) {
             @Override
             public void onTick(long l) {
 

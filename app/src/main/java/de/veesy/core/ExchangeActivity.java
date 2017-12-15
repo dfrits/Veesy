@@ -157,7 +157,7 @@ public class ExchangeActivity extends Activity implements Observer {
                 startFeedbackActivity(false);
                 break;
             case MESSAGE.CONNECTION_ERROR:
-                //connectionManager.retryConnecting();
+                connectionManager.retryConnecting();
                 break;
 
         }

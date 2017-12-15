@@ -241,10 +241,15 @@ public class MainMenu extends WearableActivity implements Observer {
             }
         };
 
-        long timeBeforeDeclaringShakeStopped = pref.getLong(Constants.SHAKE_TIME, 650L);
-        float threshold = pref.getFloat(Constants.SHAKE_TIME, 5.0F);
+        //long timeBeforeDeclaringShakeStopped = pref.getLong(Constants.SHAKE_TIME, 650L);
+        long timeBeforeDeclaringShakeStopped = 1000L;
+        //float threshold = pref.getFloat(Constants.SHAKE_TIME, 5.0F);long timeBeforeDeclaringShakeStopped = pref.getLong(Constants.SHAKE_TIME, 650L);
+        float threshold = 3.0F;
 
-        if (shakeListener != null) Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
+        if (shakeListener != null){
+            //Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
+            Sensey.getInstance().startShakeDetection(shakeListener);
+        }
     }
 
     // Debug

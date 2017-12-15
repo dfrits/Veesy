@@ -33,6 +33,7 @@ public class FeedbackActivity extends Activity {
     public static final String SUCCESS_FLAG = "SUCCESS_FLAG";
     ConnectionManager connectionManager = ConnectionManager.instance();
     ContactsManager contactsManager = ContactsManager.instance();
+    Contact contact = null;
     private boolean success = false;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,13 @@ public class FeedbackActivity extends Activity {
 
         success = getIntent().getBooleanExtra(SUCCESS_FLAG, false);
         if (success) {
+            contact = connectionManager.getReceivedContact();
             setContentView(R.layout.feedback_success);
+            try {
+                contactsManager.safeReceivedContact(this, contact);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             setContentView(feedback_failure);
         }
@@ -59,7 +66,7 @@ public class FeedbackActivity extends Activity {
      */
     public void bHomeClicked(View view) {
         finish();
-        startActivity(new Intent(this, MainMenu.class));
+        //startActivity(new Intent(this, MainMenu.class));
     }
 
     /**
@@ -69,17 +76,9 @@ public class FeedbackActivity extends Activity {
      */
     public void bDetailsClicked(View view) {
         contactsManager = ContactsManager.instance();
-        if (success && connectionManager.getReceivedContact() != null) {
-            Contact contact = connectionManager.getReceivedContact();
+        if (success && contact != null) {
             finish();
             contactsManager.showContact(this, contact);
-            try {
-                contactsManager.safeReceivedContact(this, contact);
-                System.out.println("Contact path: " + contact.getContactPath().getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
         } else {
             Util.showToast(this, "No Contact received", Toast.LENGTH_SHORT);
         }
