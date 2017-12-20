@@ -11,12 +11,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.Serializable;
 
 import de.veesy.R;
 import de.veesy.util.Constants;
+import de.veesy.util.Util;
 
 /**
  * Created by Daniel on 28.11.2017.
@@ -25,6 +27,8 @@ import de.veesy.util.Constants;
  */
 
 public class ViewContactEditableActivity extends Activity implements EditText.OnEditorActionListener {
+    private final ContactsManager cm = ContactsManager.instance();
+
     // Felder für die Kontaktdetails
     private Contact contact;
     private EditText tFirstName;
@@ -169,8 +173,6 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-        ContactsManager cm = ContactsManager.instance();
-
         String s = textView.getText().toString();
         switch (textView.getId()) {
             case R.id.tVorname:
@@ -211,16 +213,15 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
         if (imm != null) {
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
         }
-
-        try {
-            cm.safeOwnContact(contact);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        return true;
     }
 
     public void bSafeClicked(View view) {
-        finish();
+        try {
+            cm.safeOwnContact(contact);
+            finish();
+        } catch (IOException e) {
+            Util.showToast(this, R.string.error_safe_contact, Toast.LENGTH_SHORT);
+        }
     }
 }
