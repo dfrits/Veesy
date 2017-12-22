@@ -43,4 +43,8 @@
     <string name="animation">Animation</string>
     <string name="delete">Delete</string>
     <string name="safe">Safe</string>
+    <string name="tab1" translatable="false">tab1</string>
+    <string name="tab2" translatable="false">tab2</string>
+    <string name="tab3" translatable="false">tab3</string>
+    <string name="tab4" translatable="false">tab4</string>
 </resources>

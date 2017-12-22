@@ -1,11 +1,7 @@
 package de.veesy.core;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -13,7 +9,6 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.nisrulz.sensey.Sensey;
@@ -29,12 +24,10 @@ import de.veesy.connection.MESSAGE;
 import de.veesy.contacts.Contact;
 import de.veesy.contacts.ContactsActivity;
 import de.veesy.contacts.ContactsManager;
-import de.veesy.settings.IntroductionActivity;
+import de.veesy.introduction.IntroductionActivity;
 import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
-
-import static de.veesy.util.Constants.DEBUGGING;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -62,44 +55,31 @@ public class MainMenu extends WearableActivity implements Observer {
 
         //Introduction beim ersten Start der App
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        setContentView(R.layout.introduction);
-        initAnimation();
-        /*
-        //Brauchen wir ja eh nicht mehr wenn die geste IMMER am anfang der app ist
-        //if (!DEBUGGING && pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
-        if (true) {
+
+        if (pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
+//        if (true) {
+            pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
             Intent intent = new Intent(this, IntroductionActivity.class);
             intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
-            startActivity(intent);
+            startActivityForResult(intent, Constants.INTRODUCTION_REQUEST_CODE);
+        } else {
+            setContentView(R.layout.main_menu);
         }
-        */
         initContactsManager();
         initConnectionManager();
-        //setContentView(R.layout.main_menu);
         initSensey();
     }
 
-    private void initAnimation(){
-        ImageView introImage = findViewById(R.id.introAnimation);
-        introImage.setBackgroundResource(R.drawable.intro);
-        AnimationDrawable introAnimation = (AnimationDrawable) introImage.getBackground();
-        introAnimation.start();
-    }
-
-    public void onIntroAnimationClick(View view) {
-        setContentView(R.layout.main_menu);
-    }
-
-    private void initContactsManager(){
+    private void initContactsManager() {
         contactsManager = ContactsManager.instance();
-        try{
+        try {
             my_contact = contactsManager.getOwnContact(this);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void initConnectionManager(){
+    private void initConnectionManager() {
         connectionManager = ConnectionManager.instance();
         connectionManager.setSendContact(my_contact);
         connectionManager.device_setVeesyName();
@@ -115,9 +95,9 @@ public class MainMenu extends WearableActivity implements Observer {
 
 
         // TODO für debug zwecke, kann wieder naus
-        try{
+        try {
             my_contact = contactsManager.getOwnContact(this);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         connectionManager.setSendContact(my_contact);
@@ -168,6 +148,14 @@ public class MainMenu extends WearableActivity implements Observer {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Wird die Einführung beendet, wird die View gesetzt.
+        if (requestCode == Constants.INTRODUCTION_REQUEST_CODE) {
+            setContentView(R.layout.main_menu);
+        }
+    }
+
+    @Override
     protected void onStart() {
         startConnectionManager();
         super.onStart();
@@ -181,7 +169,8 @@ public class MainMenu extends WearableActivity implements Observer {
 
         long timeBeforeDeclaringShakeStopped = pref.getLong(Constants.SHAKE_TIME, 650L);
         float threshold = pref.getFloat(Constants.SHAKE_TIME, 5.0F);
-        if (shakeListener != null) Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
+        if (shakeListener != null)
+            Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
 
         super.onResume();
     }
@@ -215,7 +204,7 @@ public class MainMenu extends WearableActivity implements Observer {
 
         Sensey.getInstance().init(this);
 
-        if(shakeListener != null){
+        if (shakeListener != null) {
             Sensey.getInstance().stopShakeDetection(shakeListener);
             shakeListener = null;
         }
@@ -246,7 +235,7 @@ public class MainMenu extends WearableActivity implements Observer {
         //float threshold = pref.getFloat(Constants.SHAKE_TIME, 5.0F);long timeBeforeDeclaringShakeStopped = pref.getLong(Constants.SHAKE_TIME, 650L);
         float threshold = 3.0F;
 
-        if (shakeListener != null){
+        if (shakeListener != null) {
             //Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
             Sensey.getInstance().startShakeDetection(shakeListener);
         }

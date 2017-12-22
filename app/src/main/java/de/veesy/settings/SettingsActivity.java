@@ -65,9 +65,9 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
     }
 
     public void tIntroductionClicked(View view) {
-        Intent intent = new Intent(this, IntroductionActivity.class);
+        /*Intent intent = new Intent(this, IntroductionActivity.class);
         intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, false);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     public void tRemoveDevicesClicked(View view) {

@@ -2,11 +2,7 @@ package de.veesy;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
-
-import de.veesy.settings.IntroductionActivity;
-import de.veesy.util.Constants;
 
 /**
  * Created by vivienbardosi on 12.12.17.

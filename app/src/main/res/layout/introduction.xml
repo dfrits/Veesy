@@ -1,17 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<!-- we use the BoxInsetLayout to support both round and square displays with the same xml file.
+The alternative to this is to use the watchviewstub, where you can then specify different xml
+ for round and square. Both those views must be in root of your layout for things to work.-->
+<android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/introPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#349999"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/introAnimation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="onIntroAnimationClick"
-        android:contentDescription="@string/animation" />
-
-</RelativeLayout>
+    android:onClick="onPagerClicked"/>

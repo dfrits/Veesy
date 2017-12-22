@@ -15,7 +15,7 @@ public abstract class Constants {
     public static final String INTRODUCTION_FIRST_START_EXTRA = "INTRODUCTION_FIRST_START_EXTRA";
     public static final String APP_FIRST_START_EXTRA = "APP_FIRST_START_EXTRA";
 
-    public static final int SHOW_CONTACT_EDITABLE_REQUEST_CODE = 1;
+    public static final int INTRODUCTION_REQUEST_CODE = 1;
 
     // Martins Debugging
     public static final String SHAKE_COUNTER = "SHAKE_COUNTER";
