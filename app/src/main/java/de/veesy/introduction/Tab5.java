@@ -16,11 +16,13 @@ import de.veesy.R;
  * Created by dfritsch on 22.12.2017.
  * veesy.de
  * hs-augsburg
- *
+ * <p>
  * Seite 5 der Einführung. Die Animation startet, wenn die Seite aufgerufen wird.
  */
 
 public class Tab5 extends Fragment {
+    private AnimationDrawable introAnimation;
+    private ImageView introImage;
 
     @Nullable
     @Override
@@ -33,10 +35,32 @@ public class Tab5 extends Fragment {
         return view;
     }
 
-    private void initAnimation(View view){
-        ImageView introImage = view.findViewById(R.id.introAnimation);
-        introImage.setBackgroundResource(R.drawable.intro);
-        AnimationDrawable introAnimation = (AnimationDrawable) introImage.getBackground();
-        introAnimation.start();
+    private void initAnimation(View view) {
+        if (!introAnimation.isRunning()) {
+            introImage = view.findViewById(R.id.introAnimation);
+            introImage.setBackgroundResource(R.drawable.intro);
+            introAnimation = (AnimationDrawable) introImage.getBackground();
+            introAnimation.start();
+        }
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        stopAnimation();
+        introImage.setBackgroundResource(R.drawable.intro0001);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopAnimation();
+    }
+
+    private void stopAnimation() {
+        if (introAnimation != null && introAnimation.isRunning()) {
+            introAnimation.stop();
+            introAnimation = null;
+        }
     }
 }
