@@ -259,12 +259,12 @@ public class ShareActivity extends Activity implements Observer {
     private void startExchangeActivity() {
         if (exchangeActivityAlreadyStarted) return;
         exchangeActivityAlreadyStarted = true;
-        finish();
         Intent intent = new Intent(this, ExchangeActivity.class);
         if (alreadyPaired_flag) {
             intent.putExtra("ALREADY_PAIRED", alreadyPaired_flag);
         }
         startActivity(intent);
+        finish();
     }
 
     //endregion

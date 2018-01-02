@@ -61,7 +61,6 @@ public class FeedbackActivity extends Activity {
 
     /**
      * Schickt den Nutzer zurück zum HomeScreen.
-     *
      * @param view .
      */
     public void bHomeClicked(View view) {
@@ -71,7 +70,6 @@ public class FeedbackActivity extends Activity {
 
     /**
      * Zeigt die empfangenen Daten an.
-     *
      * @param view .
      */
     public void bDetailsClicked(View view) {
@@ -87,14 +85,15 @@ public class FeedbackActivity extends Activity {
 
     /**
      * Schickt den Nutzer zurück zur ExchangeActivity.
-     * Diese wird im Falle von nicht erfolgter datenübertragung nicht gefinished,
+     * Diese wird im Falle von nicht erfolgter Datenübertragung nicht gefinished,
      * d.h. die verbindung sollte noch da sein und der Datenaustausch müsste noch erfolgen.
-     *
      * @param view .
      */
     public void bShareClicked(View view) {
-        startActivity(new Intent(this, ExchangeActivity.class));
-        connectionManager.btSendData();
+        if (!success) {
+            startActivity(new Intent(this, ExchangeActivity.class));
+            connectionManager.btSendData();
+        }
         finish();
     }
 }
