@@ -18,6 +18,16 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
 
+        <!-- contacts -->
+
+        <activity
+            android:name=".contacts.ContactsActivity"
+            android:theme="@style/SlideRightLeftTheme" />
+        <activity android:name=".contacts.ViewContactEditableActivity" />
+        <activity android:name=".contacts.ViewContactNonEditableActivity" />
+
+        <!-- core -->
+
         <activity
             android:name=".core.MainMenu"
             android:theme="@style/noSwipeTheme">
@@ -26,16 +36,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".core.ShareActivity" />
+        <activity android:name=".core.ExchangeActivity" />
         <activity
             android:name=".core.FeedbackActivity"
             android:theme="@style/noSwipeTheme" />
 
+        <!-- introduction -->
+
         <activity
-            android:name=".contacts.ContactsActivity"
-            android:theme="@style/SlideRightLeftTheme" />
-        <activity android:name=".util.QuestionActivity"
-            android:theme="@style/SlideTopBottomTheme"/>
+            android:name=".introduction.IntroductionActivity"
+            android:theme="@style/noSwipeTheme" />
+
+        <!-- settings -->
 
         <activity
             android:name=".settings.SettingsActivity"
@@ -43,14 +56,13 @@
         <activity android:name=".settings.AboutUsActivity" />
         <activity android:name=".settings.MemberDetailsActivity" />
 
-        <activity android:name=".core.ShareActivity" />
-        <activity android:name=".core.ExchangeActivity" />
-        <activity android:name=".contacts.ViewContactEditableActivity" />
-        <activity android:name=".contacts.ViewContactNonEditableActivity" />
+        <!-- util -->
 
         <activity
-            android:name=".introduction.IntroductionActivity"
-            android:theme="@style/noSwipeTheme" />
+            android:name=".util.QuestionActivity"
+            android:theme="@style/SlideTopBottomTheme" />
+
+        <!-- sonstiges -->
 
         <meta-data
             android:name="com.google.android.wearable.standalone"

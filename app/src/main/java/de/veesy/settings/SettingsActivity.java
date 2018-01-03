@@ -44,10 +44,10 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
         connectionManager = ConnectionManager.instance();
         contactsManager = ContactsManager.instance();
 
-        if (getIntent().getBooleanExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, false)) {
+        /*if (getIntent().getBooleanExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, false)) {
             Util.showToast(this, R.string.fill_out_your_card_please, Toast.LENGTH_LONG);
             showOwnContact();
-        }
+        }*/
 
 //        if (!DEBUGGING) {
 //            LinearLayout settingsLayout = findViewById(R.id.settings_view);

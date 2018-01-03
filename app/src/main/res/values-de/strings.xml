@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- just image descriptions -->
+
     <string name="contacts">Kontakte</string>
     <string name="settings">Einstellungen</string>
-    <string name="not_paired">Pairinganfrage bitte bestätigen und erneut versuchen</string>
-    <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
+    <string name="shut_down">Beenden</string>
+    <string name="image">Bild</string> <!-- Standartbildbeschreibung (Personenbilder)-->
+    <string name="animation">Animation</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="delete">Löschen</string>
+    <string name="safe">Speichern</string>
+
+    <!-- settings -->
+
+    <string name="introduction">Einführung</string>
+    <string name="my_card">Meine Karte</string>
+    <string name="remove_devices">Geräte entfernen</string>
+    <string name="about_us">Über uns</string>
+
+    <!-- informations -->
+
+    <string name="success">Erfolg!</string>
+    <string name="failure">Fehler!</string>
+    <string name="fill_out_your_card_please">Bitte fülle zuerst deine Visitenkarte aus. Es speichert automatisch.</string>
+    <string name="devies_removed">Geräte entfernt</string>
+    <string name="delete_question">wirklich löschen?</string>
+
+    <!-- contact details -->
+
     <string name="first_name">Vorname</string>
     <string name="last_name">Nachname</string>
     <string name="phone">Telefonnummer</string>
-    <string name="shut_down">Beenden</string>
     <string name="mail">Email-Adresse</string>
     <string name="occupation">Tätigkeit</string>
     <string name="company">Firma</string>
@@ -15,25 +39,20 @@
     <string name="business_area">Geschäftsfeld</string>
     <string name="birthday">Geburtstag</string>
     <string name="hobbies">Hobbys</string>
+
+    <!-- errors -->
+
+    <string name="not_paired">Pairinganfrage bitte bestätigen und erneut versuchen</string>
+    <string name="bluetooth_permission_denied">Bitte für andere Bluetooth-Geräte sichtbar machen</string>
     <string name="no_first_name">Kein Vorname</string>
     <string name="no_last_name">Kein Nachname</string>
     <string name="delete_contact_error">Kann Kontakt nicht löschen</string>
     <string name="error_safe_contact">Kann Kontakt nicht speichern</string>
-    <string name="yes">Ja</string>
-    <string name="no">Nein</string>
-    <string name="delete_question">wirklich löschen?</string>
-    <string name="image">Bild</string>
-    <string name="fill_out_your_card_please">Bitte fülle zuerst deine Visitenkarte aus. Es speichert automatisch.</string>
-    <string name="introduction">Einführung</string>
-    <string name="my_card">Meine Karte</string>
-    <string name="remove_devices">Geräte entfernen</string>
-    <string name="about_us">Über uns</string>
     <string name="no_device_found">Keine Geräte gefunden. Bitte noch einmal suchen.!</string>
-    <string name="devies_removed">Geräte entfernt</string>
-    <string name="animation">Animation</string>
-    <string name="delete">Löschen</string>
-    <string name="safe">Speichern</string>
-    <string name="slogan">Mit veesy ist es easy!</string>
+
+    <!-- about us -->
+
+    <string name="app_slogan">Mit veesy ist es easy!</string>
     <string name="title_1">WER WIR SIND …</string>
     <string name="title_2">DAS TEAM</string>
     <string name="about_text">Wir sind 4 Masterstudenten von der Fachhochschule Augsburg und
@@ -43,5 +62,4 @@
     <string name="degree">Abschluss</string>
     <string name="uni">Hochschule</string>
     <string name="team_member_slogan">Slogan</string>
-
 </resources>
