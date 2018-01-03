@@ -15,12 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 
 import de.veesy.R;
 import de.veesy.util.Constants;
+import de.veesy.util.QuestionActivity;
 import de.veesy.util.Util;
 
 /**
@@ -38,7 +38,6 @@ public class ViewContactNonEditableActivity extends Activity implements
     private final Context context = this;
 
     private Contact contact;
-    private WearableActionDrawerView wearableActionDrawer;
 
     // Felder für die Kontaktinfos
     private LinearLayout lDetailsView;
@@ -72,15 +71,8 @@ public class ViewContactNonEditableActivity extends Activity implements
         setContentView(R.layout.contacts_view_non_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        wearableActionDrawer = findViewById(R.id.action_drawer_non_editable);
-        wearableActionDrawer.setIsAutoPeekEnabled(false);
-        wearableActionDrawer.setOnMenuItemClickListener(this);
-
         Intent intent = getIntent();
-
-
         getContactExtra(intent);
-
         initFields();
 
         // Werte setzen
@@ -213,11 +205,12 @@ public class ViewContactNonEditableActivity extends Activity implements
                 }
                 break;
         }
-        wearableActionDrawer.getController().closeDrawer();
         return true;
     }
 
     public void bDeleteClicked(View view) {
+        Intent deleteIntent = new Intent(this, QuestionActivity.class);
+
         String language = Locale.getDefault().getLanguage();
         String title;
         if (Locale.GERMAN.toString().equals(language)) {
@@ -225,8 +218,19 @@ public class ViewContactNonEditableActivity extends Activity implements
         } else {
             title = getString(R.string.delete_question) + "\n" + contact.getFullName() + "?";
         }
-        wearableActionDrawer.setPaddingRelative(0,20,0,0);
-        wearableActionDrawer.setTitle(title);
-        wearableActionDrawer.getController().openDrawer();
+
+        deleteIntent.putExtra(QuestionActivity.TITEL, title);
+        startActivityForResult(deleteIntent, Constants.QUESTION_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.QUESTION_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (ContactsManager.instance().deleteContact(contact)) {
+                finish();
+            } else {
+                Util.showToast(this, R.string.delete_contact_error, Toast.LENGTH_LONG);
+            }
+        }
     }
 }

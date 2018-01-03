@@ -33,11 +33,13 @@
 
         <activity
             android:name=".contacts.ContactsActivity"
-            android:theme="@style/noSwipeTheme" />
+            android:theme="@style/SlideRightLeftTheme" />
+        <activity android:name=".util.QuestionActivity"
+            android:theme="@style/SlideTopBottomTheme"/>
 
         <activity
             android:name=".settings.SettingsActivity"
-            android:theme="@style/noSwipeTheme" />
+            android:theme="@style/SlideLeftRightTheme" />
         <activity android:name=".settings.AboutUsActivity" />
         <activity android:name=".settings.MemberDetailsActivity" />
 

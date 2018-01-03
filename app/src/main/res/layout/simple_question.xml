@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textAlignment="center" />
+
+    <ImageButton
+        android:id="@+id/bNo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tTitle"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="70dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/no"
+        android:onClick="bNoClicked"
+        android:scaleType="fitCenter"
+        android:src="@drawable/feedback_failed_img" />
+
+    <ImageButton
+        android:id="@+id/bYes"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/bNo"
+        android:layout_marginStart="40dp"
+        android:layout_toEndOf="@+id/bNo"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/yes"
+        android:onClick="bYesClicked"
+        android:scaleType="fitCenter"
+        android:src="@drawable/feedback_checkmark_img" />
+</RelativeLayout>

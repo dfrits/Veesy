@@ -16,6 +16,7 @@ public abstract class Constants {
     public static final String APP_FIRST_START_EXTRA = "APP_FIRST_START_EXTRA";
 
     public static final int INTRODUCTION_REQUEST_CODE = 1;
+    public static final int QUESTION_REQUEST_CODE = 2;
 
     // Martins Debugging
     public static final String SHAKE_COUNTER = "SHAKE_COUNTER";
