@@ -1,4 +1,3 @@
-
 <resources>
     <string name="app_name" translatable="false">veesy</string>
     <string name="share" translatable="false">Share</string>
@@ -47,4 +46,20 @@
     <string name="tab2" translatable="false">tab2</string>
     <string name="tab3" translatable="false">tab3</string>
     <string name="tab4" translatable="false">tab4</string>
+    <string name="slogan">With veesy it is easy!</string>
+    <string name="title_1">WHO WE ARE …</string>
+    <string name="about_text">We are four students from Augsburg, Germany. We are part of a master
+        course called Interactive Media Systems with focus on mobile experience at the University
+        of applied sciences Augsburg. \n\nThis project was developed as part of our master project
+        and started in early 2017.</string>
+    <string name="title_2">THE TEAM</string>
+    <string name="vivi" translatable="false">Vivien Bardosi</string>
+    <string name="daniel" translatable="false">Daniel Fritsch</string>
+    <string name="tianyi" translatable="false">Tinyi Zhang</string>
+    <string name="martin" translatable="false">Martin Stadlmaier</string>
+    <string name="degree">Degree</string>
+    <string name="uni">University</string>
+    <string name="team_member_slogan">Slogan</string>
+
+
 </resources>

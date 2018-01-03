@@ -14,7 +14,7 @@
     <string name="address">Adresse</string>
     <string name="business_area">Geschäftsfeld</string>
     <string name="birthday">Geburtstag</string>
-    <string name="hobbies">Hobbies</string>
+    <string name="hobbies">Hobbys</string>
     <string name="no_first_name">Kein Vorname</string>
     <string name="no_last_name">Kein Nachname</string>
     <string name="delete_contact_error">Kann Kontakt nicht löschen</string>
@@ -33,5 +33,15 @@
     <string name="animation">Animation</string>
     <string name="delete">Löschen</string>
     <string name="safe">Speichern</string>
+    <string name="slogan">Mit veesy ist es easy!</string>
+    <string name="title_1">WER WIR SIND …</string>
+    <string name="title_2">DAS TEAM</string>
+    <string name="about_text">Wir sind 4 Masterstudenten von der Fachhochschule Augsburg und
+        studieren Interaktive Mediensysteme mit dem Schwerpunkt Mobile Experience.
+        \n\nDiese App ist wurde als Teil unseres Masterprojekts entwickelt und begann im Frühjahr
+        2017.</string>
+    <string name="degree">Abschluss</string>
+    <string name="uni">Hochschule</string>
+    <string name="team_member_slogan">Slogan</string>
 
 </resources>

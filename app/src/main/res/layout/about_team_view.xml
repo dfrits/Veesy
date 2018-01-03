@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/team_member_details_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--Wenn Bild als Hintergrund, dass folgende IV auskommentieren-->
+        <ImageView
+            android:id="@+id/member_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/image"
+            android:src="@drawable/about_daniel" />
+
+        <!--Wenn Bild als Hintergrund, dann folgendes bei der TV hinzufügen
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"-->
+        <TextView
+            android:id="@+id/tFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center"
+            android:text="@string/first_name"
+            android:textColor="#0ba29a"
+            android:textSize="20sp" />
+
+        <!--Wenn Bild als Hintergrund, dann folgendes bei der TV hinzufügen
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"-->
+        <TextView
+            android:id="@+id/tLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center"
+            android:text="@string/last_name"
+            android:textColor="#0ba29a"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/occupation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/phone"
+                    android:src="@drawable/about_job" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tOccupation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/occupation"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/degree"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/phone"
+                    android:src="@drawable/about_degree" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tDegree"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/degree"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/uni"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/phone"
+                    android:src="@drawable/about_uni" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tUni"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/uni"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tSlogan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/team_member_slogan"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="35dp"
+            android:background="@color/action_button_background"
+            android:contentDescription="@string/safe"
+            android:onClick="bReturnClicked"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_return" />
+    </LinearLayout>
+
+
+</ScrollView>

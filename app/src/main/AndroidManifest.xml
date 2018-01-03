@@ -38,6 +38,8 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:theme="@style/noSwipeTheme" />
+        <activity android:name=".settings.AboutUsActivity" />
+        <activity android:name=".settings.MemberDetailsActivity" />
 
         <activity android:name=".core.ShareActivity" />
         <activity android:name=".core.ExchangeActivity" />
