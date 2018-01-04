@@ -36,7 +36,7 @@ public class Tab5 extends Fragment {
     }
 
     private void initAnimation(View view) {
-        if (!introAnimation.isRunning()) {
+        if (introAnimation == null || !introAnimation.isRunning()) {
             introImage = view.findViewById(R.id.introAnimation);
             introImage.setBackgroundResource(R.drawable.intro);
             introAnimation = (AnimationDrawable) introImage.getBackground();
