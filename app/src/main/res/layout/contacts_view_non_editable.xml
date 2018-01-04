@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.wear.widget.drawer.WearableDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lContactBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/contacts_show_background">
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:fadingEdgeLength="30dp"
-        android:requiresFadingEdge="vertical"
-        android:scrollbars="vertical">
+    android:background="@drawable/contacts_show_background"
+    android:fadingEdgeLength="30dp"
+    android:orientation="vertical"
+    android:requiresFadingEdge="vertical"
+    android:scrollbars="vertical">
 
         <LinearLayout
             android:id="@+id/lContactDetails"
@@ -349,24 +345,16 @@
             </LinearLayout>
 
 
-
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:background="@color/action_button_background"
+                android:contentDescription="@string/delete"
                 android:onClick="bDeleteClicked"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/contacts_delete"
-                android:contentDescription="@string/delete" />
+                android:src="@drawable/contacts_delete" />
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <android.support.wear.widget.drawer.WearableActionDrawerView
-        android:id="@+id/action_drawer_non_editable"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:actionMenu="@menu/action_drawer_menu_non_editable" />
-</android.support.wear.widget.drawer.WearableDrawerLayout>
+</ScrollView>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/team_member_details_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,7 +7,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
 
         <!--Wenn Bild als Hintergrund, dass folgende IV auskommentieren-->
         <ImageView
@@ -20,10 +21,43 @@
             android:contentDescription="@string/image"
             android:src="@drawable/about_daniel" />
 
-        <!--Wenn Bild als Hintergrund, dann folgendes bei der TV hinzufügen
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"-->
-        <TextView
+        <!-- Das hier verwenden, wenn Bild als eigenes ist-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/tFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center"
+                android:text="@string/first_name"
+                android:textColor="#0ba29a"
+                android:textSize="20sp"
+                android:layout_marginEnd="2dp"/>
+
+            <TextView
+                android:id="@+id/tLastName"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center"
+                android:text="@string/last_name"
+                android:textColor="#0ba29a"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!--Wenn Bild als Hintergrund, dann folgendes verwenden-->
+
+        <!--<TextView
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
             android:id="@+id/tFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,19 +67,17 @@
             android:text="@string/first_name"
             android:textColor="#0ba29a"
             android:textSize="20sp" />
-
-        <!--Wenn Bild als Hintergrund, dann folgendes bei der TV hinzufügen
-        android:layout_marginEnd="25dp"
-        android:layout_marginStart="25dp"-->
         <TextView
             android:id="@+id/tLastName"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_condensed_regular"
             android:gravity="center"
             android:text="@string/last_name"
             android:textColor="#0ba29a"
-            android:textSize="20sp" />
+            android:textSize="20sp" />-->
 
         <LinearLayout
             android:id="@+id/occupation"
@@ -188,6 +220,4 @@
             android:scaleType="fitCenter"
             android:src="@drawable/button_return" />
     </LinearLayout>
-
-
 </ScrollView>

@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.wear.widget.drawer.WearableActionDrawerView;
-import android.support.wear.widget.drawer.WearableDrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +77,7 @@ public class ViewContactNonEditableActivity extends Activity implements
         // Werte setzen
         setValues();
 
-        WearableDrawerLayout background = findViewById(R.id.lContactBackground);
+        ScrollView background = findViewById(R.id.lContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
             // TODO Bild laden und als Hintergrund setzen
