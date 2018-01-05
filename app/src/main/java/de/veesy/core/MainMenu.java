@@ -123,6 +123,7 @@ public class MainMenu extends WearableActivity implements Observer {
      */
     public void bContactsClicked(View view) {
         startActivity(new Intent(this, ContactsActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 
     /**
@@ -131,6 +132,7 @@ public class MainMenu extends WearableActivity implements Observer {
      */
     public void bSettingsClicked(View view) {
         startActivity(new Intent(this, SettingsActivity.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     /**

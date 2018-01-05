@@ -21,8 +21,7 @@
         <!-- contacts -->
 
         <activity
-            android:name=".contacts.ContactsActivity"
-            android:theme="@style/SlideRightLeftTheme" />
+            android:name=".contacts.ContactsActivity"/>
         <activity android:name=".contacts.ViewContactEditableActivity" />
         <activity android:name=".contacts.ViewContactNonEditableActivity" />
 
@@ -50,17 +49,13 @@
 
         <!-- settings -->
 
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:theme="@style/SlideLeftRightTheme" />
+        <activity android:name=".settings.SettingsActivity"/>
         <activity android:name=".settings.AboutUsActivity" />
         <activity android:name=".settings.MemberDetailsActivity" />
 
         <!-- util -->
 
-        <activity
-            android:name=".util.QuestionActivity"
-            android:theme="@style/SlideTopBottomTheme" />
+        <activity android:name=".util.QuestionActivity"/>
 
         <!-- sonstiges -->
 
