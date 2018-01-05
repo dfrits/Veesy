@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import de.veesy.R;
+import de.veesy.connection.ConnectionManager;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
@@ -27,7 +28,10 @@ import de.veesy.util.Util;
  */
 
 public class ViewContactEditableActivity extends Activity implements EditText.OnEditorActionListener {
-    private final ContactsManager cm = ContactsManager.instance();
+    private final ContactsManager contactsManager = ContactsManager.instance();
+    private ConnectionManager connectionManager = ConnectionManager.instance();
+
+    boolean name_has_changed = false;
 
     // Felder für die Kontaktdetails
     private Contact contact;
@@ -54,6 +58,8 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_view_editable);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        name_has_changed = false;
 
         getContactExtra(getIntent());
 
@@ -96,12 +102,14 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
         String s = contact.getFirstName();
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
+            name_has_changed = true;
         } else {
             tFirstName.setText("");
         }
         s = contact.getLastName();
         if (s != null && !s.isEmpty()) {
             tLastName.setText(s);
+            name_has_changed = true;
         } else {
             tLastName.setText("");
         }
@@ -218,7 +226,11 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
 
     public void bSafeClicked(View view) {
         try {
-            cm.safeOwnContact(contact);
+            contactsManager.safeOwnContact(contact);
+            if (name_has_changed) {
+                connectionManager.setSendContact(contact);
+                connectionManager.device_setVeesyName();
+            }
             finish();
         } catch (IOException e) {
             Util.showToast(this, R.string.error_safe_contact, Toast.LENGTH_SHORT);
