@@ -32,10 +32,6 @@ import de.veesy.util.Util;
 
 public class ViewContactNonEditableActivity extends Activity implements
         MenuItem.OnMenuItemClickListener {
-    private static final ContactsManager cm = ContactsManager.instance();
-
-    private final Context context = this;
-
     private Contact contact;
 
     // Felder für die Kontaktinfos

@@ -65,7 +65,6 @@ public class FeedbackActivity extends Activity {
      */
     public void bHomeClicked(View view) {
         finish();
-        //startActivity(new Intent(this, MainMenu.class));
     }
 
     /**
@@ -80,7 +79,6 @@ public class FeedbackActivity extends Activity {
         } else {
             Util.showToast(this, "No Contact received", Toast.LENGTH_SHORT);
         }
-        //finish();
     }
 
     /**

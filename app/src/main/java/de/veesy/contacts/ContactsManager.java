@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.veesy.util.Constants;
-import de.veesy.util.Util;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 import ezvcard.VCardVersion;
@@ -80,13 +79,10 @@ public class ContactsManager {
     /**
      * Liest alle Kontakte aus und gibt sie in einer Liste zurück.
      * @param context Kontext von der Aktivity
-     * @param refresh Gibt an, ob die Liste aktualisiert werden soll
      * @return Liste mit allen fremden Kontakten
      */
-    List<Contact> getContacts(Context context, boolean refresh) {
-        if (refresh) {
-            updateContactList(context);
-        }
+    List<Contact> getContacts(Context context) {
+        updateContactList(context);
         return contacts;
     }
 

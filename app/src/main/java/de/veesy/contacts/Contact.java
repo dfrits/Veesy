@@ -28,9 +28,9 @@ public class Contact implements Serializable {
     private File contactPath;
 
 
-    public Contact(String firstName, String lastName, String occupation, String company,
-                   String businessArea, String phoneNumber, String mail, String address,
-                   String website, String birthday, String hobbies, Uri picture, File contactPath) {
+    Contact(String firstName, String lastName, String occupation, String company,
+            String businessArea, String phoneNumber, String mail, String address,
+            String website, String birthday, String hobbies, Uri picture, File contactPath) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.occupation = occupation;
@@ -108,61 +108,61 @@ public class Contact implements Serializable {
         return firstName + " " + lastName + ": " + phoneNumber;
     }
 
+    public boolean isEmpty(){
+        return (lastName != null && firstName!=null && lastName.isEmpty() && firstName.isEmpty());
+    }
+
     /* Setter */
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
     }
 
-    public void setLastName(String last_name) {
+    void setLastName(String last_name) {
         this.lastName = last_name;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public void setCompany(String company) {
+    void setCompany(String company) {
         this.company = company;
     }
 
-    public void setBusinessArea(String businessArea) {
+    void setBusinessArea(String businessArea) {
         this.businessArea = businessArea;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setMail(String mail) {
+    void setMail(String mail) {
         this.mail = mail;
     }
 
-    public void setAddress(String address) {
+    void setAddress(String address) {
         this.address = address;
     }
 
-    public void setWebsite(String website) {
+    void setWebsite(String website) {
         this.website = website;
     }
 
-    public void setBirthday(String birthday) {
+    void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-    public void setHobbies(String hobbies) {
+    void setHobbies(String hobbies) {
         this.hobbies = hobbies;
     }
 
-    public void setPicture(Uri picture) {
+    void setPicture(Uri picture) {
         this.picture = picture;
     }
 
-    public void setContactPath(File contactPath) {
+    void setContactPath(File contactPath) {
         this.contactPath = contactPath;
-    }
-
-    public boolean isEmpty(){
-        return (lastName != null && firstName!=null && lastName.isEmpty() && firstName.isEmpty());
     }
 }

@@ -3,10 +3,8 @@ package de.veesy.core;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ import de.veesy.util.Util;
  * hs-augsburg
  */
 public class MainMenu extends WearableActivity implements Observer {
-    private int debugCounter = 0;
     private ConnectionManager connectionManager = null;
     private ContactsManager contactsManager = null;
 
@@ -43,7 +40,6 @@ public class MainMenu extends WearableActivity implements Observer {
 
     private int shakesDetected = 0;
     private ShakeDetector.ShakeListener shakeListener;
-    private CountDownTimer countDownTimer = null;
 
     private SharedPreferences pref = null;
 
@@ -241,50 +237,5 @@ public class MainMenu extends WearableActivity implements Observer {
             //Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
             Sensey.getInstance().startShakeDetection(shakeListener);
         }
-    }
-
-    // Debug
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-            //initSensey();
-            //onResume();
-            /*debugCounter++;
-            if (debugCounter == 1) {
-                final Context context = this;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "Press twice to shutdown..", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            if (debugCounter == 2) {
-                if (countDownTimer != null) countDownTimer.cancel();
-                System.out.println("Forcing Shutdown");
-                //connectionManager.setBackOriginalDeviceName();
-                finish();
-
-            } else {
-                countDownTimer = new CountDownTimer(2000, 1000) {
-                    @Override
-                    public void onTick(long l) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        debugCounter = 0;
-                    }
-                }.start();
-
-            }
-            if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_UP) {
-            }*/
-
-        }
-        return true;
     }
 }

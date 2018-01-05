@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.SnapHelper;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
-import android.support.wear.widget.drawer.WearableActionDrawerView;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -34,20 +33,14 @@ import de.veesy.util.Constants;
 
 public class ContactsActivity extends Activity {
     private final ContactsManager contactsManager = ContactsManager.instance();
-    private final Activity context = this;
     private RoundListAdapter adapter;
-    private WearableActionDrawerView wearableActionDrawer;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_list_view);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        wearableActionDrawer = findViewById(R.id.action_drawer_non_editable);
-        wearableActionDrawer.setIsAutoPeekEnabled(false);
-
         initListView();
-        //setData();
     }
 
     @Override
@@ -70,7 +63,7 @@ public class ContactsActivity extends Activity {
             }
 
             @Override
-            public void onItemLongClicked(final int position, String value) {
+            public void onItemLongClicked(int position, String value) {
                 onListItemLongClicked(position);
             }
         });
@@ -85,7 +78,7 @@ public class ContactsActivity extends Activity {
      * Holt die aktuellen Kontakte vom Manager und zeigt diese an.
      */
     private void setData() {
-        List<Contact> contacts = contactsManager.getContacts(this, true);
+        List<Contact> contacts = contactsManager.getContacts(this);
         List<AdapterObject> list = new ArrayList<>();
 
         contacts = contacts.isEmpty() && Constants.DEBUGGING ? contactsManager.getdummydata()
@@ -137,29 +130,6 @@ public class ContactsActivity extends Activity {
      */
     private void onListItemLongClicked(final int position) {
         contactsManager.showContact(this, position);
-        /*String language = Locale.getDefault().getLanguage();
-        String title;
-        if (Locale.GERMAN.toString().equals(language)) {
-            title = contactName + "\n" + getString(R.string.delete_question);
-        } else {
-            title = getString(R.string.delete_question) + "\n" + contactName + "?";
-        }
-        wearableActionDrawer.setTitle(title);
-        wearableActionDrawer.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.mDeleteYes:
-                        if (!ContactsManager.instance().deleteContact(position)) {
-                            Util.showToast(context, R.string.delete_contact_error, Toast.LENGTH_LONG);
-                        }
-                        break;
-                }
-                wearableActionDrawer.getController().closeDrawer();
-                return true;
-            }
-        });
-        wearableActionDrawer.getController().openDrawer();*/
     }
 
     public void bShareClicked(View view) {
