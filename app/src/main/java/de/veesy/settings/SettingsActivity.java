@@ -94,7 +94,7 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
 
     public void bShareClicked(View view) {
         finish();
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_right);
     }
 
     @Override

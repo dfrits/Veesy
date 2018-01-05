@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import de.veesy.R;
@@ -20,6 +21,7 @@ public class QuestionActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.simple_question);
 
@@ -30,12 +32,12 @@ public class QuestionActivity extends Activity {
     public void bYesClicked(View view) {
         setResult(RESULT_OK);
         finish();
-        overridePendingTransition(0, R.anim.slide_out_bottom);
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_bottom);
     }
 
     public void bNoClicked(View view) {
         setResult(RESULT_CANCELED);
         finish();
-        overridePendingTransition(0, R.anim.slide_out_bottom);
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_bottom);
     }
 }

@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,14 +71,9 @@ public class ShareActivity extends Activity implements Observer {
         initShareActivity_permission_denied();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(300);
-        // long[] vibrationPattern = {0, 100, 100, 0};
-
-        //-1 - don't repeat
-        //final int indexInPatternToRepeat = -1;
-        //vibrator.vibrate(vibrationPattern, indexInPatternToRepeat);
-        // for testing on emulator
-//        initShareActivity_permission_granted();
+        if (vibrator != null) {
+            vibrator.vibrate(300);
+        }
     }
 
     //region GUI Handling
@@ -103,9 +97,6 @@ public class ShareActivity extends Activity implements Observer {
         initAnimation();
         startConnectionManager();
         setRefreshListener();
-
-        /* still good for testing */
-        //setList();
     }
 
     //endregion
@@ -150,9 +141,6 @@ public class ShareActivity extends Activity implements Observer {
                     animationView.clearAnimation();
                     animationView.setVisibility(INVISIBLE);
                 }
-
-                //Util.showToast(this, getString(R.string.no_device_found), Toast.LENGTH_LONG);
-
                 break;
             case MESSAGE.PAIRING:
                 startExchangeActivity_flag = true;
@@ -200,14 +188,11 @@ public class ShareActivity extends Activity implements Observer {
         adapter = new RoundListAdapter(new ListItemCallback() {
             @Override
             public void onItemClicked(int position, String value) {
-                //Toast.makeText(context, "Connecting with " + deviceName, Toast.LENGTH_SHORT).show();
-                onListItemClick(position, value);
+                onListItemClick(value);
             }
 
             @Override
-            public void onItemLongClicked(int position, String value) {
-                return;
-            }
+            public void onItemLongClicked(int position, String value) {}
         });
         recyclerView.setLayoutManager(
                 new WearableLinearLayoutManager(this, scrollingLayoutCallback));
@@ -232,28 +217,9 @@ public class ShareActivity extends Activity implements Observer {
         return dataList;
     }
 
-    /**
-     * Übergibt der Liste die neuen Daten
-     */
-    private void setList() {
-        adapter.setData(getDataList(null));
-    }
-
-    protected void onListItemClick(int position, String deviceName) {
+    protected void onListItemClick(String deviceName) {
         startExchangeActivity();
         connectionManager.btConnectToDevice(deviceName);
-        //region Debug Kram
-
-        boolean alreadyPaired = false;
-
-        if (DUMMY_DATA.contains(deviceName)) {
-            alreadyPaired = true;
-        }
-
-        //if (!deviceName.equals("Vivien Bardosi")) alreadyPaired = false;
-        //intent.putExtra("ALREADY_PAIRED", alreadyPaired);*/
-
-        //endregion
     }
 
     private void startExchangeActivity() {
@@ -261,7 +227,7 @@ public class ShareActivity extends Activity implements Observer {
         exchangeActivityAlreadyStarted = true;
         Intent intent = new Intent(this, ExchangeActivity.class);
         if (alreadyPaired_flag) {
-            intent.putExtra("ALREADY_PAIRED", alreadyPaired_flag);
+            intent.putExtra("ALREADY_PAIRED", true);
         }
         startActivity(intent);
         finish();

@@ -32,10 +32,6 @@ import de.veesy.util.Util;
 
 public class ViewContactNonEditableActivity extends Activity implements
         MenuItem.OnMenuItemClickListener {
-    private static final ContactsManager cm = ContactsManager.instance();
-
-    private final Context context = this;
-
     private Contact contact;
 
     // Felder für die Kontaktinfos
@@ -220,7 +216,7 @@ public class ViewContactNonEditableActivity extends Activity implements
 
         deleteIntent.putExtra(QuestionActivity.TITEL, title);
         startActivityForResult(deleteIntent, Constants.QUESTION_REQUEST_CODE);
-        overridePendingTransition(R.anim.slide_in_bottom, 0);
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
     }
 
     @Override
