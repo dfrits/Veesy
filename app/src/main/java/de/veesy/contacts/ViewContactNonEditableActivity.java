@@ -220,6 +220,7 @@ public class ViewContactNonEditableActivity extends Activity implements
 
         deleteIntent.putExtra(QuestionActivity.TITEL, title);
         startActivityForResult(deleteIntent, Constants.QUESTION_REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_bottom, 0);
     }
 
     @Override

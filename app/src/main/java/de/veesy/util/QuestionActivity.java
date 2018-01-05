@@ -30,10 +30,12 @@ public class QuestionActivity extends Activity {
     public void bYesClicked(View view) {
         setResult(RESULT_OK);
         finish();
+        overridePendingTransition(0, R.anim.slide_out_bottom);
     }
 
     public void bNoClicked(View view) {
         setResult(RESULT_CANCELED);
         finish();
+        overridePendingTransition(0, R.anim.slide_out_bottom);
     }
 }
