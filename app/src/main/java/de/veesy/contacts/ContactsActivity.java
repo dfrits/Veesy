@@ -164,7 +164,7 @@ public class ContactsActivity extends Activity {
 
     public void bShareClicked(View view) {
         finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_left);
     }
 }
 
