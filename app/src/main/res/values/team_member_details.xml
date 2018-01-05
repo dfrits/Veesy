@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="details_vivi">
-        <item>Vivien</item>
-        <item>Bardosi</item>
+        <item>VIVIEN</item>
+        <item>BARDOSI</item>
         <item>UX/Frontend Design</item>
         <item>Bachelor of Arts in Fine Art &amp; Multimedia</item>
         <item>Ludwig Maximilian University of Munich</item>
-        <item>"It's not enough that we build products that function,
-            that are understandable and usable, we also need to build products that
-            bring joy and excitement, pleasure and fun, and yes, beauty to people's lives."
+        <item>"It's not enough that we build products that function, that are understandable and usable, we also need to build products that bring joy and excitement, pleasure and fun, and yes, beauty to people's lives."
             - Don Norman</item>
     </string-array>
 
     <string-array name="details_martin">
-        <item>Martin</item>
-        <item>Stadlmaier</item>
+        <item>MARTIN</item>
+        <item>STADLMAIER</item>
         <item>UX Research/Backend Development</item>
         <item>Bachelor of Science in Geoinformatics</item>
         <item>University of Augsburg</item>
@@ -22,18 +20,17 @@
     </string-array>
 
     <string-array name="details_tianyi">
-        <item>Tianyi</item>
-        <item>Zhang</item>
+        <item>TIANYI</item>
+        <item>ZHANG</item>
         <item>Design/Corporate Identity</item>
         <item>Bachelor of Engineering in Industrial Design</item>
         <item>Hefei Universität of Technology, China</item>
-        <item>Design is not a skill, but a feeling and observation that can capture the essence
-            of things.</item>
+        <item>Design is not a skill, but a fee-ling and observation that can capture the essence of things.</item>
     </string-array>
 
     <string-array name="details_daniel">
-        <item>Daniel</item>
-        <item>Fritsch</item>
+        <item>DANIEL</item>
+        <item>FRITSCH</item>
         <item>Frontend &amp; Backend Development</item>
         <item>Bachelor of Science in Informatics</item>
         <item>University of Applied Sciences Landshut</item>

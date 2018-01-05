@@ -2,7 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/team_member_details_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/contacts_show_background"
+    android:requiresFadingEdge="vertical"
+    android:fadingEdgeLength="30dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,12 +26,12 @@
 
         <!-- Das hier verwenden, wenn Bild als eigenes ist-->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/tFirstName"
@@ -38,7 +41,7 @@
                 android:gravity="center"
                 android:text="@string/first_name"
                 android:textColor="#0ba29a"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:layout_marginEnd="2dp"/>
 
             <TextView
@@ -50,7 +53,7 @@
                 android:gravity="center"
                 android:text="@string/last_name"
                 android:textColor="#0ba29a"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!--Wenn Bild als Hintergrund, dann folgendes verwenden-->
@@ -82,8 +85,9 @@
         <LinearLayout
             android:id="@+id/occupation"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:layout_marginBottom="8dp"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -103,16 +107,16 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="2">
 
                 <TextView
                     android:id="@+id/tOccupation"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
                     android:text="@string/occupation"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
@@ -122,8 +126,9 @@
         <LinearLayout
             android:id="@+id/degree"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:layout_marginBottom="8dp"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -143,16 +148,16 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="2">
 
                 <TextView
                     android:id="@+id/tDegree"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
                     android:text="@string/degree"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
@@ -162,8 +167,9 @@
         <LinearLayout
             android:id="@+id/uni"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:layout_marginBottom="8dp"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -183,7 +189,8 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="2">
 
                 <TextView
@@ -192,7 +199,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
                     android:text="@string/uni"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
@@ -203,10 +209,13 @@
             android:id="@+id/tSlogan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
             android:text="@string/team_member_slogan"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:textAlignment="center"/>
 
         <ImageButton
             android:layout_width="match_parent"
