@@ -145,9 +145,9 @@ public class ConnectionManager extends Observable {
      * <p>
      * if something goes wrong, this method determines after 10s
      */
-    private void device_renameTo(String name, boolean setBackOriginalName) {
+    private void device_renameTo(String name, boolean setBackOriginalName, boolean changeName) {
         if (btAdapter != null) {
-            if (!isVeesyDevice(btAdapter.getName()) || setBackOriginalName) {
+            if (!isVeesyDevice(btAdapter.getName()) || setBackOriginalName|| changeName) {
 
                 Log.d(TAG, "Current device name is:      " + btAdapter.getName());
                 Log.d(TAG, "Setting back orignal name:   " + setBackOriginalName);
@@ -198,7 +198,7 @@ public class ConnectionManager extends Observable {
     public boolean checkName() {
         String name = btAdapter.getName();
         if (isVeesyDevice(name)) return true;
-        else device_renameTo(btName_prefix + btName_splitter + btName_device, false);
+        else device_renameTo(btName_prefix + btName_splitter + btName_device, false, false);
         return false;
     }
 
@@ -719,9 +719,15 @@ public class ConnectionManager extends Observable {
     }
 
     public void device_setVeesyName() {
+        Log.d(TAG, "device_setVeesyName . . . .");
         String name = originalDeviceName;
         if (sendContact != null && !sendContact.isEmpty()) name = sendContact.getFullName();
-        device_renameTo(btName_prefix + btName_splitter + name, false);
+        device_renameTo(btName_prefix + btName_splitter + name, false, false);
+    }
+
+    public void device_changeName(){
+        Log.d(TAG, "Changing name . . . .");
+        device_renameTo(btName_prefix + btName_splitter + sendContact.getFullName(), false, true);
     }
 
     private String device_getOriginalDeviceName() {
@@ -766,7 +772,7 @@ public class ConnectionManager extends Observable {
      * "[veesy]- ..", he has the ability to set back the name     *
      */
     public void setBackOriginalDeviceName() {
-        device_renameTo(originalDeviceName, true);
+        device_renameTo(originalDeviceName, true, false);
     }
 
 

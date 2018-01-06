@@ -102,14 +102,12 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
         String s = contact.getFirstName();
         if (s != null && !s.isEmpty()) {
             tFirstName.setText(s);
-            name_has_changed = true;
         } else {
             tFirstName.setText("");
         }
         s = contact.getLastName();
         if (s != null && !s.isEmpty()) {
             tLastName.setText(s);
-            name_has_changed = true;
         } else {
             tLastName.setText("");
         }
@@ -185,9 +183,11 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
         switch (textView.getId()) {
             case R.id.tVorname:
                 contact.setFirstName(s);
+                name_has_changed = true;
                 break;
             case R.id.tNachname:
                 contact.setLastName(s);
+                name_has_changed = true;
                 break;
             case R.id.tOccupation:
                 contact.setOccupation(s);
@@ -229,7 +229,7 @@ public class ViewContactEditableActivity extends Activity implements EditText.On
             contactsManager.safeOwnContact(contact);
             if (name_has_changed) {
                 connectionManager.setSendContact(contact);
-                connectionManager.device_setVeesyName();
+                connectionManager.device_changeName();
             }
             finish();
         } catch (IOException e) {
