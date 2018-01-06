@@ -50,7 +50,7 @@ public class ShareActivity extends Activity implements Observer {
     private Animation radar_animation;
     private static List<String> DUMMY_DATA;
 
-    private static int visibility_time = 20;
+    private static int visibility_time = 60;
 
     private boolean exchangeActivityAlreadyStarted = false;
     private boolean alreadyPaired_flag = false;
@@ -133,8 +133,7 @@ public class ShareActivity extends Activity implements Observer {
                 break;
             case START_DISCOVERING:
                 if (animationView != null)
-                    Util.runOnUiAnimation(this, animationView, radar_animation);
-
+                    Util.runAnimationOnUiThread(this, animationView, radar_animation);
                 break;
             case STOP_DISCOVERING:
                 if (animationView != null) {
@@ -235,22 +234,16 @@ public class ShareActivity extends Activity implements Observer {
 
     //endregion
 
-    protected void onStop() {
-        super.onStop();
-    }
 
-
+    @Override
     protected void onDestroy() {
-
-        System.out.println("ShareActivity onDestroy called");
-
+        super.onDestroy();
         try {
             connectionManager.unregisterReceiver(this);
             connectionManager.deleteObserver(this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        super.onDestroy();
     }
 
     public void bShareClicked(View view) {

@@ -35,68 +35,55 @@ public class ExchangeActivity extends Activity implements Observer {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         initConnectionManager();
 
         boolean already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
-        if (already_paired_flag) initExchangeActivity_paired();
-        else initExchangeActivity_pairing();
-
-        //TODO fehler handling
-        // was passiert wenn pairing kaputt geht?
+        if (already_paired_flag) runExchangeActivity_paired();
+        else runExchangeActivity_pairing();
     }
 
+
     private void initConnectionManager() {
-        System.out.println("initConnectionManager");
         connectionManager = ConnectionManager.instance();
         connectionManager.addObserver(this);
         connectionManager.registerReceiver(this);
     }
 
-    private void initExchangeActivity_not_paired() {
+    private void runExchangeActivity_not_paired() {
         setContentView(R.layout.exchange_not_paired);
     }
 
-    private void initExchangeActivity_paired() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setContentView(R.layout.exchange_paired);
-            }
-        });
-        initExchangeAnimation();
+    private void runExchangeActivity_paired() {
+        Util.setContentViewOnUiThread(this, R.layout.exchange_paired);
+        runExchangeAnimation();
     }
 
-    private void initExchangeActivity_pairing() {
-        System.out.println("setContentView pairing");
-        setContentView(R.layout.exchange_pairing);
-        initPairingAnimation();
+    private void runExchangeActivity_pairing() {
+        Util.setContentViewOnUiThread(this, R.layout.exchange_pairing);
+        runPairingAnimation();
     }
 
-    private void initExchangeAnimation() {
-        final ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
+    private void runExchangeAnimation() {
+        ImageView exchangeAnimationView = findViewById(R.id.iVExchangeAnimation);
         Animation exchange_animation = AnimationUtils.loadAnimation(this, R.anim.rotate_exchange);
-        //exchangeAnimationView.startAnimation(exchange_animation);
-        Util.runOnUiAnimation(this, exchangeAnimationView, exchange_animation);
+        Util.runAnimationOnUiThread(this, exchangeAnimationView, exchange_animation);
     }
 
-    private void initPairingAnimation() {
-        final ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
+    private void runPairingAnimation() {
+        ImageView pairingAnimationView = findViewById(R.id.iVPairingAnimation);
         Animation pairing_animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out);
-        pairingAnimationView.startAnimation(pairing_animation);
-        //Util.runOnUiAnimation(this, pairingAnimationView, pairing_animation);
+        Util.runAnimationOnUiThread(this, pairingAnimationView, pairing_animation);
     }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (connectionManager != null) {
             connectionManager.unregisterReceiver(this);
             connectionManager.deleteObserver(this);
             connectionManager.btCloseConnection();
         }
-        super.onDestroy();
     }
 
     private void startFeedbackActivity(boolean success) {
@@ -123,17 +110,17 @@ public class ExchangeActivity extends Activity implements Observer {
     public void update(Observable observable, Object o) {
         switch ((Integer) o) {
             case MESSAGE.PAIRING:
-                initExchangeActivity_pairing();
+                runExchangeActivity_pairing();
                 break;
             case MESSAGE.PAIRED:
-                initExchangeActivity_paired();
+                runExchangeActivity_paired();
                 connectionManager.startConnectionTimeOutHandler();
                 break;
             case MESSAGE.ALREADY_PAIRED:
-                initExchangeActivity_paired();
+                runExchangeActivity_paired();
                 break;
             case MESSAGE.NOT_PAIRED:
-                initExchangeActivity_not_paired();
+                runExchangeActivity_not_paired();
                 break;
             case MESSAGE.CONNECTED:
                 System.out.println("MESSAGE.CONNECTED in Exchange Act");
@@ -159,14 +146,12 @@ public class ExchangeActivity extends Activity implements Observer {
             case MESSAGE.CONNECTION_ERROR:
                 connectionManager.retryConnecting();
                 break;
-
         }
     }
 
     //debug kram
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-            startFeedbackActivity(true);
         }
         return true;
     }
