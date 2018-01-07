@@ -20,7 +20,8 @@
         <!-- contacts -->
 
         <activity
-            android:name=".contacts.ContactsActivity"/>
+            android:name=".contacts.ContactsActivity"
+            android:theme="@style/noSwipeTheme" />
         <activity android:name=".contacts.ViewContactEditableActivity" />
         <activity android:name=".contacts.ViewContactNonEditableActivity" />
 
@@ -48,13 +49,17 @@
 
         <!-- settings -->
 
-        <activity android:name=".settings.SettingsActivity"/>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:theme="@style/noSwipeTheme" />
         <activity android:name=".settings.AboutUsActivity" />
         <activity android:name=".settings.MemberDetailsActivity" />
 
         <!-- util -->
 
-        <activity android:name=".util.QuestionActivity"/>
+        <activity
+            android:name=".util.QuestionActivity"
+            android:theme="@style/noSwipeTheme" />
 
         <!-- sonstiges -->
 
