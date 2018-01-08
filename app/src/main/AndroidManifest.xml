@@ -40,6 +40,7 @@
         <activity
             android:name=".core.FeedbackActivity"
             android:theme="@style/noSwipeTheme" />
+        <activity android:name=".core.ShutDownActivity" />
 
         <!-- introduction -->
 

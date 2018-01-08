@@ -53,7 +53,7 @@ public class MainMenu extends WearableActivity implements Observer {
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
-//        if (true) {
+            //        if (true) {
             pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
             Intent intent = new Intent(this, IntroductionActivity.class);
             intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
@@ -140,9 +140,8 @@ public class MainMenu extends WearableActivity implements Observer {
      */
     public void bShutdownClicked(View view) {
         Util.showToast(this, "Shutdown", Toast.LENGTH_SHORT);
-        connectionManager.addObserver(this);
-        connectionManager.unpairAllDevices();
-        connectionManager.setBackOriginalDeviceName();
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
@@ -179,20 +178,6 @@ public class MainMenu extends WearableActivity implements Observer {
         System.out.println("Main onStop called");
         if (connectionManager != null) connectionManager.deleteObserver(this);
         Sensey.getInstance().stopShakeDetection(shakeListener);
-    }
-
-    @Override
-    protected void onDestroy() {
-        // We need to do this because somehow it happens that the connection manager is still alive
-        connectionManager.finish();
-        super.onDestroy();
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        if ((Integer) o == MESSAGE.READY_TO_SHUTDOWN) {
-            finish();
-        }
     }
 
     private void initSensey() {
