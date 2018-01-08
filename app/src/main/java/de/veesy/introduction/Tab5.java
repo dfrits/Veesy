@@ -1,6 +1,7 @@
 package de.veesy.introduction;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import de.veesy.R;
 public class Tab5 extends Fragment {
     private AnimationDrawable introAnimation;
     private ImageView introImage;
+    private IntroAnimation backgroundTask;
 
     @Nullable
     @Override
@@ -31,8 +33,27 @@ public class Tab5 extends Fragment {
             return null;
         }
         View view = inflater.inflate(R.layout.gesture_animation_view, container, false);
-        initAnimation(view);
+
+        introImage = view.findViewById(R.id.introAnimation);
+        introImage.setBackgroundResource(R.drawable.intro);
+        backgroundTask = new IntroAnimation();
+        backgroundTask.execute(introImage);
+
+//        initAnimation(view);
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            introAnimation = backgroundTask.getIntroAnimation();
+            if (introAnimation == null) {
+                initAnimation(getView());
+            }
+            if (!introAnimation.isRunning()) introAnimation.start();
+        } else {
+            stopAnimation();
+        }
     }
 
     private void initAnimation(View view) {
@@ -40,7 +61,6 @@ public class Tab5 extends Fragment {
             introImage = view.findViewById(R.id.introAnimation);
             introImage.setBackgroundResource(R.drawable.intro);
             introAnimation = (AnimationDrawable) introImage.getBackground();
-            introAnimation.start();
         }
     }
 
