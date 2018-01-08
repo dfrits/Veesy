@@ -159,7 +159,7 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/action_button_background"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/safe"
             android:onClick="bReturnClicked"
             android:paddingBottom="15dp"

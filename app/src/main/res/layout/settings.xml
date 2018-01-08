@@ -9,7 +9,7 @@
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/share"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"

@@ -23,7 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/share"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"
