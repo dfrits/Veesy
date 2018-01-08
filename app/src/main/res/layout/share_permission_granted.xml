@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <ImageView
         android:layout_width="match_parent"
-        android:background="@drawable/share_permission_granted_background"
         android:layout_height="match_parent"
-        android:contentDescription="bg" />
+        android:background="@drawable/share_permission_granted_background"
+        android:contentDescription="@string/background" />
 
     <ImageView
         android:id="@+id/suchanimation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/share_animation_light"
-        android:contentDescription="animation"/>
+        android:contentDescription="@string/animation" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent">
 
-        <android.support.wear.widget.WearableRecyclerView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.wear.widget.WearableRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/lVDevices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="15dp"
-            android:paddingEnd="10dp"
             android:background="@android:color/transparent"
-            android:scrollbars="vertical"/>
+            android:paddingEnd="10dp"
+            android:paddingStart="15dp"
+            android:scrollbars="vertical" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
 </RelativeLayout>

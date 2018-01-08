@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/feedback_background"
@@ -9,9 +8,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_feedback"
@@ -27,8 +26,8 @@
             android:layout_height="22dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/roboto_condensed_regular"
-            android:text="@string/success"
             android:gravity="center"
+            android:text="@string/success"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -38,7 +37,7 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
-        android:background="@android:color/transparent"
+        android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/details"
         android:onClick="bDetailsClicked"
         android:scaleType="fitCenter"
@@ -50,11 +49,9 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
+        android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/home"
         android:onClick="bHomeClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/home_button" />
-
-
 </RelativeLayout>

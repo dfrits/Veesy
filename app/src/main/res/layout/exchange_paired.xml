@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/exchange_paired_hintergrund">
-
 
     <ImageView
         android:id="@+id/iVExchangeAnimation"
@@ -16,16 +14,14 @@
         android:contentDescription="@string/share"
         android:src="@drawable/exchanging_animation" />
 
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@null"
+        android:background="?android:attr/selectableItemBackground"
         android:onClick="bCancelClicked"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textAppearance="@android:style/TextAppearance"
         android:textSize="22sp" />
-
 </RelativeLayout>

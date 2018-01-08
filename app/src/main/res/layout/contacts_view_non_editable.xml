@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lContactBackground"
     android:layout_width="match_parent"
@@ -11,350 +10,350 @@
     android:requiresFadingEdge="vertical"
     android:scrollbars="vertical">
 
-        <LinearLayout
-            android:id="@+id/lContactDetails"
+    <LinearLayout
+        android:id="@+id/lContactDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tVorname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center"
+            android:textColor="#0ba29a"
+            android:textSize="20sp"
+            tools:text="Andreas" />
+
+        <TextView
+            android:id="@+id/tNachname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center"
+            android:textColor="#0ba29a"
+            android:textSize="20sp"
+            tools:text="Epping" />
+
+        <LinearLayout
+            android:id="@+id/occupation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tVorname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="50dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="12dp"
+                android:id="@+id/tOccupation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="2"
                 android:fontFamily="@font/roboto_condensed_regular"
-                android:gravity="center"
-                android:textColor="#0ba29a"
-                android:textSize="20sp"
-                tools:text="Andreas" />
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                tools:text="Sales Manager" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/company"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tNachname"
+                android:id="@+id/tCompany"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="25dp"
-                android:layout_marginStart="25dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
                 android:fontFamily="@font/roboto_condensed_regular"
-                android:gravity="center"
-                android:textColor="#0ba29a"
-                android:textSize="20sp"
-                tools:text="Epping" />
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="orderbird AG München" />
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/occupation"
+        <LinearLayout
+            android:id="@+id/business_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tBusiness_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="Softwareentwickler" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/phone"
+                    android:src="@drawable/contacts_phone_img" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
 
                 <TextView
-                    android:id="@+id/tOccupation"
-                    android:layout_width="0dp"
+                    android:id="@+id/tPhone"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="2"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:gravity="center_vertical"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    tools:text="Sales Manager" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/company"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tCompany"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    tools:text="orderbird AG München" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/business_area"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/tBusiness_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    tools:text="Softwareentwickler" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/phone"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="3dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/phone"
-                        android:src="@drawable/contacts_phone_img" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/tPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_regular"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="015119403060" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/mail"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/mail"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_mail_img" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/tMail"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_regular"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="andreas.epping@gmail.com" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/mail"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_address" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/tAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_regular"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="Kleinstraße 17, 81298 München" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/website"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/mail"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_website" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/tWebsite"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_regular"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="www.andreas-epping.de" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/birthday"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/mail"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_birthday" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/tBirthday"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_regular"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="12.08.1977" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/hobbies"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/mail"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/contacts_hobby" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/tHobbies"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/roboto_condensed_regular"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="Angeln" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/action_button_background"
-                android:contentDescription="@string/delete"
-                android:onClick="bDeleteClicked"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/contacts_delete" />
+                    android:textSize="15sp"
+                    tools:text="015119403060" />
+            </FrameLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mail"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/contacts_mail_img" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tMail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="andreas.epping@gmail.com" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mail"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/contacts_address" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="Kleinstraße 17, 81298 München" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/website"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mail"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/contacts_website" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tWebsite"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="www.andreas-epping.de" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/birthday"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mail"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/contacts_birthday" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tBirthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="12.08.1977" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hobbies"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mail"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/contacts_hobby" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tHobbies"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="Angeln" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/action_button_background"
+            android:contentDescription="@string/delete"
+            android:onClick="bDeleteClicked"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/contacts_delete" />
+
+    </LinearLayout>
 </ScrollView>
