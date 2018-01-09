@@ -12,7 +12,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/settings"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"

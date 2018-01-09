@@ -11,6 +11,8 @@
     <string name="no">Nein</string>
     <string name="delete">Löschen</string>
     <string name="safe">Speichern</string>
+    <string name="cancel">Cancel</string>
+    <string name="background">Hintergrund</string>
 
     <!-- settings -->
 

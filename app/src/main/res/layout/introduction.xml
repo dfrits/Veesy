@@ -1,10 +1,8 @@
-
 <!-- we use the BoxInsetLayout to support both round and square displays with the same xml file.
 The alternative to this is to use the watchviewstub, where you can then specify different xml
  for round and square. Both those views must be in root of your layout for things to work.-->
-<android.support.v4.view.ViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/introPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="onPagerClicked"/>
+    android:onClick="onPagerClicked" />

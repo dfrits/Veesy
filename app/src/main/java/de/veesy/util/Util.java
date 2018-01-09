@@ -43,11 +43,20 @@ public abstract class Util {
         });
     }
 
-    public static void runOnUiAnimation(final Activity activity, final View view, final Animation animation){
+    public static void runAnimationOnUiThread(final Activity activity, final View view, final Animation animation){
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 view.startAnimation(animation);
+            }
+        });
+    }
+
+    public static void setContentViewOnUiThread(final Activity activity, final int view){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.setContentView(view);
             }
         });
     }

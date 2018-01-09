@@ -35,6 +35,7 @@ import static de.veesy.connection.MESSAGE.DISCOVERABILITY_OFF;
 import static de.veesy.connection.MESSAGE.DISCOVERABILITY_ON;
 import static de.veesy.connection.MESSAGE.START_DISCOVERING;
 import static de.veesy.connection.MESSAGE.STOP_DISCOVERING;
+import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
 
 /**
  * Created by dfritsch on 24.10.2017.
@@ -50,10 +51,10 @@ public class ShareActivity extends Activity implements Observer {
     private Animation radar_animation;
     private static List<String> DUMMY_DATA;
 
-    private static int visibility_time = 20;
+    private static int visibility_time = 60;
 
     private boolean exchangeActivityAlreadyStarted = false;
-    private boolean alreadyPaired_flag = false;
+    //private boolean alreadyPaired_flag = false;
 
     static {
         DUMMY_DATA = new ArrayList<>();
@@ -74,6 +75,12 @@ public class ShareActivity extends Activity implements Observer {
         if (vibrator != null) {
             vibrator.vibrate(300);
         }
+
+    }
+
+    //Debug
+    private void setList(){
+        adapter.setData(getDataList(DUMMY_DATA));
     }
 
     //region GUI Handling
@@ -97,6 +104,9 @@ public class ShareActivity extends Activity implements Observer {
         initAnimation();
         startConnectionManager();
         setRefreshListener();
+
+        //Debug
+        setList();
     }
 
     //endregion
@@ -133,8 +143,7 @@ public class ShareActivity extends Activity implements Observer {
                 break;
             case START_DISCOVERING:
                 if (animationView != null)
-                    Util.runOnUiAnimation(this, animationView, radar_animation);
-
+                    Util.runAnimationOnUiThread(this, animationView, radar_animation);
                 break;
             case STOP_DISCOVERING:
                 if (animationView != null) {
@@ -145,9 +154,11 @@ public class ShareActivity extends Activity implements Observer {
             case MESSAGE.PAIRING:
                 startExchangeActivity_flag = true;
                 break;
-            case MESSAGE.ALREADY_PAIRED:
-                startExchangeActivity_flag = true;
-                alreadyPaired_flag = true;
+//
+            case MESSAGE.RESPOND_AS_CLIENT:
+                System.out.println("MESSAGE.RESPOND in Exchange Act");
+                connectionManager.btSendData();
+                startFeedbackActivity(true);
                 break;
             default:
                 break;
@@ -156,6 +167,14 @@ public class ShareActivity extends Activity implements Observer {
             startExchangeActivity();
         }
     }
+
+    private void startFeedbackActivity(boolean success) {
+        Intent feedback_intent = new Intent(this, FeedbackActivity.class);
+        feedback_intent.putExtra(SUCCESS_FLAG, success);
+        startActivity(feedback_intent);
+        finish();
+    }
+
 
     //endregion
 
@@ -218,6 +237,16 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     protected void onListItemClick(String deviceName) {
+
+
+        //debug
+        if(deviceName.equals("Martin Stadlmaier")){
+            Intent intent = new Intent(this, FeedbackActivity.class);
+            intent.putExtra("SUCCESS_FLAG", false);
+            startActivity(intent);
+            finish();
+            return;
+        }
         startExchangeActivity();
         connectionManager.btConnectToDevice(deviceName);
     }
@@ -226,31 +255,25 @@ public class ShareActivity extends Activity implements Observer {
         if (exchangeActivityAlreadyStarted) return;
         exchangeActivityAlreadyStarted = true;
         Intent intent = new Intent(this, ExchangeActivity.class);
-        if (alreadyPaired_flag) {
-            intent.putExtra("ALREADY_PAIRED", true);
-        }
+//        if (alreadyPaired_flag) {
+//            intent.putExtra("ALREADY_PAIRED", true);
+//        }
         startActivity(intent);
         finish();
     }
 
     //endregion
 
-    protected void onStop() {
-        super.onStop();
-    }
 
-
+    @Override
     protected void onDestroy() {
-
-        System.out.println("ShareActivity onDestroy called");
-
+        super.onDestroy();
         try {
             connectionManager.unregisterReceiver(this);
             connectionManager.deleteObserver(this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        super.onDestroy();
     }
 
     public void bShareClicked(View view) {
