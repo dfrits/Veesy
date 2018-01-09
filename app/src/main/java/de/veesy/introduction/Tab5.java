@@ -1,7 +1,6 @@
 package de.veesy.introduction;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,7 +38,6 @@ public class Tab5 extends Fragment {
         backgroundTask = new IntroAnimation();
         backgroundTask.execute(introImage);
 
-//        initAnimation(view);
         return view;
     }
 
@@ -52,7 +50,9 @@ public class Tab5 extends Fragment {
             }
             if (!introAnimation.isRunning()) introAnimation.start();
         } else {
-            stopAnimation();
+            if (introAnimation != null) {
+                introAnimation.stop();
+            }
         }
     }
 
