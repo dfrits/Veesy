@@ -73,7 +73,7 @@ public class SettingsActivity extends Activity implements EditText.OnEditorActio
 
     public void tRemoveDevicesClicked(View view) {
         if (connectionManager != null) {
-            connectionManager.unpairAllDevices();
+            connectionManager.unpairAllDevices(true);
             Util.showToast(this, getString(R.string.devies_removed), Toast.LENGTH_SHORT);
         }
     }

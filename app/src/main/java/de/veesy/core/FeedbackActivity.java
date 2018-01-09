@@ -90,7 +90,7 @@ public class FeedbackActivity extends Activity {
     public void bShareClicked(View view) {
         if (!success) {
             startActivity(new Intent(this, ExchangeActivity.class));
-            connectionManager.btSendData();
+            connectionManager.btReConnect();
         }
         finish();
     }

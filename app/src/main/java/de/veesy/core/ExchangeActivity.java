@@ -38,7 +38,7 @@ public class ExchangeActivity extends Activity implements Observer {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initConnectionManager();
 
-        boolean already_paired_flag = getIntent().getBooleanExtra(ALREADY_PAIRED, false);
+        boolean already_paired_flag = connectionManager.isAlreadyPaired();
         if (already_paired_flag) runExchangeActivity_paired();
         else runExchangeActivity_pairing();
     }
@@ -90,7 +90,7 @@ public class ExchangeActivity extends Activity implements Observer {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
         feedback_intent.putExtra(SUCCESS_FLAG, success);
         startActivity(feedback_intent);
-        if (success) finish();
+        finish();
     }
 
     public void bPairClicked(View view) {
@@ -103,7 +103,7 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     public void bCancelClicked(View view) {
-        startActivity(new Intent(this, ShareActivity.class));
+        //startActivity(new Intent(this, ShareActivity.class));
         finish();
     }
 
@@ -116,9 +116,10 @@ public class ExchangeActivity extends Activity implements Observer {
                 runExchangeActivity_paired();
                 connectionManager.startConnectionTimeOutHandler();
                 break;
-            case MESSAGE.ALREADY_PAIRED:
-                runExchangeActivity_paired();
-                break;
+//            case MESSAGE.ALREADY_PAIRED:
+//                //kommt nie an
+//                runExchangeActivity_paired();
+//                break;
             case MESSAGE.NOT_PAIRED:
                 runExchangeActivity_not_paired();
                 break;
@@ -140,11 +141,12 @@ public class ExchangeActivity extends Activity implements Observer {
                 break;
             case MESSAGE.DATA_TRANSMISSION_FAILED:
                 System.out.println("MESSAGE.DATA_FAILED in Exchange Act");
-                //connectionManager.btCloseConnection();
+                connectionManager.btCloseConnection();
                 startFeedbackActivity(false);
                 break;
             case MESSAGE.CONNECTION_ERROR:
-                connectionManager.retryConnecting();
+                System.out.println("Connection Error occured :/");
+                connectionManager.btReConnect();
                 break;
         }
     }
