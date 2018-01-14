@@ -14,7 +14,6 @@
         android:paddingEnd="10dp"
         android:paddingStart="10dp">
 
-        <!--Wenn Bild als Hintergrund, dass folgende IV auskommentieren-->
         <ImageView
             android:id="@+id/member_img"
             android:layout_width="80dp"
@@ -24,7 +23,6 @@
             android:contentDescription="@string/image"
             android:src="@drawable/about_daniel" />
 
-        <!-- Das hier verwenden, wenn Bild als eigenes ist-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,32 +53,6 @@
                 android:textColor="#0ba29a"
                 android:textSize="16sp" />
         </LinearLayout>
-
-        <!--Wenn Bild als Hintergrund, dann folgendes verwenden-->
-
-        <!--<TextView
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:id="@+id/tFirstName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/roboto_condensed_regular"
-            android:gravity="center"
-            android:text="@string/first_name"
-            android:textColor="#0ba29a"
-            android:textSize="20sp" />
-        <TextView
-            android:id="@+id/tLastName"
-            android:layout_marginEnd="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_condensed_regular"
-            android:gravity="center"
-            android:text="@string/last_name"
-            android:textColor="#0ba29a"
-            android:textSize="20sp" />-->
 
         <LinearLayout
             android:id="@+id/occupation"
