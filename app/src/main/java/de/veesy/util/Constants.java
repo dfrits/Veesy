@@ -9,7 +9,7 @@ package de.veesy.util;
 public abstract class Constants {
 
     public static final String appName = "veesy";
-    public static boolean DEBUGGING = true;
+    public static boolean DEBUGGING = false;
 
     public static final String CONTACT_EXTRA = "CONTACT_EXTRA";
     public static final String INTRODUCTION_FIRST_START_EXTRA = "INTRODUCTION_FIRST_START_EXTRA";
@@ -20,6 +20,5 @@ public abstract class Constants {
 
     // Martins Debugging
     public static final String SHAKE_COUNTER = "SHAKE_COUNTER";
-    public static final String SHAKE_THRESHOLD = "SHAKE_THRESHOLD";
     public static final String SHAKE_TIME = "SHAKE_TIME";
 }

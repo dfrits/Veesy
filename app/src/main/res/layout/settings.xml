@@ -15,7 +15,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/home_button" />
 
-
     <LinearLayout
         android:id="@+id/settings_view"
         android:layout_width="match_parent"
@@ -71,38 +70,5 @@
             android:onClick="tAboutClicked"
             android:text="@string/about_us"
             android:textSize="18sp" />
-
-        <View style="@style/Divider" />
-
-        <!--<EditText-->
-        <!--android:id="@+id/tCounter"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:hint="counter"-->
-        <!--android:inputType="number"-->
-        <!--android:imeOptions="actionDone"-->
-        <!--android:textSize="18sp" />-->
-        <!--<EditText-->
-        <!--android:id="@+id/tThreshold"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:inputType="number"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:hint="threshold"-->
-        <!--android:imeOptions="actionDone"-->
-        <!--android:textSize="18sp" />-->
-        <!--<EditText-->
-        <!--android:id="@+id/tTime"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:imeOptions="actionDone"-->
-        <!--android:inputType="number"-->
-        <!--android:hint="timebeforestopped"-->
-        <!--android:textSize="18sp" />-->
     </LinearLayout>
 </LinearLayout>

@@ -28,6 +28,7 @@
     <string name="fill_out_your_card_please">Bitte fülle zuerst deine Visitenkarte aus. Es speichert automatisch.</string>
     <string name="devies_removed">Geräte entfernt</string>
     <string name="delete_question">wirklich löschen?</string>
+    <string name="shutdown">Beenden…</string>
 
     <!-- contact details -->
 
@@ -64,4 +65,15 @@
     <string name="degree">Abschluss</string>
     <string name="uni">Hochschule</string>
     <string name="team_member_slogan">Slogan</string>
+
+    <!-- introduction -->
+
+    <string name="intro_tab_1_info_text">Willkommen bei veesy</string>
+    <string name="intro_tab_2_info_text">Erstelle deine eigene Visitenkarte</string>
+    <string name="intro_tab_3_info_text">Verwalte all deine Kontakte direkt auf deiner Uhr</string>
+    <string name="intro_tab_4_button_text">Zeig mal!</string>
+    <string name="intro_tab_4_info_text">Teile deine Visitenkarte ganz einfach mit einem Handshake</string>
+
+    <!-- Neue Textfelder werden automatisch hier drunter eingefügt -->
+    <string name="neue_felder">Neue Felder</string>
 </resources>

@@ -50,8 +50,8 @@ public class ViewContactNonEditableActivity extends Activity implements
 
     /**
      * Erstellt automatisch einen Intent mit den nötigen Extras.
-     * @param context   Context der aufrufenden Activity
-     * @param contact   Kontakt, der angezeigt werden soll
+     * @param context Context der aufrufenden Activity
+     * @param contact Kontakt, der angezeigt werden soll
      * @return Intent zum starten dieser Activity
      */
     public static Intent getIntent(Context context, Contact contact) {
@@ -76,7 +76,7 @@ public class ViewContactNonEditableActivity extends Activity implements
         ScrollView background = findViewById(R.id.lContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
-            // TODO Bild laden und als Hintergrund setzen
+            // TODO Bild laden und als Hintergrund setzen oder eigenes Bild. Wie bei About
         } else {
             background.setBackgroundResource(R.drawable.contacts_show_background);
         }

@@ -37,6 +37,7 @@
     <string name="devies_removed">Devices removed</string>
     <string name="fill_out_your_card_please">Please fill your card first. It saves automatically.</string>
     <string name="delete_question">Really delete</string>
+    <string name="shutdown">Shutdown…</string>
 
     <!-- contact details -->
 
@@ -68,6 +69,11 @@
     <string name="tab2" translatable="false">tab2</string>
     <string name="tab3" translatable="false">tab3</string>
     <string name="tab4" translatable="false">tab4</string>
+    <string name="intro_tab_1_info_text">Welcome to veesy</string>
+    <string name="intro_tab_2_info_text">Create your own business card</string>
+    <string name="intro_tab_3_info_text">Manage all your contacts right on your watch</string>
+    <string name="intro_tab_4_info_text">Exchange contact information easily with a handshake</string>
+    <string name="intro_tab_4_button_text">Show me!</string>
 
     <!-- about us -->
 
@@ -85,4 +91,7 @@
     <string name="degree">Degree</string>
     <string name="uni">University</string>
     <string name="team_member_slogan">Slogan</string>
+
+    <!-- Neue Textfelder werden automatisch hier drunter eingefügt -->
+    <string name="neue_felder">Neue Felder</string>
 </resources>

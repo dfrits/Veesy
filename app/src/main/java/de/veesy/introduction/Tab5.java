@@ -31,10 +31,10 @@ public class Tab5 extends Fragment {
         if (container == null) {
             return null;
         }
-        View view = inflater.inflate(R.layout.gesture_animation_view, container, false);
+        View view = inflater.inflate(R.layout.intro_tab_5, container, false);
 
         introImage = view.findViewById(R.id.introAnimation);
-        introImage.setBackgroundResource(R.drawable.intro);
+        introImage.setBackgroundResource(R.drawable.intro_animation);
         backgroundTask = new IntroAnimation();
         backgroundTask.execute(introImage);
 
@@ -59,7 +59,7 @@ public class Tab5 extends Fragment {
     private void initAnimation(View view) {
         if (introAnimation == null || !introAnimation.isRunning()) {
             introImage = view.findViewById(R.id.introAnimation);
-            introImage.setBackgroundResource(R.drawable.intro);
+            introImage.setBackgroundResource(R.drawable.intro_animation);
             introAnimation = (AnimationDrawable) introImage.getBackground();
         }
     }
@@ -68,7 +68,7 @@ public class Tab5 extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         stopAnimation();
-        introImage.setBackgroundResource(R.drawable.intro0001);
+        introImage.setBackgroundResource(R.drawable.intro_animation_frame_0001);
     }
 
     @Override

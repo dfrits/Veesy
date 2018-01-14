@@ -12,7 +12,6 @@ import java.io.Serializable;
  */
 
 public class Contact implements Serializable {
-
     private String lastName;
     private String firstName;
     private String occupation;
@@ -48,55 +47,55 @@ public class Contact implements Serializable {
 
     /* Getter */
 
-    public String getLastName() {
+    String getLastName() {
         return lastName;
     }
 
-    public String getFirstName() {
+    String getFirstName() {
         return firstName;
     }
 
-    public String getOccupation() {
+    String getOccupation() {
         return occupation;
     }
 
-    public String getCompany() {
+    String getCompany() {
         return company;
     }
 
-    public String getBusinessArea() {
+    String getBusinessArea() {
         return businessArea;
     }
 
-    public String getPhoneNumber() {
+    String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getMail() {
+    String getMail() {
         return mail;
     }
 
-    public String getAddress() {
+    String getAddress() {
         return address;
     }
 
-    public String getWebsite() {
+    String getWebsite() {
         return website;
     }
 
-    public String getBirthday() {
+    String getBirthday() {
         return birthday;
     }
 
-    public String getHobbies() {
+    String getHobbies() {
         return hobbies;
     }
 
-    public Uri getPicture() {
+    Uri getPicture() {
         return picture;
     }
 
-    public File getContactPath() {
+    File getContactPath() {
         return contactPath;
     }
 
@@ -108,13 +107,13 @@ public class Contact implements Serializable {
         return firstName + " " + lastName + ": " + phoneNumber;
     }
 
-    public boolean isEmpty(){
-        return (lastName != null && firstName!=null && lastName.isEmpty() && firstName.isEmpty());
+    public boolean isEmpty() {
+        return (lastName != null && firstName != null && lastName.isEmpty() && firstName.isEmpty());
     }
 
     /* Setter */
 
-    public void setOccupation(String occupation) {
+    void setOccupation(String occupation) {
         this.occupation = occupation;
     }
 

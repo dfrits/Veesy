@@ -32,7 +32,7 @@ public class RoundListAdapter extends RecyclerView.Adapter<RoundListAdapter.Meta
     }
 
     public void clear() {
-        if(this.data != null) this.data.clear();
+        if (this.data != null) this.data.clear();
         notifyDataSetChanged();
     }
 

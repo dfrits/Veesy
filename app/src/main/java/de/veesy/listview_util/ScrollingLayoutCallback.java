@@ -10,7 +10,7 @@ import android.view.View;
  * hs-augsburg
  */
 
-public class ScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutCallback  {
+public class ScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutCallback {
 
     @Override
     public void onLayoutFinished(View child, RecyclerView parent) {
@@ -18,7 +18,7 @@ public class ScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutC
         float centerOffset = ((float) child.getHeight() / 2.0f) / (float) parent.getHeight();
         float yRelativeToCenterOffset = (child.getY() / parent.getHeight()) + centerOffset;
 
-        float progressToCenter = (float) (Math.sin(yRelativeToCenterOffset * Math.PI)+0.16);
+        float progressToCenter = (float) (Math.sin(yRelativeToCenterOffset * Math.PI) + 0.16);
 
         child.setScaleX(progressToCenter);
         child.setScaleY(progressToCenter);

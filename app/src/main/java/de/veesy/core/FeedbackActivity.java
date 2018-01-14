@@ -1,5 +1,6 @@
 package de.veesy.core;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class FeedbackActivity extends Activity {
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(300);
 
-        View feedback_failure = LayoutInflater.from(this).inflate(
+        @SuppressLint("InflateParams") View feedback_failure = LayoutInflater.from(this).inflate(
                 R.layout.feedback_failure, null);
 
         success = getIntent().getBooleanExtra(SUCCESS_FLAG, false);

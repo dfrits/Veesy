@@ -4,8 +4,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import de.veesy.R;
-
 /**
  * Created by dfritsch on 08.01.2018.
  * veesy.de

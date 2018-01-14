@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_all_black">
+    android:background="@drawable/exchange_pairing_background">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
             android:id="@+id/iVPairingAnimation"
@@ -17,7 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:contentDescription="@string/pairing"
-            android:src="@drawable/pairing_animation" />
+            android:src="@drawable/exchange_pairing_animation" />
 
         <TextView
             android:layout_width="match_parent"

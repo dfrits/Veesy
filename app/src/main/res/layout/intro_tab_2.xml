@@ -10,17 +10,16 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/tab2"
         android:onClick="onPagerClicked"
-        android:src="@drawable/intro2" />
+        android:src="@drawable/intro_tab_2" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="90dp"
-        android:text="Create your own business card"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:textSize="18dp"/>
-
+        android:paddingStart="10dp"
+        android:text="@string/intro_tab_2_info_text"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 </RelativeLayout>

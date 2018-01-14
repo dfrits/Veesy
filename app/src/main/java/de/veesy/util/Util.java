@@ -43,7 +43,8 @@ public abstract class Util {
         });
     }
 
-    public static void runAnimationOnUiThread(final Activity activity, final View view, final Animation animation){
+    public static void runAnimationOnUiThread(final Activity activity, final View view,
+                                              final Animation animation) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -52,7 +53,7 @@ public abstract class Util {
         });
     }
 
-    public static void setContentViewOnUiThread(final Activity activity, final int view){
+    public static void setContentViewOnUiThread(final Activity activity, final int view) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -27,5 +27,5 @@
         android:contentDescription="@string/share"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/share_button_mini" />
+        android:src="@drawable/share_button" />
 </RelativeLayout>
