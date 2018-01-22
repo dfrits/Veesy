@@ -56,31 +56,4 @@
     <item android:drawable="@drawable/intro_animation_frame_0052" android:duration="37"/>
     <item android:drawable="@drawable/intro_animation_frame_0053" android:duration="37"/>
     <item android:drawable="@drawable/intro_animation_frame_0054" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0055" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0056" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0057" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0058" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0059" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0060" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0061" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0062" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0063" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0064" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0065" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0066" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0067" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0068" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0069" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0070" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0071" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0072" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0073" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0074" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0075" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0076" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0077" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0078" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0079" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0080" android:duration="37"/>
-    <item android:drawable="@drawable/intro_animation_frame_0081" android:duration="37"/>
 </animation-list>
