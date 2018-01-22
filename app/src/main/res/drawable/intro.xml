@@ -56,7 +56,7 @@
     <item android:drawable="@drawable/intro0052" android:duration="37"/>
     <item android:drawable="@drawable/intro0053" android:duration="37"/>
     <item android:drawable="@drawable/intro0054" android:duration="37"/>
-    <item android:drawable="@drawable/intro0055" android:duration="37"/>
+    <!--<item android:drawable="@drawable/intro0055" android:duration="37"/>
     <item android:drawable="@drawable/intro0056" android:duration="37"/>
     <item android:drawable="@drawable/intro0057" android:duration="37"/>
     <item android:drawable="@drawable/intro0058" android:duration="37"/>
@@ -82,5 +82,5 @@
     <item android:drawable="@drawable/intro0078" android:duration="37"/>
     <item android:drawable="@drawable/intro0079" android:duration="37"/>
     <item android:drawable="@drawable/intro0080" android:duration="37"/>
-    <item android:drawable="@drawable/intro0081" android:duration="37"/>
+    <item android:drawable="@drawable/intro0081" android:duration="37"/>-->
 </animation-list>
