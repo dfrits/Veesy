@@ -30,28 +30,22 @@ public class MemberDetailsActivity extends Activity {
 
     private void init() {
         String[] details = new String[0];
-        // Entweder als Hintergrund oder eigenes Bild. Je nach dem umkommentieren (hier und im layout)
-//        ScrollView background = findViewById(R.id.team_member_details_bg);
         ImageView image = findViewById(R.id.member_img);
         switch (getIntent().getIntExtra(EXTRA_KEY, 4)) {
             case 0:
                 details = getResources().getStringArray(R.array.details_vivi);
-//                background.setBackgroundResource(R.drawable.about_vivi);
                 image.setImageResource(R.drawable.about_vivi);
                 break;
             case 1:
                 details = getResources().getStringArray(R.array.details_martin);
-//                background.setBackgroundResource(R.drawable.about_martin);
                 image.setImageResource(R.drawable.about_martin);
                 break;
             case 2:
                 details = getResources().getStringArray(R.array.details_tianyi);
-//                background.setBackgroundResource(R.drawable.about_tianyi);
                 image.setImageResource(R.drawable.about_tianyi);
                 break;
             case 3:
                 details = getResources().getStringArray(R.array.details_daniel);
-//                background.setBackgroundResource(R.drawable.about_daniel);
                 image.setImageResource(R.drawable.about_daniel);
                 break;
         }

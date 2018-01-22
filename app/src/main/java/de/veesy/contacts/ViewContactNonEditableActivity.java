@@ -30,8 +30,7 @@ import de.veesy.util.Util;
  * Zeigt den übergebenen Kontakt an. Die Felder sind nicht bearbeitbar.
  */
 
-public class ViewContactNonEditableActivity extends Activity implements
-        MenuItem.OnMenuItemClickListener {
+public class ViewContactNonEditableActivity extends Activity {
     private Contact contact;
 
     // Felder für die Kontaktinfos
@@ -50,8 +49,8 @@ public class ViewContactNonEditableActivity extends Activity implements
 
     /**
      * Erstellt automatisch einen Intent mit den nötigen Extras.
-     * @param context   Context der aufrufenden Activity
-     * @param contact   Kontakt, der angezeigt werden soll
+     * @param context Context der aufrufenden Activity
+     * @param contact Kontakt, der angezeigt werden soll
      * @return Intent zum starten dieser Activity
      */
     public static Intent getIntent(Context context, Contact contact) {
@@ -76,7 +75,7 @@ public class ViewContactNonEditableActivity extends Activity implements
         ScrollView background = findViewById(R.id.lContactBackground);
         Uri image = contact.getPicture();
         if (image != null) {
-            // TODO Bild laden und als Hintergrund setzen
+            // TODO Bild laden und als Hintergrund setzen oder eigenes Bild. Wie bei About
         } else {
             background.setBackgroundResource(R.drawable.contacts_show_background);
         }
@@ -187,20 +186,6 @@ public class ViewContactNonEditableActivity extends Activity implements
             setResult(RESULT_CANCELED, intent);
             finish();
         }
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.mDeleteYes:
-                if (ContactsManager.instance().deleteContact(contact)) {
-                    finish();
-                } else {
-                    Util.showToast(this, R.string.delete_contact_error, Toast.LENGTH_LONG);
-                }
-                break;
-        }
-        return true;
     }
 
     public void bDeleteClicked(View view) {

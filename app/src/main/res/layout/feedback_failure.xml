@@ -42,7 +42,7 @@
         android:contentDescription="@string/details"
         android:onClick="bShareClicked"
         android:scaleType="fitCenter"
-        android:src="@drawable/share_button_mini" />
+        android:src="@drawable/share_button" />
 
     <ImageButton
         android:layout_width="30dp"

@@ -27,6 +27,7 @@ import de.veesy.listview_util.AdapterObject;
 import de.veesy.listview_util.ListItemCallback;
 import de.veesy.listview_util.RoundListAdapter;
 import de.veesy.listview_util.ScrollingLayoutCallback;
+import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
 import static android.view.View.INVISIBLE;
@@ -43,7 +44,6 @@ import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
  * hs-augsburg
  */
 
-
 public class ShareActivity extends Activity implements Observer {
     private ConnectionManager connectionManager = null;
     private RoundListAdapter adapter;
@@ -54,7 +54,6 @@ public class ShareActivity extends Activity implements Observer {
     private static int visibility_time = 60;
 
     private boolean exchangeActivityAlreadyStarted = false;
-    //private boolean alreadyPaired_flag = false;
 
     static {
         DUMMY_DATA = new ArrayList<>();
@@ -75,11 +74,10 @@ public class ShareActivity extends Activity implements Observer {
         if (vibrator != null) {
             vibrator.vibrate(300);
         }
-
     }
 
     //Debug
-    private void setList(){
+    private void setList() {
         adapter.setData(getDataList(DUMMY_DATA));
     }
 
@@ -106,7 +104,9 @@ public class ShareActivity extends Activity implements Observer {
         setRefreshListener();
 
         //Debug
-        setList();
+        if (Constants.DEBUGGING) {
+            setList();
+        }
     }
 
     //endregion
@@ -127,7 +127,6 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-
         boolean startExchangeActivity_flag = false;
 
         switch ((Integer) arg) {
@@ -154,11 +153,10 @@ public class ShareActivity extends Activity implements Observer {
             case MESSAGE.PAIRING:
                 startExchangeActivity_flag = true;
                 break;
-//
             case MESSAGE.RESPOND_AS_CLIENT:
                 System.out.println("MESSAGE.RESPOND in Exchange Act");
                 connectionManager.btSendData();
-                startFeedbackActivity(true);
+                startFeedbackActivity();
                 break;
             default:
                 break;
@@ -168,13 +166,12 @@ public class ShareActivity extends Activity implements Observer {
         }
     }
 
-    private void startFeedbackActivity(boolean success) {
+    private void startFeedbackActivity() {
         Intent feedback_intent = new Intent(this, FeedbackActivity.class);
-        feedback_intent.putExtra(SUCCESS_FLAG, success);
+        feedback_intent.putExtra(SUCCESS_FLAG, true);
         startActivity(feedback_intent);
         finish();
     }
-
 
     //endregion
 
@@ -221,7 +218,6 @@ public class ShareActivity extends Activity implements Observer {
     /**
      * Erstellt eine Liste für den ListAdapter. Dabei wird jedem String der Punkt hinzufügt. Ist
      * Liste <b>null</b>, dann werden die Dummydaten verwendet.
-     *
      * @param list Liste mit anzuzeigenden Daten oder null
      * @return Liste der übergebenen daten plus Punkt
      */
@@ -237,10 +233,8 @@ public class ShareActivity extends Activity implements Observer {
     }
 
     protected void onListItemClick(String deviceName) {
-
-
         //debug
-        if(deviceName.equals("Martin Stadlmaier")){
+        if (Constants.DEBUGGING && deviceName.equals("Martin Stadlmaier")) {
             Intent intent = new Intent(this, FeedbackActivity.class);
             intent.putExtra("SUCCESS_FLAG", false);
             startActivity(intent);
@@ -255,15 +249,11 @@ public class ShareActivity extends Activity implements Observer {
         if (exchangeActivityAlreadyStarted) return;
         exchangeActivityAlreadyStarted = true;
         Intent intent = new Intent(this, ExchangeActivity.class);
-//        if (alreadyPaired_flag) {
-//            intent.putExtra("ALREADY_PAIRED", true);
-//        }
         startActivity(intent);
         finish();
     }
 
     //endregion
-
 
     @Override
     protected void onDestroy() {

@@ -1,7 +1,6 @@
 package de.veesy.introduction;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,14 +31,13 @@ public class Tab5 extends Fragment {
         if (container == null) {
             return null;
         }
-        View view = inflater.inflate(R.layout.gesture_animation_view, container, false);
+        View view = inflater.inflate(R.layout.intro_tab_5, container, false);
 
         introImage = view.findViewById(R.id.introAnimation);
-        introImage.setBackgroundResource(R.drawable.intro);
+        introImage.setBackgroundResource(R.drawable.intro_animation);
         backgroundTask = new IntroAnimation();
         backgroundTask.execute(introImage);
 
-//        initAnimation(view);
         return view;
     }
 
@@ -52,14 +50,16 @@ public class Tab5 extends Fragment {
             }
             if (!introAnimation.isRunning()) introAnimation.start();
         } else {
-            stopAnimation();
+            if (introAnimation != null) {
+                introAnimation.stop();
+            }
         }
     }
 
     private void initAnimation(View view) {
         if (introAnimation == null || !introAnimation.isRunning()) {
             introImage = view.findViewById(R.id.introAnimation);
-            introImage.setBackgroundResource(R.drawable.intro);
+            introImage.setBackgroundResource(R.drawable.intro_animation);
             introAnimation = (AnimationDrawable) introImage.getBackground();
         }
     }
@@ -68,7 +68,7 @@ public class Tab5 extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         stopAnimation();
-        introImage.setBackgroundResource(R.drawable.intro0001);
+        introImage.setBackgroundResource(R.drawable.intro_animation_frame_0001);
     }
 
     @Override

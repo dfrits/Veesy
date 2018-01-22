@@ -3,7 +3,6 @@ package de.veesy.core;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -28,8 +27,6 @@ import static de.veesy.core.FeedbackActivity.SUCCESS_FLAG;
  */
 
 public class ExchangeActivity extends Activity implements Observer {
-
-    public static final String ALREADY_PAIRED = "ALREADY_PAIRED";
 
     private ConnectionManager connectionManager;
 
@@ -103,7 +100,6 @@ public class ExchangeActivity extends Activity implements Observer {
     }
 
     public void bCancelClicked(View view) {
-        //startActivity(new Intent(this, ShareActivity.class));
         finish();
     }
 
@@ -116,10 +112,6 @@ public class ExchangeActivity extends Activity implements Observer {
                 runExchangeActivity_paired();
                 connectionManager.startConnectionTimeOutHandler();
                 break;
-//            case MESSAGE.ALREADY_PAIRED:
-//                //kommt nie an
-//                runExchangeActivity_paired();
-//                break;
             case MESSAGE.NOT_PAIRED:
                 runExchangeActivity_not_paired();
                 break;
@@ -149,12 +141,5 @@ public class ExchangeActivity extends Activity implements Observer {
                 connectionManager.btReConnect();
                 break;
         }
-    }
-
-    //debug kram
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == 265 && event.getAction() == KeyEvent.ACTION_DOWN) {
-        }
-        return true;
     }
 }

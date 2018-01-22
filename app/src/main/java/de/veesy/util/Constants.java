@@ -20,6 +20,5 @@ public abstract class Constants {
 
     // Martins Debugging
     public static final String SHAKE_COUNTER = "SHAKE_COUNTER";
-    public static final String SHAKE_THRESHOLD = "SHAKE_THRESHOLD";
     public static final String SHAKE_TIME = "SHAKE_TIME";
 }

@@ -14,6 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/bContact"
+        android:layout_toStartOf="@+id/bSettings"
         android:background="@android:color/transparent"
         android:fontFamily="@font/roboto"
         android:text="@string/share"
@@ -33,10 +35,11 @@
         android:src="@drawable/main_handshake_button" />
 
     <ImageButton
+        android:id="@+id/bContact"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/contacts"
         android:onClick="bContactsClicked"
@@ -44,6 +47,7 @@
         android:src="@drawable/main_contacts_button" />
 
     <ImageButton
+        android:id="@+id/bSettings"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -56,6 +60,7 @@
         android:src="@drawable/main_settings_button" />
 
     <ImageButton
+        android:id="@+id/bShutdown"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
@@ -66,5 +71,5 @@
         android:paddingBottom="10dp"
         android:paddingTop="5dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/home_shutdown_button" />
+        android:src="@drawable/main_shutdown_button" />
 </RelativeLayout>

@@ -285,18 +285,18 @@ public class ContactsManager {
                 mail, address, website, birthday, hobbies, picture, path);
     }
 
-    /**
-     * Löscht den Kontakt.
-     * @param position Position in der Liste
+    /*
+      Löscht den Kontakt.
+      @param position Position in der Liste
      */
-    boolean deleteContact(int position) {
+    /*boolean deleteContact(int position) {
         if ((contacts == null || contacts.isEmpty()) && Constants.DEBUGGING) {
             dummylist.remove(position);
             return true;
         }
         Contact contact = contacts.get(position);
         return contact.getContactPath() != null && deleteContact(contact);
-    }
+    }*/
 
     /**
      * Löscht den Kontakt.
@@ -306,7 +306,7 @@ public class ContactsManager {
         if ((contacts == null || contacts.isEmpty()) && Constants.DEBUGGING) {
             dummylist.remove(contact);
             for (int i = 0; i < dummylist.size(); i++) {
-                if(dummylist.get(i).getFullName().equals(contact.getFullName()))
+                if (dummylist.get(i).getFullName().equals(contact.getFullName()))
                     dummylist.remove(i);
             }
             return true;
