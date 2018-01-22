@@ -2,13 +2,11 @@ package de.veesy.core;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.nisrulz.sensey.Sensey;
@@ -29,20 +27,21 @@ import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
+import static de.veesy.introduction.IntroductionActivity.SHOW_ALL;
+
 /**
  * Created by dfritsch on 24.10.2017.
  * veesy.de
  * hs-augsburg
  */
 public class MainMenu extends WearableActivity implements Observer {
+    private static boolean isFirstStart;
     private ConnectionManager connectionManager = null;
     private ContactsManager contactsManager = null;
     private Contact my_contact = null;
     private int shakesDetected = 0;
     private ShakeDetector.ShakeListener shakeListener;
     private SharedPreferences pref = null;
-    private AnimationDrawable introAnimation;
-    private ImageView introImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +50,21 @@ public class MainMenu extends WearableActivity implements Observer {
 
         //Introduction beim ersten Start der App
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        isFirstStart = pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true);
 
-        if (pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
+        Intent intent = new Intent(this, IntroductionActivity.class);
+        intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
+        if (isFirstStart) {
             pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
-            Intent intent = new Intent(this, IntroductionActivity.class);
-            intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
-            startActivityForResult(intent, Constants.INTRODUCTION_REQUEST_CODE);
+            intent.putExtra(SHOW_ALL, isFirstStart);
         } else {
-            setContentView(R.layout.intro_tab_5);
-            initAnimation();
-            introAnimation.start();
+            intent.putExtra(SHOW_ALL, isFirstStart);
         }
+        startActivityForResult(intent, Constants.INTRODUCTION_REQUEST_CODE);
+
         initContactsManager();
         initConnectionManager();
         initSensey();
-    }
-
-    private void initAnimation() {
-        if (introAnimation == null || !introAnimation.isRunning()) {
-            introImage = findViewById(R.id.introAnimation);
-            introImage.setBackgroundResource(R.drawable.intro_animation);
-            introAnimation = (AnimationDrawable) introImage.getBackground();
-        }
     }
 
     private void initContactsManager() {
@@ -172,6 +164,7 @@ public class MainMenu extends WearableActivity implements Observer {
         float threshold = pref.getFloat(Constants.SHAKE_TIME, 5.0F);
         if (shakeListener != null)
             Sensey.getInstance().startShakeDetection(threshold, timeBeforeDeclaringShakeStopped, shakeListener);
+
     }
 
     @Override
@@ -184,23 +177,8 @@ public class MainMenu extends WearableActivity implements Observer {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopAnimation();
         // We need to do this because somehow it happens that the connection manager is still alive
         connectionManager.finish();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        stopAnimation();
-        introImage.setBackgroundResource(R.drawable.intro_animation_frame_0001);
-    }
-
-    private void stopAnimation() {
-        if (introAnimation != null && introAnimation.isRunning()) {
-            introAnimation.stop();
-            introAnimation = null;
-        }
     }
 
     private void initSensey() {
@@ -234,7 +212,7 @@ public class MainMenu extends WearableActivity implements Observer {
         }
     }
 
-    public void onPagerClicked(View view) {
-        setContentView(R.layout.main_menu);
+    public static boolean isFirstStart() {
+        return isFirstStart;
     }
 }
