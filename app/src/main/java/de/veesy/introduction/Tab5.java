@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import de.veesy.R;
-import de.veesy.core.MainMenu;
 
 /**
  * Created by dfritsch on 22.12.2017.
@@ -36,30 +35,20 @@ public class Tab5 extends Fragment {
 
         introImage = view.findViewById(R.id.introAnimation);
         introImage.setBackgroundResource(R.drawable.intro_animation);
-
-        if (!MainMenu.isFirstStart()) {
-            initAnimation(view);
-            if (introAnimation != null) {
-                introAnimation.start();
-            }
-        } else {
-            backgroundTask = new IntroAnimation();
-            backgroundTask.execute(introImage);
-        }
+        backgroundTask = new IntroAnimation();
+        backgroundTask.execute(introImage);
 
         return view;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && MainMenu.isFirstStart()) {
-            if (backgroundTask != null) {
-                introAnimation = backgroundTask.getIntroAnimation();
-            }
+        if (isVisibleToUser) {
+            introAnimation = backgroundTask.getIntroAnimation();
             if (introAnimation == null) {
                 initAnimation(getView());
             }
-            if (introAnimation != null && !introAnimation.isRunning()) introAnimation.start();
+            if (!introAnimation.isRunning()) introAnimation.start();
         } else {
             if (introAnimation != null) {
                 introAnimation.stop();
@@ -68,7 +57,7 @@ public class Tab5 extends Fragment {
     }
 
     private void initAnimation(View view) {
-        if ((introAnimation == null || !introAnimation.isRunning()) && view != null) {
+        if (introAnimation == null || !introAnimation.isRunning()) {
             introImage = view.findViewById(R.id.introAnimation);
             introImage.setBackgroundResource(R.drawable.intro_animation);
             introAnimation = (AnimationDrawable) introImage.getBackground();
