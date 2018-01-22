@@ -24,12 +24,16 @@ import de.veesy.R;
 public class IntroductionActivity extends FragmentActivity {
     private PagerAdapter pagerAdapter;
     private ViewPager pager;
+    public static final String SHOW_ALL = "SHOW_ALL";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.introduction);
+
+
+
         initialisePaging();
     }
 
@@ -41,10 +45,12 @@ public class IntroductionActivity extends FragmentActivity {
      */
     private void initialisePaging() {
         List<Fragment> fragments = new Vector<>();
-        fragments.add(Fragment.instantiate(this, Tab1.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab2.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab3.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab4.class.getName()));
+        if (getIntent().getBooleanExtra(SHOW_ALL, true)) {
+            fragments.add(Fragment.instantiate(this, Tab1.class.getName()));
+            fragments.add(Fragment.instantiate(this, Tab2.class.getName()));
+            fragments.add(Fragment.instantiate(this, Tab3.class.getName()));
+            fragments.add(Fragment.instantiate(this, Tab4.class.getName()));
+        }
         fragments.add(Fragment.instantiate(this, Tab5.class.getName()));
         fragments.add(Fragment.instantiate(this, Tab6.class.getName()));
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);

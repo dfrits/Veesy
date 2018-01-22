@@ -27,22 +27,21 @@ import de.veesy.settings.SettingsActivity;
 import de.veesy.util.Constants;
 import de.veesy.util.Util;
 
+import static de.veesy.introduction.IntroductionActivity.SHOW_ALL;
+
 /**
  * Created by dfritsch on 24.10.2017.
  * veesy.de
  * hs-augsburg
  */
 public class MainMenu extends WearableActivity implements Observer {
+    private static boolean isFirstStart;
     private ConnectionManager connectionManager = null;
     private ContactsManager contactsManager = null;
-
     private Contact my_contact = null;
-
     private int shakesDetected = 0;
     private ShakeDetector.ShakeListener shakeListener;
-
     private SharedPreferences pref = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +50,18 @@ public class MainMenu extends WearableActivity implements Observer {
 
         //Introduction beim ersten Start der App
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        isFirstStart = pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true);
 
-        if (pref.getBoolean(Constants.APP_FIRST_START_EXTRA, true)) {
+        Intent intent = new Intent(this, IntroductionActivity.class);
+        intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
+        if (isFirstStart) {
             pref.edit().putBoolean(Constants.APP_FIRST_START_EXTRA, false).apply();
-            Intent intent = new Intent(this, IntroductionActivity.class);
-            intent.putExtra(Constants.INTRODUCTION_FIRST_START_EXTRA, true);
-            startActivityForResult(intent, Constants.INTRODUCTION_REQUEST_CODE);
+            intent.putExtra(SHOW_ALL, isFirstStart);
         } else {
-            setContentView(R.layout.main_menu);
+            intent.putExtra(SHOW_ALL, isFirstStart);
         }
+        startActivityForResult(intent, Constants.INTRODUCTION_REQUEST_CODE);
+
         initContactsManager();
         initConnectionManager();
         initSensey();
@@ -208,5 +210,9 @@ public class MainMenu extends WearableActivity implements Observer {
         if (shakeListener != null) {
             Sensey.getInstance().startShakeDetection(shakeListener);
         }
+    }
+
+    public static boolean isFirstStart() {
+        return isFirstStart;
     }
 }
