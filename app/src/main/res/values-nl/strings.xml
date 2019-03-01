@@ -1,0 +1,97 @@
+<resources>
+    <!-- app name -->
+
+    <string name="app_name" translatable="false">veesy</string>
+
+    <!-- just image descriptions -->
+
+    <string name="share" translatable="false">Delen</string>
+    <string name="contacts">Contactpersonen</string>
+    <string name="settings">Instellingen</string>
+    <string name="home" translatable="false">Startpagina</string>
+    <string name="details" translatable="false">Details</string>
+    <string name="pairing" translatable="false">Bezig met koppelen...</string>
+    <string name="shut_down">Afsluiten</string>
+    <string name="image">Afbeelding</string> <!-- Standartbildbeschreibung (Personenbilder)-->
+    <string name="animation">Animatie</string>
+    <string name="delete">Verwijderen</string>
+    <string name="safe">Veilig</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="data_transmission_success" translatable="false">Gegevensoverdracht voltooid</string>
+    <string name="data_transmission_failure" translatable="false">Gegevensoverdracht mislukt</string>
+    <string name="cancel">Annuleren</string>
+    <string name="background">Achtergrond</string>
+
+    <!-- settings -->
+
+    <string name="my_card">Mijn kaart</string>
+    <string name="remove_devices">Apparaten verwijderen</string>
+    <string name="about_us">Over ons</string>
+    <string name="introduction">Introductie</string>
+
+    <!-- informations -->
+
+    <string name="success">Voltooid!</string>
+    <string name="failure">Mislukt!</string>
+    <string name="devies_removed">Apparaten verwijderd</string>
+    <string name="fill_out_your_card_please">Vul eerst je kaart in; deze wordt automatisch opgeslagen.</string>
+    <string name="delete_question">Permanent verwijderen</string>
+    <string name="shutdown">Afsluiten…</string>
+
+    <!-- contact details -->
+
+    <string name="first_name">Voornaam</string>
+    <string name="last_name">Achternaam</string>
+    <string name="phone">Telefoonnummer</string>
+    <string name="mail">E-mailadres</string>
+    <string name="occupation">Rol</string>
+    <string name="company">Bedrijf</string>
+    <string name="website" translatable="false">Website</string>
+    <string name="address">Adres</string>
+    <string name="business_area">Bedrijventerrein</string>
+    <string name="birthday">Verjaardag</string>
+    <string name="hobbies">Hobby\'s</string>
+
+    <!-- errors -->
+
+    <string name="error_safe_contact">Kan contactpersoon niet opslaan</string>
+    <string name="delete_contact_error">Kan contactpersoon niet verwijderen</string>
+    <string name="no_device_found">Geen apparaat aangetroffen. Staart een nieuwe zoekopdracht!</string>
+    <string name="no_first_name">Geen voornaam</string>
+    <string name="no_last_name">Geen achternaam</string>
+    <string name="not_paired">Opnieuw zoeken of nu koppelen</string>
+    <string name="bluetooth_permission_denied">Bluetooth is vereist voor het delen van contactpersonen</string>
+
+    <!-- introduction -->
+
+    <string name="tab1" translatable="false">tab1</string>
+    <string name="tab2" translatable="false">tab2</string>
+    <string name="tab3" translatable="false">tab3</string>
+    <string name="tab4" translatable="false">tab4</string>
+    <string name="intro_tab_1_info_text">Welkom bij veesy</string>
+    <string name="intro_tab_2_info_text">Creëer je eigen visitekaartje</string>
+    <string name="intro_tab_3_info_text">Beheer al je contactpersonen via je smartwatch</string>
+    <string name="intro_tab_4_info_text">Deel gemakkelijk contactpersooninformatie</string>
+    <string name="intro_tab_4_button_text">Laat maar zien!</string>
+
+    <!-- about us -->
+
+    <string name="app_slogan">Met veesy is 't een kat in 't bakkie!</string>
+    <string name="title_1">WIE ZIJN WE?</string>
+    <string name="title_2">HET TEAM</string>
+    <string name="about_text">We zijn vier studenten uit Augsburg, Duitsland. We doen de masteropleiding
+        \'Interactieve Mediasystemen\', waar de focus ligt op de mobiele gebruikservaring van de
+        Augsburg-universiteit voor Toegepaste Wetenschappen. \n\nDit project is ontwikkeld als onderdeel
+        van ons masterproject, dat begon aan het begin van 2017.</string>
+    <string name="vivi" translatable="false">Vivien Bardosi</string>
+    <string name="daniel" translatable="false">Daniel Fritsch</string>
+    <string name="tianyi" translatable="false">Tianyi Zhang</string>
+    <string name="martin" translatable="false">Martin Stadlmaier</string>
+    <string name="degree">Niveau</string>
+    <string name="uni">Universitair</string>
+    <string name="team_member_slogan">Slagzin</string>
+
+    <!-- Neue Textfelder werden automatisch hier drunter eingefügt -->
+    <string name="neue_felder">Nieuwe velden</string>
+</resources>
